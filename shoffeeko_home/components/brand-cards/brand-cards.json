@@ -1,0 +1,16 @@
+{
+  "cards": [
+    {
+      "title": "Who We Are",
+      "image": "assets/images/Design_Image/Who_We_Are.png"
+    },
+    {
+      "title": "Mission",
+      "image": "assets/images/Design_Image/Mission.png"
+    },
+    {
+      "title": "What We Do",
+      "image": "assets/images/Design_Image/What_We_Do.png"
+    }
+  ]
+}

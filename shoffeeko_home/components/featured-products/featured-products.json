@@ -1,0 +1,58 @@
+{
+  "modalText": "You can go directly to the product page or take the ShoffeeKo quiz module you already created.",
+  "products": [
+    {
+      "id": "pine",
+      "title": "Pine & Juniper",
+      "vendor": "SHOFFEEKO",
+      "price": "$15.00 USD",
+      "button": "Add to cart",
+      "image": "assets/images/Product_Image/Pine_and_Juniper.jpg",
+      "url": "#"
+    },
+    {
+      "id": "tiramisu",
+      "title": "Tiramisu & Black Sesame",
+      "vendor": "SHOFFEEKO",
+      "price": "$15.00 USD",
+      "button": "Add to cart",
+      "image": "assets/images/Product_Image/Tiramisu_BlackSesame.jpg",
+      "url": "#"
+    },
+    {
+      "id": "pistachio",
+      "title": "Pistachio & Cardamom",
+      "vendor": "SHOFFEEKO",
+      "price": "$15.00 USD",
+      "button": "Add to cart",
+      "image": "assets/images/Product_Image/Pistachio_Roast.jpg",
+      "url": "#"
+    },
+    {      "id": "doha",
+      "title": "Vulcan Coffee Roastery (Doha)",
+      "vendor": "SHOFFEEKO",
+      "price": "$20.00 USD",
+      "button": "Add to cart",
+      "image": "assets/images/Product_Image/Doha_Houseblend.jpg",
+      "url": "#"
+    },
+    {
+      "id": "flat",
+      "title": "Flat White Specialty Coffee (Qatar)",
+      "vendor": "SHOFFEEKO",
+      "price": "From $10.00 USD",
+      "button": "Choose options",
+      "image": "assets/images/Product_Image/Flat_WhiteBlend.jpg",
+      "url": "#"
+    },
+    {
+      "id": "mocha",
+      "title": "Haraaz Red Mocha",
+      "vendor": "SHOFFEEKO",
+      "price": "$20.00 USD",
+      "button": "Add to cart",
+      "image": "assets/images/Product_Image/Red_Mocha.png",
+      "url": "#"
+    }
+  ]
+}

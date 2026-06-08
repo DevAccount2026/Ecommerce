@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Parallax Section Styling
+   ========================================================================== */
+
+
+.parallax {
+  /* Layout & Sizing */
+  min-height: 390px;
+  padding: 70px 20px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  
+  /* Background Settings */
+  /* Combines a semi-transparent black overlay with the background variable */
+  background-image: 
+    linear-gradient(#0008, #0008), 
+    var(--bg);
+ background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ==========================================================================
+   Typography & Content Inside the Parallax
+   ========================================================================== */
+
+.parallax__content h4 {
+  color: #fffde9;
+  font-size: clamp(24px, 5vw, 24px); /* Scales fluidly between 34px and 64px */
+  line-height: 1.15;
+  margin: 0 0 24px;
+  
+}
+
+.parallax__content p {
+  color: #fff;
+  font-size: clamp(16px, 1vw, 16px); /* Scales fluidly between 17px and 25px */
+  max-width: 960px;
+  margin: auto;
+}
+
+/* Initial positions */
+
+.parallax-heading {
+  opacity: 0;
+  transform: translateX(150px);
+  transition: all 1s ease;
+}
+
+.parallax-text {
+  opacity: 0;
+  transform: translateX(-150px);
+  transition: all 1s ease;
+}
+
+/* Animate into view */
+
+.parallax-heading.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.parallax-text.animate-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+/*-------------------------------------*/
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+
+/* Disables the fixed parallax effect on mobile devices for better performance */
+@media (max-width: 768px) {
+  .parallax {
+    background-attachment: scroll;
+  }
+}

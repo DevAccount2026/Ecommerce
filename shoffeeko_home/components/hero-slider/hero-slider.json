@@ -1,0 +1,31 @@
+{
+  "autoplay": true,
+  "autoplaySpeed": 3000,
+  "slides": [
+    {
+      "type": "video",
+      "video": "assets/videos/Hero1.mp4",
+      "heading": "Served Well",
+      "buttonText": "Shop Now",
+      "buttonUrl": "catalog.html"
+    },
+  
+
+    {
+      "video": "assets/videos/Hero2.mp4",
+      "heading": "Freshly Roasted",
+      "poster": "assets/images/hero-poster-1.jpg",
+      "buttonText": "Shop Now",
+      "buttonUrl": "catalog.html"
+    },
+   
+    {
+      "type": "video",
+      "video": "assets/videos/Hero3.mp4",
+       "poster": "assets/images/hero-poster-1.jpg",
+      "heading": "Premium Coffee",
+      "buttonText": "Shop Now",
+      "buttonUrl": "catalog.html"
+    }   
+  ]
+}

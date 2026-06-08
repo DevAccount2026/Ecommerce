@@ -1,0 +1,90 @@
+{
+  "settings": {
+    "currency": "USD",
+    "columnsDesktop": 3,
+    "columnsTablet": 2,
+    "columnsMobile": 1,
+    "showHeader": false,
+    "title": "Catalog",
+    "subtitle": "Explore our ShoffeeKo coffee blends.",
+    "imageRatio": "wide",
+    "buttonText": "Add to cart",
+    "chooseOptionsText": "Choose options",
+    "colors": {
+      "background": "#050505",
+      "text": "#e8e2d2",
+      "muted": "#cfc7b9",
+      "buttonText": "#ffffff",
+      "border": "#f1f1f1",
+      "accent": "#7d1839"
+    }
+  },
+  "products": [
+      {
+      "id": "Doha-House-Blend",
+      "title": "Doha House Blend",
+      "price": 20,
+      "pricePrefix": "",
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg",
+      "url": "products/doha-house-blend.html",
+      "hasOptions": false,
+      "collection": "premium-blends",
+      "tags": ["bold", "premium", "house-blend"]
+    },
+    {
+      "id": "flat-white-specialty-coffee-qatar",
+      "title": "Flat White Specialty Coffee (Qatar)",
+      "price": 10,
+      "pricePrefix": "From ",
+      "image": "../assets/images/Product_Image/Flat_WhiteBlend.jpg",
+      "url": "products/flat-white-specialty-coffee-qatar.html",
+      "hasOptions": true,
+      "collection": "specialty-coffee",
+      "tags": ["smooth", "creamy", "daily"]
+    },
+    {
+      "id": "haraaz-red-mocha",
+      "title": "Haraaz Red Mocha",
+      "price": 20,
+      "pricePrefix": "",
+      "image": "../assets/images/Product_Image/Red_Mocha.png",
+      "url": "products/haraaz-red-mocha.html",
+      "hasOptions": false,
+      "collection": "premium-blends",
+      "tags": ["bold", "mocha", "rich"]
+    },
+    {
+      "id": "pine-juniper",
+      "title": "Pine & Juniper",
+      "price": 15,
+      "pricePrefix": "",
+      "image": "../assets/images/Product_Image/Pine_and_Juniper.jpg",
+      "url": "products/pine-juniper.html",
+      "hasOptions": false,
+       "collection": "specialty-coffee",
+      "tags": ["classic", "balanced", "fresh"]
+    },
+    {
+      "id": "pistachio-cardamom",
+      "title": "Pistachio & Cardamom",
+      "price": 15,
+      "pricePrefix": "",
+      "image": "../assets/images/Product_Image/Pistachio_Roast.jpg",
+      "url": "products/pistachio-cardamom.html",
+      "hasOptions": false,
+      "collection": "dessert-coffee",
+      "tags": ["nutty", "sweet", "smooth"]
+    },
+    {
+      "id": "premium-arabica",
+      "title": "Premium Arabica",
+      "price": 24.99,
+      "pricePrefix": "",
+      "image": "../assets/images/Product_Image/Premium_Arabica.jpg",
+      "url": "products/premium-arabica.html",
+      "hasOptions": false,
+      "collection": "dessert-coffee",
+      "tags": ["sweet", "creamy", "chocolatey"]
+    }
+  ]
+}

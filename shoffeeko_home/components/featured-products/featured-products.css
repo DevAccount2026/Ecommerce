@@ -1,0 +1,282 @@
+/* --- Products Section --- */
+.products {
+  padding: 70px 0;
+}
+
+.products h2 {
+  font-size: 42px;
+}
+
+.products__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 100px 38px;
+}
+
+/* --- Product Cards --- */
+.product-card {
+  cursor: pointer;
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 9px;
+  border: 1px solid #fff;
+}
+
+.product-card h3 {
+  font-size: 16px;
+  margin: 12px 0 5px;
+}
+
+.product-card .vendor {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #aaa;
+}
+
+.product-card .price {
+  font-weight: 700;
+}
+
+.product-card button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  background: #080808;
+  color: #fff;
+  border: 2px solid #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* --- Product Modal --- */
+.product-modal[hidden] {
+  display: none !important;
+}
+
+.product-modal.is-open {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.modal-box {
+  width: min(1100px, 92vw);
+  min-height: 620px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  z-index: 100000;
+  border-radius: 28px;
+  background: #f7f0e7;
+  color: #2b2018;
+}
+
+/* Left Side */
+.modal-left {
+  width: 42%;
+  background: #d6b58d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 45px;
+}
+
+.modal-left img {
+  width: 100%;
+  max-width: 430px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* Right Side */
+.modal-right {
+  width: 58%;
+  padding: 50px 45px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-coffee-icon {
+  text-align: center;
+  font-size: 28px;
+}
+
+.modal-right h2 {
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.modal-intro {
+  font-size: 17px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.modal-benefits {
+  display: flex;
+  gap: 18px;
+  margin: 28px 0;
+  text-align: center;
+}
+
+.modal-benefits div {
+  flex: 1;
+}
+
+.modal-benefits strong,
+.modal-benefits small {
+  display: block;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.modal-option {
+  flex: 1;
+  border: 1px solid #e0d0bd;
+  border-radius: 18px;
+  padding: 24px;
+  text-align: center;
+  background: #fff9f2;
+}
+
+.modal-option-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.modal-option h3 {
+  margin: 8px 0;
+}
+
+.modal-option p {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.modal-btn {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 18px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.modal-btn-brown {
+  background: #4a220d;
+  color: #fff;
+}
+
+.modal-btn-green {
+  background: #2c6d3f;
+  color: #fff;
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 24px;
+  z-index: 100001;
+  border: none;
+  background: transparent;
+  color: #111;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .products__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-box {
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-left,
+  .modal-right {
+    width: 100%;
+  }
+
+  .modal-actions,
+  .modal-benefits {
+    flex-direction: column;
+  }
+}
+.quiz-progress {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.quiz-progress-bar {
+  width: 100%;
+  height: 12px;
+  margin-bottom: 24px;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.quiz-answer {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #d8c8b8;
+  background: #fff9f2;
+  color: #2b2018;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.quiz-answer.selected {
+  background: #2c6d3f;
+  color: #fff;
+  border-color: #2c6d3f;
+}
+
+.quiz-result-card {
+  text-align: center;
+}
+
+.quiz-result-card img {
+  width: 220px;
+  max-width: 100%;
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+
+.quiz-discount {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 14px;
+  background: #4a220d;
+  color: #fff;
+  font-size: 20px;
+}

@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "name": "Marco — Manager",
+      "rating": 5,
+      "text": "ShoffeeKo keeps my mornings focused and smooth.",
+      "image": "assets/images/Manager.jpg"
+    },
+    {
+      "name": "Ana — Student",
+      "rating": 4,
+      "text": "My late-night study partner. Rich, warm, and comforting.",
+      "image": "assets/images/Student.jpg"
+    },
+    {
+      "name": "Kiko — Truck Driver",
+      "rating": 5,
+      "text": "Driving long hours can be exhausting, but ShoffeeKo helps me stay alert.",
+      "image": "assets/images/Truck_Driver.jpg"
+    },
+    {
+      "name": "Dave — Professional",
+      "rating": 5,
+      "text": "Café-quality comfort without leaving my desk.",
+      "image": "assets/images/Programmer.jpg"
+    }
+  ]
+}

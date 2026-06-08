@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "type": "video",
+      "title": "History",
+      "caption": "Discover the story behind ShoffeeKo and how every great cup begins.",
+      "video": "assets/videos/Our_History.mp4",
+      "link": "history.html",
+      "linkText": "Read Our Story"
+    },
+    {
+      "type": "video",
+      "title": "Brewing Methods",
+      "caption": "Learn simple brewing methods to make every cup smoother and richer.",
+      "video": "assets/videos/BrewingMethod.mp4",
+      "link": "brewing-methods.html",
+      "linkText": "View Tutorials"
+    },
+    {
+      "type": "video",
+      "title": "Blogs",
+      "caption": "Check out our latest blogs, reviews, and coffee stories.",
+      "video": "assets/videos/Blogs.mp4",
+      "link": "blogs.html",
+      "linkText": "News – ShoffeeKo"
+    }
+  ]
+}

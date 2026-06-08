@@ -1,0 +1,68 @@
+/* --- Split Section Container --- */
+.split {
+  padding: 70px 0;
+}
+
+/* --- Split Grid Layout --- */
+.split__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 48px;
+  align-items: center;
+}
+
+/* --- Media (Images) --- */
+.split__media {
+  transform: translateX(-80px); /* Pushes the image slightly to the left */
+}
+
+.split__media img {
+  width: 100%;
+  border-radius: 18px;
+}
+
+/* --- Text & Content --- */
+.split__text {
+  transform: translateX(80px); /* Pushes the text slightly to the right */
+}
+
+.split__text h2 {
+  font-size: 44px;
+  color: #ff6f9f;
+}
+
+.split__text p {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* --- Badges/Tags --- */
+.split__badges {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.split__badges span {
+  background: #fffde9;
+  color: #2c0617;
+  border-radius: 999px; /* Perfectly rounded pill shape */
+  padding-left: 22px;
+  padding-right: 22px;
+  padding-top: 8px;
+  padding-bottom: 20px;
+}
+
+/* --- Price --- */
+.split__price {
+  font-size: 34px;
+  color: #b000ff;
+  font-weight: 800;
+}
+
+/* --- Responsive Design (Tablets & Mobile) --- */
+@media (max-width: 900px) {
+  .split__grid {
+    grid-template-columns: 1fr; /* Stacks the grid into a single column */
+  }
+}

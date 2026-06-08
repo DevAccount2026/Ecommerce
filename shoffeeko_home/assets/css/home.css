@@ -1,0 +1,10 @@
+#home-page {
+  overflow: hidden;
+}
+
+.module-missing {
+  padding: 40px;
+  border: 1px dashed #774;
+  margin: 20px;
+  color: #fdd;
+}

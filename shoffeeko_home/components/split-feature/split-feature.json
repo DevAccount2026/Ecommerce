@@ -1,0 +1,14 @@
+{
+  "image": "assets/images/Product_Image/Premium_Arabica.jpg",
+  "title": "Premium Arabica Blend",
+  "subtitle": "Single Origin Ethiopia",
+  "description": "Experience the rich, smooth flavor of our carefully selected Arabica beans, roasted to perfection for a delightful coffee experience.",
+  "badges": [
+    "100% Arabica",
+    "Medium Roast",
+    "1KG Package"
+  ],
+  "price": "$24.99",
+  "buttonText": "Add to Cart",
+  "buttonUrl": "#products"
+}
