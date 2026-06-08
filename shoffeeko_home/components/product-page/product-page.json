@@ -1,1 +1,140 @@
-"collection":"specialty-coffee"
+{
+  "products": [
+    {
+      "id": "Doha-House-Blend",
+      "title": "Doha House Blend",
+      "vendor": "SHOFFEEKO",
+      "price": 20,
+      "pricePrefix": "",
+      "collection": "premium-blends",
+      "tags": ["bold", "premium", "house-blend"],
+
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg",
+
+      "description": "A premium house blend inspired by Doha's vibrant coffee culture. Rich body, smooth finish, and balanced aroma.",
+
+      "options": [],
+      "inventory": 50,
+
+      "relatedProducts": [
+        "haraaz-red-mocha",
+        "premium-arabica"
+      ]
+    },
+
+    {
+      "id": "flat-white-specialty-coffee-qatar",
+      "title": "Flat White Specialty Coffee (Qatar)",
+      "vendor": "SHOFFEEKO",
+      "price": 10,
+      "pricePrefix": "From ",
+      "collection": "specialty-coffee",
+      "tags": ["smooth", "creamy", "daily"],
+
+      "image": "../assets/images/Product_Image/Flat_WhiteBlend.jpg",
+
+      "description": "Known for precise roasting and high-quality single-origin beans.",
+
+      "options": [
+        "Small",
+        "Medium",
+        "Large"
+      ],
+
+      "inventory": 100,
+
+      "relatedProducts": [
+        "pine-juniper",
+        "pistachio-cardamom"
+      ]
+    },
+
+    {
+      "id": "haraaz-red-mocha",
+      "title": "Haraaz Red Mocha",
+      "vendor": "SHOFFEEKO",
+      "price": 20,
+      "pricePrefix": "",
+      "collection": "premium-blends",
+      "tags": ["bold", "mocha", "rich"],
+
+      "image": "../assets/images/Product_Image/Red_Mocha.png",
+
+      "description": "A bold and aromatic Yemeni-style mocha with deep chocolate notes.",
+
+      "options": [],
+      "inventory": 75,
+
+      "relatedProducts": [
+        "Doha-House-Blend",
+        "premium-arabica"
+      ]
+    },
+
+    {
+      "id": "pine-juniper",
+      "title": "Pine & Juniper",
+      "vendor": "SHOFFEEKO",
+      "price": 15,
+      "pricePrefix": "",
+      "collection": "specialty-coffee",
+      "tags": ["classic", "balanced", "fresh"],
+
+      "image": "../assets/images/Product_Image/Pine_and_Juniper.jpg",
+
+      "description": "Very clean-label and popular with the wellness crowd.",
+
+      "options": [],
+      "inventory": 120,
+
+      "relatedProducts": [
+        "flat-white-specialty-coffee-qatar",
+        "pistachio-cardamom"
+      ]
+    },
+
+    {
+      "id": "pistachio-cardamom",
+      "title": "Pistachio & Cardamom",
+      "vendor": "SHOFFEEKO",
+      "price": 15,
+      "pricePrefix": "",
+      "collection": "dessert-coffee",
+      "tags": ["nutty", "sweet", "smooth"],
+
+      "image": "../assets/images/Product_Image/Pistachio_Roast.jpg",
+
+      "description": "Smooth pistachio notes blended with aromatic cardamom for a unique dessert coffee experience.",
+
+      "options": [],
+      "inventory": 90,
+
+      "relatedProducts": [
+        "pine-juniper",
+        "flat-white-specialty-coffee-qatar"
+      ]
+    },
+
+    {
+      "id": "premium-arabica",
+      "title": "Premium Arabica",
+      "vendor": "SHOFFEEKO",
+      "price": 24.99,
+      "pricePrefix": "",
+      "collection": "premium-blends",
+      "tags": ["premium", "arabica", "smooth"],
+
+      "image": "../assets/images/Product_Image/Premium_Arabica.jpg",
+
+      "description": "A premium Arabica blend with a smooth finish and refined flavor profile.",
+
+      "options": [],
+      "inventory": 60,
+
+      "relatedProducts": [
+        "Doha-House-Blend",
+        "haraaz-red-mocha"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ async function initProductPage() {
   const params = new URLSearchParams(window.location.search);
   const productId = params.get('id');
 
-  const response = await fetch('../components/catalog-page/catalog-page.json');
+  const response = await fetch('../components/product-page/product-page.json');
   const data = await response.json();
 
   const products = data.products || [];
@@ -18,12 +18,16 @@ async function initProductPage() {
     return;
   }
 
-  const related = products
-    .filter(p =>
-      p.id !== product.id &&
-      p.collection === product.collection
-    )
-    .slice(0, 3);
+  const relatedIds = product.relatedProducts || [];
+
+  const related = relatedIds.length
+    ? products.filter(p => relatedIds.includes(p.id))
+    : products
+        .filter(p =>
+          p.id !== product.id &&
+          p.collection === product.collection
+        )
+        .slice(0, 3);
 
   root.innerHTML = `
     <section class="product-detail sk-container">
@@ -33,30 +37,35 @@ async function initProductPage() {
       </div>
 
       <div class="product-detail__info">
-        <p class="product-vendor">SHOFFEEKO</p>
+        <p class="product-vendor">${product.vendor || 'SHOFFEEKO'}</p>
+
         <h1>${product.title}</h1>
+
         <p class="product-price">
           ${product.pricePrefix || ''}$${Number(product.price).toFixed(2)} USD
         </p>
 
-        ${product.hasOptions ? `
+        ${product.options && product.options.length ? `
           <div class="product-options">
             <p>Grind size</p>
-            <button>Small</button>
-            <button>Medium</button>
-            <button>Large</button>
+            ${product.options.map(option => `
+              <button type="button">${option}</button>
+            `).join('')}
           </div>
         ` : ''}
 
         <div class="quantity-box">
           <p>Quantity</p>
-          <button>-</button>
-          <span>1</span>
-          <button>+</button>
+
+          <div class="quantity-controls">
+            <button type="button">−</button>
+            <span>1</span>
+            <button type="button">+</button>
+          </div>
         </div>
 
-        <button class="product-add">Add to cart</button>
-        <button class="product-buy">Buy it now</button>
+        <button class="product-add" type="button">Add to cart</button>
+        <button class="product-buy" type="button">Buy it now</button>
 
         <p class="product-description">
           ${product.description || 'Premium ShoffeeKo coffee blend crafted for everyday moments.'}
