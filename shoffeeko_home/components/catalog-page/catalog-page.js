@@ -5,9 +5,10 @@ async function initCatalogPage() {
   if (!root) return;
 
   try {
-    const jsonPath = root.dataset.json || "data/catalog-page.json";
+    const jsonPath = root.dataset.json || "../components/catalog-page/catalog-page.json";
     const response = await fetch(jsonPath);
     if (!response.ok) throw new Error(`Unable to load ${jsonPath}`);
+
     const data = await response.json();
     renderCatalog(root, data);
   } catch (error) {
@@ -44,7 +45,16 @@ function renderCatalog(root, data) {
   `;
 
   root.querySelectorAll("[data-add-to-cart]").forEach(button => {
-    button.addEventListener("click", () => addToCart(button.dataset.addToCart));
+    button.addEventListener("click", event => {
+      const productId = button.dataset.addToCart;
+      const product = products.find(item => item.id === productId);
+
+      if (product?.hasOptions) {
+        window.location.href = getProductUrl(product);
+      } else {
+        addToCart(productId);
+      }
+    });
   });
 }
 
@@ -53,14 +63,17 @@ function renderProductCard(product, settings) {
     ? (settings.chooseOptionsText || "Choose options")
     : (settings.buttonText || "Add to cart");
 
+  const productUrl = getProductUrl(product);
+
   return `
     <article class="catalog-card reveal-card">
-      <a class="catalog-card__media catalog-card__media--${settings.imageRatio || "wide"}" href="${product.url || "#"}">
+
+      <a class="catalog-card__media catalog-card__media--${settings.imageRatio || "wide"}" href="${productUrl}">
         <img src="${product.image || ""}" alt="${escapeHTML(product.title || "Product image")}" loading="lazy">
       </a>
 
       <h2 class="catalog-card__title">
-        <a href="${product.url || "#"}">${escapeHTML(product.title || "Untitled product")}</a>
+        <a href="${productUrl}">${escapeHTML(product.title || "Untitled product")}</a>
       </h2>
 
       <p class="catalog-card__price">${formatPrice(product, settings.currency || "USD")}</p>
@@ -68,8 +81,16 @@ function renderProductCard(product, settings) {
       <button class="catalog-card__button" data-add-to-cart="${escapeHTML(product.id || "")}">
         ${escapeHTML(buttonLabel)}
       </button>
+
     </article>
   `;
+}
+
+function getProductUrl(product) {
+  if (product.url) return product.url;
+
+  const id = encodeURIComponent(product.id || "");
+  return `product.html?id=${id}`;
 }
 
 function formatPrice(product, currency) {
@@ -79,7 +100,11 @@ function formatPrice(product, currency) {
 
 function addToCart(productId) {
   const cartCount = document.getElementById("cartCount");
-  if (cartCount) cartCount.textContent = String(Number(cartCount.textContent || 0) + 1);
+
+  if (cartCount) {
+    cartCount.textContent = String(Number(cartCount.textContent || 0) + 1);
+  }
+
   console.log(`Added to cart: ${productId}`);
 }
 

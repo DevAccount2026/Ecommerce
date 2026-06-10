@@ -117,7 +117,7 @@ body {
   display: grid;
   grid-template-columns: repeat(var(--columns-desktop), minmax(0, 1fr));
   column-gap: 44px;
-  row-gap: 34px;
+  row-gap: 100px;
 }
 
 .catalog-card {

@@ -20,13 +20,13 @@
     }
   },
   "products": [
-      {
+    {
       "id": "Doha-House-Blend",
       "title": "Doha House Blend",
       "price": 20,
       "pricePrefix": "",
       "image": "../assets/images/Product_Image/Doha_Houseblend.jpg",
-      "url": "products/doha-house-blend.html",
+      "url": "product.html?id=Doha-House-Blend",
       "hasOptions": false,
       "collection": "premium-blends",
       "tags": ["bold", "premium", "house-blend"]
@@ -37,7 +37,7 @@
       "price": 10,
       "pricePrefix": "From ",
       "image": "../assets/images/Product_Image/Flat_WhiteBlend.jpg",
-      "url": "products/flat-white-specialty-coffee-qatar.html",
+      "url": "product.html?id=flat-white-specialty-coffee-qatar",
       "hasOptions": true,
       "collection": "specialty-coffee",
       "tags": ["smooth", "creamy", "daily"]
@@ -48,7 +48,7 @@
       "price": 20,
       "pricePrefix": "",
       "image": "../assets/images/Product_Image/Red_Mocha.png",
-      "url": "products/haraaz-red-mocha.html",
+      "url": "product.html?id=haraaz-red-mocha",
       "hasOptions": false,
       "collection": "premium-blends",
       "tags": ["bold", "mocha", "rich"]
@@ -59,9 +59,9 @@
       "price": 15,
       "pricePrefix": "",
       "image": "../assets/images/Product_Image/Pine_and_Juniper.jpg",
-      "url": "products/pine-juniper.html",
+      "url": "product.html?id=pine-juniper",
       "hasOptions": false,
-       "collection": "specialty-coffee",
+      "collection": "specialty-coffee",
       "tags": ["classic", "balanced", "fresh"]
     },
     {
@@ -70,7 +70,7 @@
       "price": 15,
       "pricePrefix": "",
       "image": "../assets/images/Product_Image/Pistachio_Roast.jpg",
-      "url": "products/pistachio-cardamom.html",
+      "url": "product.html?id=pistachio-cardamom",
       "hasOptions": false,
       "collection": "dessert-coffee",
       "tags": ["nutty", "sweet", "smooth"]
@@ -81,7 +81,7 @@
       "price": 24.99,
       "pricePrefix": "",
       "image": "../assets/images/Product_Image/Premium_Arabica.jpg",
-      "url": "products/premium-arabica.html",
+      "url": "product.html?id=premium-arabica",
       "hasOptions": false,
       "collection": "dessert-coffee",
       "tags": ["sweet", "creamy", "chocolatey"]
