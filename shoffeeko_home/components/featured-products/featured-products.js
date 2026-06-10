@@ -87,15 +87,33 @@ SKModules['featured-products'] = {
     `).join('');
 
     grid.addEventListener('click', e => {
-      const card = e.target.closest('.product-card');
-      if (!card) return;
+      const button = e.target.closest('button');
+      
 
-      const product = data.products.find(p => p.id === card.dataset.id);
-      if (!product) return;
+   if (button) {
+        const card = button.closest('.product-card');
+        if (!card) return;
 
-      currentProduct = product;
-      openIntroModal(product);
-    });
+        const product = data.products.find(p => p.id === card.dataset.id);
+        if (!product) return;
+
+        addToCart(product);
+        return;
+     }
+
+        const image = e.target.closest('.product-card img');
+        if (!image) return;
+
+        const card = image.closest('.product-card');
+        if (!card) return;
+
+        const product = data.products.find(p => p.id === card.dataset.id);
+        if (!product) return;
+
+        currentProduct = product;
+        openIntroModal(product);
+      });
+
 
     function openIntroModal(product) {
       modal.hidden = false;

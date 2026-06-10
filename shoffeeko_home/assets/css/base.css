@@ -209,3 +209,127 @@ a {
 .sk-icons svg {
   display: block;
 }
+
+/*===================Count badge==========================*/
+
+.sk-cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-count-badge {
+  position: absolute;
+  top: -10px;
+  right: -12px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+
+.cart-count-badge:empty {
+  display: none;
+}
+
+/* ---------------cart drawer------------------ */
+.cart-drawer {
+  position: fixed;
+  top: 105px;
+  right: 36px;
+  z-index: 99999;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+}
+
+.cart-drawer[hidden] {
+  display: none !important;
+}
+
+.cart-drawer__box {
+  position: relative;
+  background: #050505;
+  color: #f5efdf;
+  border: 2px solid #f5efdf;
+  border-radius: 0 0 18px 18px;
+  padding: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.cart-drawer__close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: 0;
+  color: #f5efdf;
+  font-size: 34px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cart-drawer__status {
+  font-weight: 700;
+  margin: 0 0 24px;
+  font-size: 16px;
+}
+
+.cart-drawer__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.cart-drawer__item img {
+  width: 90px !important;
+  height: 60px !important;
+  max-width: 90px !important;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #f5efdf;
+  flex-shrink: 0;
+}
+
+.cart-drawer__item-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.cart-drawer__btn {
+  width: 100%;
+  display: block;
+  border: 2px solid #f5efdf;
+  background: transparent;
+  color: #f5efdf;
+  padding: 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  margin-top: 12px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.cart-drawer__btn--checkout {
+  background: #f5efdf;
+  color: #111;
+}
+
+.cart-drawer__continue {
+  display: block;
+  margin: 18px auto 0;
+  background: none;
+  border: 0;
+  color: #f5efdf;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}

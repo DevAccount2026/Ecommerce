@@ -70,10 +70,26 @@ async function renderShell() {
 
           <div class="sk-icons">
             <img src="${BASE_PATH}assets/images/icons/icon-search.svg" alt="Search">
+
             <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
-            <img src="${BASE_PATH}assets/images/icons/icon-cart.svg" alt="Cart">
+
+              <a href="#" class="sk-cart-link" id="cartButton" aria-label="Cart">
+                <img src="${BASE_PATH}assets/images/icons/icon-cart.svg" alt="Cart">
+                <span id="cartCount" class="cart-count-badge">0</span>
+              </a>
           </div>
 
+        </div>
+
+        <div id="cartDrawer" class="cart-drawer" hidden>
+          <div class="cart-drawer__box">
+            <button type="button" class="cart-drawer__close" id="cartDrawerClose">×</button>
+            <p class="cart-drawer__status">✓ Item added to your cart</p>
+            <div id="cartDrawerItems"></div>
+            <button class="cart-drawer__btn">View cart</button>
+            <button class="cart-drawer__btn cart-drawer__btn--checkout">Check out</button>
+            <button class="cart-drawer__continue" id="cartDrawerContinue">Continue shopping</button>
+          </div>
         </div>
       </header>
     `;
@@ -84,6 +100,7 @@ async function renderShell() {
   }
 
   setActiveNav();
+  document.dispatchEvent(new Event("shellReady"));
 }
 
 function setActiveNav() {
@@ -101,6 +118,8 @@ function setActiveNav() {
     document.querySelector('.sk-nav a[href$="catalog-page.html"]')?.classList.add('active');
   }
 }
+
+
 
 async function initModules() {
   await renderShell();
