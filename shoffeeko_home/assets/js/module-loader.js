@@ -73,10 +73,11 @@ async function renderShell() {
 
             <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
 
-              <a href="#" class="sk-cart-link" id="cartButton" aria-label="Cart">
+              <a href="${BASE_PATH}pages/cart.html" class="sk-cart-link" id="cartButton" aria-label="Cart">
                 <img src="${BASE_PATH}assets/images/icons/icon-cart.svg" alt="Cart">
                 <span id="cartCount" class="cart-count-badge">0</span>
               </a>
+
           </div>
 
         </div>
@@ -86,11 +87,13 @@ async function renderShell() {
             <button type="button" class="cart-drawer__close" id="cartDrawerClose">×</button>
             <p class="cart-drawer__status">✓ Item added to your cart</p>
             <div id="cartDrawerItems"></div>
-            <button class="cart-drawer__btn">View cart</button>
-            <button class="cart-drawer__btn cart-drawer__btn--checkout">Check out</button>
+            <a href="${BASE_PATH}pages/cart.html" class="cart-drawer__btn">View cart</a>
+            <a href="${BASE_PATH}pages/checkout.html" class="cart-drawer__btn cart-drawer__btn--checkout">Check out</a>
             <button class="cart-drawer__continue" id="cartDrawerContinue">Continue shopping</button>
           </div>
         </div>
+
+        
       </header>
     `;
   }

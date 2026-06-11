@@ -1,0 +1,14 @@
+
+
+{
+  "settings": {
+    "title": "Your Cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyText": "Browse our coffee collection and add your favorites.",
+    "continueShoppingText": "Continue Shopping",
+    "subtotalText": "Subtotal",
+    "checkoutText": "Check out",
+    "currency": "USD",
+    "cartKey": "shoffeeko_cart"
+  }
+}

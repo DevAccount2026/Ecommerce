@@ -255,7 +255,7 @@ a {
 
 .cart-drawer__box {
   position: relative;
-  background: #050505;
+  background: #271803;
   color: #f5efdf;
   border: 2px solid #f5efdf;
   border-radius: 0 0 18px 18px;
@@ -309,7 +309,7 @@ a {
   display: block;
   border: 2px solid #f5efdf;
   background: transparent;
-  color: #f5efdf;
+  color: #f9f9f7;
   padding: 16px;
   border-radius: 999px;
   font-weight: 700;
@@ -319,8 +319,8 @@ a {
 }
 
 .cart-drawer__btn--checkout {
-  background: #f5efdf;
-  color: #111;
+  background: #271803;
+  color: #fcfafa;
 }
 
 .cart-drawer__continue {
