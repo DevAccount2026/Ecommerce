@@ -324,12 +324,15 @@ a {
 }
 
 .cart-drawer__continue {
+  width: 100%;
   display: block;
-  margin: 18px auto 0;
-  background: none;
-  border: 0;
-  color: #f5efdf;
-  text-decoration: underline;
+  border: 2px solid #f5efdf;
+  background: transparent;
+  color: #f9f9f7;
+  padding: 16px;
+  border-radius: 999px;
   font-weight: 700;
+  margin-top: 12px;
   cursor: pointer;
+  text-align: center;
 }
