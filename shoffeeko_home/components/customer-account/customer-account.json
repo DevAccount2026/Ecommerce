@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "title": "My Account",
+    "welcomeText": "Welcome back",
+    "accountDetailsTitle": "Account Details",
+    "orderHistoryText": "View Order History",
+    "logoutText": "Logout",
+    "sessionStorageKey": "shoffeeko_current_customer"
+  }
+}

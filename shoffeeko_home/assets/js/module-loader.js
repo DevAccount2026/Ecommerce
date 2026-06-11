@@ -71,7 +71,9 @@ async function renderShell() {
           <div class="sk-icons">
             <img src="${BASE_PATH}assets/images/icons/icon-search.svg" alt="Search">
 
-            <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
+            <a href="${BASE_PATH}pages/cust_login.html" id="accountLink">
+              <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
+            </a>
 
               <a href="${BASE_PATH}pages/cart.html" class="sk-cart-link" id="cartButton" aria-label="Cart">
                 <img src="${BASE_PATH}assets/images/icons/icon-cart.svg" alt="Cart">
@@ -104,6 +106,32 @@ async function renderShell() {
 
   setActiveNav();
   document.dispatchEvent(new Event("shellReady"));
+
+  function updateAccountLink() {
+
+  const customer =
+    JSON.parse(
+      localStorage.getItem("shoffeeko_current_customer")
+    );
+
+  const accountLink = document.getElementById("accountLink");
+
+    if (!accountLink) return;
+
+      if (customer) {
+
+        accountLink.href =
+          `${BASE_PATH}pages/cust_account.html`;
+
+      } else {
+
+        accountLink.href =
+          `${BASE_PATH}pages/cust_login.html`;
+
+      }
+    }
+
+  updateAccountLink();
 }
 
 function setActiveNav() {

@@ -1,0 +1,155 @@
+.customer-account-section {
+  padding: 80px 0;
+}
+
+.customer-account-section h1 {
+  font-size: 42px;
+  margin-bottom: 35px;
+}
+
+.account-layout {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 36px;
+}
+
+.account-card {
+  background: #080808;
+  border: 1px solid #fff8dc;
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.account-card h2 {
+  margin-top: 0;
+}
+
+.account-welcome p {
+  color: #cfc7b9;
+}
+
+.account-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #fff8dc;
+  color: #111;
+  border: 1px solid #fff8dc;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-btn-outline {
+  background: transparent;
+  color: #fff8dc;
+}
+
+.account-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 248, 220, .25);
+}
+
+.account-detail-row span {
+  color: #cfc7b9;
+}
+
+@media (max-width: 900px) {
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-detail-row {
+    flex-direction: column;
+  }
+}.customer-account-section {
+  padding: 80px 0;
+}
+
+.customer-account-section h1 {
+  font-size: 42px;
+  margin-bottom: 35px;
+}
+
+.account-layout {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 36px;
+}
+
+.account-card {
+  background: #080808;
+  border: 1px solid #fff8dc;
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.account-card h2 {
+  margin-top: 0;
+}
+
+.account-welcome p {
+  color: #cfc7b9;
+}
+
+.account-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #fff8dc;
+  color: #111;
+  border: 1px solid #fff8dc;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-btn-outline {
+  background: transparent;
+  color: #fff8dc;
+}
+
+.account-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 248, 220, .25);
+}
+
+.account-detail-row span {
+  color: #cfc7b9;
+}
+
+@media (max-width: 900px) {
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account-detail-row {
+    flex-direction: column;
+  }
+}

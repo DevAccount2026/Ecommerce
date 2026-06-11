@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "title": "Order History",
+    "emptyTitle": "No orders yet",
+    "emptyText": "Your completed ShoffeeKo orders will appear here.",
+    "continueShoppingText": "Continue Shopping",
+    "backToAccountText": "Back to Account",
+    "ordersKey": "shoffeeko_orders",
+    "sessionStorageKey": "shoffeeko_current_customer",
+    "currency": "USD"
+  }
+}
