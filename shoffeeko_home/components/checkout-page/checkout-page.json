@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "Checkout",
+    "contactTitle": "Contact Information",
+    "shippingTitle": "Shipping Address",
+    "summaryTitle": "Order Summary",
+    "placeOrderText": "Place Order",
+    "returnToCartText": "Return to Cart",
+    "currency": "USD",
+    "cartKey": "shoffeeko_cart",
+    "ordersKey": "shoffeeko_orders"
+  }
+}

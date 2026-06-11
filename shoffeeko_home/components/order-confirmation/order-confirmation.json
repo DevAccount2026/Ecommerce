@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "Thank you for your order!",
+    "subtitle": "Your ShoffeeKo order has been received.",
+    "orderNumberLabel": "Order Number",
+    "customerLabel": "Customer",
+    "summaryTitle": "Order Summary",
+    "subtotalLabel": "Subtotal",
+    "continueShoppingText": "Continue Shopping",
+    "currency": "USD",
+    "ordersKey": "shoffeeko_orders"
+  }
+}

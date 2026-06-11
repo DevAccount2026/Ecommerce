@@ -35,9 +35,23 @@ async function initCartPage() {
     }
   }
 
+  function parsePrice(price) {
+  if (typeof price === "number") return price;
+
+  return Number(
+    String(price)
+      .replace("From", "")
+      .replace("USD", "")
+      .replace("$", "")
+      .trim()
+    ) || 0;
+  }
+
   function formatPrice(price) {
     return `$${Number(price || 0).toFixed(2)} ${settings.currency || "USD"}`;
   }
+
+  
 
   function renderCart() {
     const cart = getCart();
@@ -57,7 +71,7 @@ async function initCartPage() {
     }
 
     const subtotal = cart.reduce((sum, item) => {
-      return sum + Number(item.price || 0) * Number(item.quantity || 1);
+       return sum + parsePrice(item.price) * Number(item.quantity || 1);
     }, 0);
 
     content.innerHTML = `
@@ -71,7 +85,7 @@ async function initCartPage() {
 
               <div class="cart-item__info">
                 <h2>${item.title}</h2>
-                <p>${formatPrice(item.price)}</p>
+                <p>${formatPrice(parsePrice(item.price))}</p>
 
                 <div class="cart-qty">
                   <button type="button" data-action="decrease">−</button>
@@ -85,7 +99,8 @@ async function initCartPage() {
               </div>
 
               <strong class="cart-line-price">
-                ${formatPrice(Number(item.price) * Number(item.quantity))}
+                ${formatPrice(parsePrice(item.price) * Number(item.quantity || 1))}
+                
               </strong>
             </article>
           `).join("")}
