@@ -127,8 +127,212 @@ async function initAdminDashboard() {
   const data = await fetchDashboardStats();
 
   renderDashboardStats(data);
+  renderSalesPerformanceChart(data?.salesPerformance);
+  renderTopCategoriesChart(data?.topProductCategories);
+  renderOrderStatusChart(data?.orderStatusDistribution);
   renderRecentOrders(data?.recentOrders);
   renderLowStockAlerts(data?.lowStockAlerts);
+}
+
+//--------------//
+
+function renderSalesPerformanceChart(items) {
+  const canvas = document.querySelector("#salesPerformanceChart");
+
+  if (!canvas || !Array.isArray(items) || typeof Chart === "undefined") return;
+
+  const labels = items.map(item => item.date);
+  const revenueData = items.map(item => item.revenue);
+  const ordersData = items.map(item => item.orders);
+
+  new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Revenue",
+          data: revenueData,
+          yAxisID: "revenueAxis",
+          borderColor: "#5ee0b5",
+          backgroundColor: "rgba(94, 224, 181, 0.12)",
+          tension: 0.4,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        },
+        {
+          label: "Orders",
+          data: ordersData,
+          yAxisID: "ordersAxis",
+          borderColor: "#3fb7d9",
+          backgroundColor: "rgba(63, 183, 217, 0.08)",
+          tension: 0.4,
+          fill: false,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
+
+      plugins: {
+        legend: {
+          labels: {
+            color: "#f5efe6"
+          }
+        },
+        tooltip: {
+          backgroundColor: "#f5efe6",
+          titleColor: "#07111f",
+          bodyColor: "#07111f"
+        }
+      },
+
+      scales: {
+        x: {
+          ticks: {
+            color: "#cfc7b9"
+          },
+          grid: {
+            color: "rgba(255,255,255,0.06)"
+          }
+        },
+
+        revenueAxis: {
+          type: "linear",
+          position: "left",
+          ticks: {
+            color: "#5ee0b5"
+          },
+          grid: {
+            color: "rgba(255,255,255,0.06)"
+          }
+        },
+
+        ordersAxis: {
+          type: "linear",
+          position: "right",
+          ticks: {
+            color: "#3fb7d9"
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderOrderStatusChart(items) {
+  const canvas = document.querySelector("#orderStatusChart");
+
+  if (!canvas || !Array.isArray(items) || typeof Chart === "undefined") return;
+
+  const labels = items.map(item => item.status);
+  const values = items.map(item => item.count);
+
+  new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: [
+            "#5ee0b5",
+            "#3fb7d9",
+            "#f1c76b",
+            "#ff6b6b"
+          ],
+          borderColor: "#132238",
+          borderWidth: 4,
+          hoverOffset: 8
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "72%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            color: "#f5efe6",
+            padding: 16,
+            usePointStyle: true,
+            pointStyle: "circle"
+          }
+        },
+        tooltip: {
+          backgroundColor: "#f5efe6",
+          titleColor: "#07111f",
+          bodyColor: "#07111f"
+        }
+      }
+    }
+  });
+}
+
+function renderTopCategoriesChart(items) {
+  const canvas = document.querySelector("#topCategoriesChart");
+
+  if (!canvas || !Array.isArray(items) || typeof Chart === "undefined") return;
+
+  const labels = items.map(item => item.category);
+  const values = items.map(item => item.count);
+
+  new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data: values,
+          backgroundColor: [
+            "#5ee0b5",
+            "#3fb7d9",
+            "#c9a46b",
+            "#f1c76b",
+            "#8aa4c8"
+          ],
+          borderColor: "#132238",
+          borderWidth: 4,
+          hoverOffset: 8
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "72%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            color: "#f5efe6",
+            padding: 14,
+            usePointStyle: true,
+            pointStyle: "circle"
+          }
+        },
+        tooltip: {
+          backgroundColor: "#f5efe6",
+          titleColor: "#07111f",
+          bodyColor: "#07111f"
+        }
+      }
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);

@@ -8,6 +8,41 @@
 
   <div class="admin-stats-grid" id="adminStatsGrid"></div>
 
+  <div class="admin-analytics-grid">
+
+    <section class="admin-panel admin-sales-chart">
+      <div class="admin-panel__header">
+        <h2>Sales Performance</h2>
+        <span class="admin-panel__link">Last 7 Days</span>
+      </div>
+
+      <div class="admin-chart-wrap">
+        <canvas id="salesPerformanceChart"></canvas>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-category-chart">
+      <div class="admin-panel__header">
+        <h2>Top Product Categories</h2>
+      </div>
+
+      <div class="admin-donut-wrap">
+        <canvas id="topCategoriesChart"></canvas>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-status-chart">
+      <div class="admin-panel__header">
+        <h2>Order Status Distribution</h2>
+      </div>
+
+      <div class="admin-donut-wrap">
+        <canvas id="orderStatusChart"></canvas>
+      </div>
+    </section>
+
+  </div>
+
   <div class="admin-dashboard-grid">
 
     <section class="admin-panel admin-recent-orders">

@@ -177,7 +177,7 @@ body {
   padding: 24px;
   box-shadow: 0 18px 40px rgba(0,0,0,0.25);
 
-  min-height: 140px;
+  min-height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -294,10 +294,11 @@ body {
 }
 
 .admin-table td {
-  padding: 16px 18px;
+  padding: 20px 18px;
   border-top: 1px solid rgba(255,255,255,0.08);
   color: #f5efe6;
   font-size: 14px;
+
 }
 
 .admin-order-id {
@@ -374,6 +375,56 @@ body {
 .admin-low-stock .admin-table th,
 .admin-low-stock .admin-table td {
   padding: 14px 14px;
+}
+
+.admin-sales-chart {
+  margin-top: 26px;
+}
+
+.admin-chart-wrap {
+  height: 320px;
+  padding: 10px 22px 24px;
+}
+.admin-analytics-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.admin-analytics-grid .admin-panel {
+  margin-top: 0;
+}
+
+.admin-chart-wrap {
+  height: 320px;
+  padding: 10px 22px 24px;
+}
+
+.admin-donut-wrap {
+  height: 320px;
+  padding: 10px 22px 24px;
+}
+
+@media (max-width: 1400px) {
+  .admin-analytics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-sales-chart {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sales-chart {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 1200px) {

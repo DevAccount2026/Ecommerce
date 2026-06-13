@@ -65,7 +65,87 @@
     "stock": 0,
     "status": "Out of Stock"
   }
+],
+
+"salesPerformance": [
+  {
+    "date": "Jun 7",
+    "revenue": 4200,
+    "orders": 18
+  },
+  {
+    "date": "Jun 8",
+    "revenue": 5200,
+    "orders": 22
+  },
+  {
+    "date": "Jun 9",
+    "revenue": 6100,
+    "orders": 30
+  },
+  {
+    "date": "Jun 10",
+    "revenue": 5800,
+    "orders": 27
+  },
+  {
+    "date": "Jun 11",
+    "revenue": 7600,
+    "orders": 39
+  },
+  {
+    "date": "Jun 12",
+    "revenue": 9200,
+    "orders": 51
+  },
+  {
+    "date": "Jun 13",
+    "revenue": 12450,
+    "orders": 88
+  }
+],
+
+"orderStatusDistribution": [
+  {
+    "status": "Shipped",
+    "count": 60
+  },
+  {
+    "status": "Processing",
+    "count": 25
+  },
+  {
+    "status": "Pending",
+    "count": 10
+  },
+  {
+    "status": "Cancelled",
+    "count": 5
+  }
+],
+"topProductCategories": [
+  {
+    "category": "Arabica",
+    "count": 35
+  },
+  {
+    "category": "Flavored Coffee",
+    "count": 30
+  },
+  {
+    "category": "Espresso",
+    "count": 20
+  },
+  {
+    "category": "Decaf",
+    "count": 10
+  },
+  {
+    "category": "Others",
+    "count": 5
+  }
 ]
+
 
   
 }
