@@ -348,3 +348,36 @@ body {
 .admin-table-btn:hover {
   background: #263a56;
 }
+
+.admin-dashboard-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-dashboard-grid .admin-panel {
+  margin-top: 0;
+}
+
+.admin-status--low-stock {
+  /*background: rgba(201,164,107,0.2);*/
+  color: #f1c76b;
+}
+
+.admin-status--out-of-stock {
+ /* background: rgba(255,107,107,0.18);*/
+  color: #ff6b6b;
+}
+
+.admin-low-stock .admin-table th,
+.admin-low-stock .admin-table td {
+  padding: 14px 14px;
+}
+
+@media (max-width: 1200px) {
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

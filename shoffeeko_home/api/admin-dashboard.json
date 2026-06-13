@@ -38,5 +38,35 @@
       "total": 560,
       "status": "Cancelled"
     }
-  ]
+  ],
+
+  "lowStockAlerts": [
+  {
+    "name": "Arabica Pistachio",
+    "sku": "SHK-001",
+    "stock": 3,
+    "status": "Low Stock"
+  },
+  {
+    "name": "Mocha Blend",
+    "sku": "SHK-002",
+    "stock": 0,
+    "status": "Out of Stock"
+  },
+  {
+    "name": "Caramel Roast",
+    "sku": "SHK-003",
+    "stock": 5,
+    "status": "Low Stock"
+  },
+  {
+    "name": "Hazelnut Coffee",
+    "sku": "SHK-004",
+    "stock": 0,
+    "status": "Out of Stock"
+  }
+]
+
+  
 }
+

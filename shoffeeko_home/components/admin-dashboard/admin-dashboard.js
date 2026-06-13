@@ -95,6 +95,28 @@ function renderRecentOrders(orders) {
   `).join("");
 }
 
+function renderLowStockAlerts(items) {
+  const tableBody = document.querySelector("#lowStockTable");
+  if (!tableBody || !Array.isArray(items)) return;
+
+  tableBody.innerHTML = items.map(item => `
+    <tr>
+      <td>${item.name}</td>
+      <td class="admin-order-id">${item.sku}</td>
+      <td>${item.stock}</td>
+      <td>
+        <span class="admin-status admin-status--${getStatusClass(item.status)}">
+          ${item.status}
+        </span>
+      </td>
+      <td>
+        <button class="admin-table-btn">Add Stock</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+
 async function initAdminDashboard() {
   const root = document.querySelector("#adminDashboard");
   if (!root) return;
@@ -106,6 +128,7 @@ async function initAdminDashboard() {
 
   renderDashboardStats(data);
   renderRecentOrders(data?.recentOrders);
+  renderLowStockAlerts(data?.lowStockAlerts);
 }
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);

@@ -8,27 +8,54 @@
 
   <div class="admin-stats-grid" id="adminStatsGrid"></div>
 
-  <section class="admin-panel admin-recent-orders">
-    <div class="admin-panel__header">
-      <h2>Recent Orders</h2>
-      <a href="#" class="admin-panel__link">View All</a>
-    </div>
+  <div class="admin-dashboard-grid">
 
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Customer</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+    <section class="admin-panel admin-recent-orders">
+      <div class="admin-panel__header">
+        <h2>Recent Orders</h2>
+        <a href="#" class="admin-panel__link">View All</a>
+      </div>
 
-        <tbody id="recentOrdersTable"></tbody>
-      </table>
-    </div>
-  </section>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="recentOrdersTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-low-stock">
+      <div class="admin-panel__header">
+        <h2>Low Stock Alerts</h2>
+        <a href="#" class="admin-panel__link">Inventory</a>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>SKU</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="lowStockTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
 </div>
