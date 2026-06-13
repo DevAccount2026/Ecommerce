@@ -82,6 +82,14 @@ function renderProductCard(product, settings) {
 
       <button class="catalog-card__button" data-add-to-cart="${escapeHTML(product.id || "")}">
         ${escapeHTML(buttonLabel)}
+   
+      </button>
+
+      <button
+        class="wishlist-heart"
+        data-wishlist="${product.id}"
+        type="button">
+        ♥
       </button>
 
     </article>
@@ -120,3 +128,81 @@ function escapeHTML(value) {
   }[char]));
 }
 
+const wishlistKey = "shoffeeko_wishlist";
+const sessionKey = "shoffeeko_current_customer";
+
+document.addEventListener("click", e => {
+
+  const heart = e.target.closest("[data-wishlist]");
+
+  if (!heart) return;
+
+  const customer = JSON.parse(
+    localStorage.getItem(sessionKey)
+  );
+
+  if (!customer) {
+    window.location.href = "cust_login.html";
+    return;
+  }
+
+  const productId = heart.dataset.wishlist;
+
+  let wishlist =
+    JSON.parse(localStorage.getItem(wishlistKey))
+    || [];
+
+  const exists = wishlist.find(item =>
+    item.customerEmail === customer.email &&
+    item.productId === productId
+  );
+
+  if (exists) {
+
+    wishlist = wishlist.filter(item =>
+      !(item.customerEmail === customer.email &&
+        item.productId === productId)
+    );
+
+    heart.classList.remove("active");
+
+  } else {
+
+    wishlist.push({
+      customerEmail: customer.email,
+      productId
+    });
+
+    heart.classList.add("active");
+  }
+
+  localStorage.setItem(
+    wishlistKey,
+    JSON.stringify(wishlist)
+  );
+});
+
+const customer = JSON.parse(
+  localStorage.getItem("shoffeeko_current_customer")
+);
+
+if (customer) {
+
+  const wishlist =
+    JSON.parse(localStorage.getItem("shoffeeko_wishlist"))
+    || [];
+
+  document
+    .querySelectorAll("[data-wishlist]")
+    .forEach(btn => {
+
+      const exists = wishlist.find(item =>
+        item.customerEmail === customer.email &&
+        item.productId === btn.dataset.wishlist
+      );
+
+      if (exists) {
+        btn.classList.add("active");
+      }
+    });
+}

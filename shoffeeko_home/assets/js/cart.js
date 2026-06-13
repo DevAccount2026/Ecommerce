@@ -13,17 +13,19 @@ function addToCart(product) {
 
   const existingItem = cart.find(item => item.id === product.id);
 
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    cart.push({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      image: product.image,
-      quantity: 1
-    });
-  }
+const qtyToAdd = Number(product.quantity || 1);
+
+if (existingItem) {
+  existingItem.quantity += qtyToAdd;
+} else {
+  cart.push({
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    image: product.image,
+    quantity: qtyToAdd
+  });
+}
 
   saveCart(cart);
   updateCartCount();

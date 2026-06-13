@@ -78,28 +78,45 @@ SKModules['featured-products'] = {
 
     grid.innerHTML = data.products.map(p => `
       <article class="product-card reveal" data-id="${p.id}">
+
+        <button
+          class="wishlist-heart"
+          data-wishlist="${p.id}"
+          type="button"
+          aria-label="Add to wishlist">
+          ♥
+        </button>
+
         <img src="${p.image}" alt="${p.title}">
         <h3>${p.title}</h3>
         <div class="vendor">${p.vendor}</div>
         <p class="price">${p.price}</p>
-        <button type="button">${p.button}</button>
+        <button type="button" class="product-add-btn">${p.button}</button>
       </article>
     `).join('');
 
-    grid.addEventListener('click', e => {
-      const button = e.target.closest('button');
-      
 
-   if (button) {
-        const card = button.closest('.product-card');
-        if (!card) return;
 
-        const product = data.products.find(p => p.id === card.dataset.id);
-        if (!product) return;
+       grid.addEventListener('click', e => {
+        const heart = e.target.closest('[data-wishlist]');
 
-        addToCart(product);
-        return;
-     }
+        if (heart) {
+          toggleWishlist(heart);
+          return;
+        }
+
+        const addButton = e.target.closest('.product-add-btn');
+
+        if (addButton) {
+          const card = addButton.closest('.product-card');
+          if (!card) return;
+
+          const product = data.products.find(p => p.id === card.dataset.id);
+          if (!product) return;
+
+          addToCart(product);
+          return;
+        }
 
         const image = e.target.closest('.product-card img');
         if (!image) return;
@@ -111,6 +128,76 @@ SKModules['featured-products'] = {
         if (!product) return;
 
         currentProduct = product;
+
+
+          function getCurrentCustomer() {
+            return JSON.parse(localStorage.getItem('shoffeeko_current_customer'));
+          }
+
+          function getWishlist() {
+            return JSON.parse(localStorage.getItem('shoffeeko_wishlist')) || [];
+          }
+
+          function saveWishlist(wishlist) {
+            localStorage.setItem('shoffeeko_wishlist', JSON.stringify(wishlist));
+          }
+
+          function toggleWishlist(heart) {
+            const customer = getCurrentCustomer();
+
+            if (!customer) {
+              window.location.href = 'pages/cust_login.html';
+              return;
+            }
+
+            const productId = heart.dataset.wishlist;
+
+            let wishlist = getWishlist();
+
+            const exists = wishlist.find(item =>
+              item.customerEmail === customer.email &&
+              item.productId === productId
+            );
+
+            if (exists) {
+              wishlist = wishlist.filter(item =>
+                !(item.customerEmail === customer.email &&
+                  item.productId === productId)
+              );
+
+              heart.classList.remove('active');
+            } else {
+              wishlist.push({
+                customerEmail: customer.email,
+                productId
+              });
+
+              heart.classList.add('active');
+            }
+
+            saveWishlist(wishlist);
+          }
+
+          function restoreWishlistHearts() {
+            const customer = getCurrentCustomer();
+            if (!customer) return;
+
+            const wishlist = getWishlist();
+
+            root.querySelectorAll('[data-wishlist]').forEach(heart => {
+              const exists = wishlist.find(item =>
+                item.customerEmail === customer.email &&
+                item.productId === heart.dataset.wishlist
+              );
+
+              if (exists) {
+                heart.classList.add('active');
+              }
+            });
+          }
+
+          restoreWishlistHearts();
+
         openIntroModal(product);
       });
 
@@ -309,3 +396,4 @@ SKModules['featured-products'] = {
     });
   }
 };
+

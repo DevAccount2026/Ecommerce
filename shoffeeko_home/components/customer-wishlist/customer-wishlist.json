@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "My Wishlist",
+    "emptyTitle": "Your wishlist is empty",
+    "emptyText": "Save your favorite ShoffeeKo products here.",
+    "continueShoppingText": "Continue Shopping",
+    "backToAccountText": "Back to Account",
+    "wishlistKey": "shoffeeko_wishlist",
+    "sessionStorageKey": "shoffeeko_current_customer",
+    "productDataPath": "../components/product-page/product-page.json",
+    "currency": "USD"
+  }
+}

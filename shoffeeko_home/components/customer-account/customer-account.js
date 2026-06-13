@@ -29,12 +29,17 @@ async function initCustomerAccount() {
 
           <div class="account-actions">
             <a href="cust_orderhistory.html" class="account-btn">
-              ${settings.orderHistoryText}
+              ${settings.orderHistoryText}           
+            </a>
+
+            <a href="cust_wishlist.html" class="account-btn">
+              My Wishlist
             </a>
 
             <button type="button" class="account-btn account-btn-outline" id="logoutBtn">
               ${settings.logoutText}
             </button>
+            
           </div>
         </div>
 

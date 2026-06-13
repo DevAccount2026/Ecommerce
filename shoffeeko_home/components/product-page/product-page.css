@@ -1,5 +1,6 @@
 /* PRODUCT PAGE LAYOUT */
 
+
 .product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -20,6 +21,33 @@
 .product-detail__info {
   max-width: 520px;
 }
+
+/* --- Wishlist Heart --- */
+
+  .product-wishlist-heart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 20px;
+    margin: 12px 0 18px;
+
+    border-radius: 999px;
+    border: 1px solid #fff8dc;
+
+    background: transparent;
+    color: #fff8dc;
+
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .product-wishlist-heart.active {
+    background: #7d1839;
+    color: #fff;
+  }
+
+/*-------------------------------*/
 
 /* RELATED PRODUCTS */
 
@@ -121,11 +149,15 @@
 
   cursor: pointer;
   transition: .25s;
+
+  border-color:  #fff8dc;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .product-add:hover {
-  background: #fff8dc;
-  color: #111;
+  background:  #8a5603;
+  color: #f6f4f4;
 }
 
 /* BUY IT NOW */
@@ -140,18 +172,22 @@
   border-radius: 999px;
   border: 0;
 
-  background: #f2f2f2;
-  color: #111;
+  background: #060606;
+  color: #f7f4f4;
 
   font-size: 17px;
   font-weight: 700;
 
   cursor: pointer;
   transition: .25s;
+
+  border-color:  #fff8dc;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .product-buy:hover {
-  background: #ffffff;
+  background:  #8a5603;
 }
 
 /* OPTIONS */
