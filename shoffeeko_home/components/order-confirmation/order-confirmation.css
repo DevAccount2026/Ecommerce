@@ -120,14 +120,23 @@
 .order-btn {
   display: inline-block;
   margin-top: 24px;
-  padding: 15px 28px;
+  padding: 15px;
+  margin-left: 120px;
+  margin-bottom: 20px;
   border-radius: 999px;
-  background: #fff8dc;
-  color: #111;
+  background: #191918;
+  color: #fefbfb;
   text-decoration: none;
   font-weight: 700;
+  border-color :  #fefbfb;
+  border-style: solid;
+  border-width: 1px;
 }
 
+.order-btn:hover{
+  background: #673f08;
+  color: #fefbfb;
+}
 
 .status-badge {
   display: inline-flex;
