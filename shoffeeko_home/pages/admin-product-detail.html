@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShoffeeKo Admin Dashboard</title>
+  <title>ShoffeeKo Product Detail</title>
 
   <link rel="stylesheet" href="../assets/css/base.css" />
   <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../components/admin-product-detail/admin-product-detail.css" />
 </head>
 <body>
 
   <div class="admin-shell">
-
     <aside class="admin-sidebar">
       <div class="admin-sidebar__brand">
         <span class="admin-sidebar__logo">S</span>
@@ -19,23 +19,21 @@
       </div>
 
       <nav class="admin-sidebar__nav">
-        <a href="admin-dashboard.html" class="active">Dashboard</a>
+        <a href="admin-dashboard.html">Dashboard</a>
         <a href="admin-orders.html">Orders</a>
-        <a href="admin-products.html">Products</a>
+        <a href="admin-products.html" class="active">Products</a>
         <a href="#">Customers</a>
         <a href="#">Analytics</a>
         <a href="#">Marketing</a>
         <a href="#">Settings</a>
       </nav>
-      
     </aside>
 
     <div class="admin-main">
-
       <header class="admin-topbar">
         <div class="admin-search">
           <span>⌕</span>
-          <input type="search" placeholder="Search orders, products..." />
+          <input type="search" placeholder="Search products..." />
         </div>
 
         <div class="admin-topbar__actions">
@@ -50,20 +48,11 @@
       </header>
 
       <main class="admin-page">
-        <section
-          id="adminDashboard"
-          data-api="../api/admin-dashboard.json">
-        </section>
+        <section id="adminProductDetailPage" data-api="../api/admin-products.json"></section>
       </main>
-
     </div>
-
   </div>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="../components/admin-dashboard/admin-dashboard.js"></script>
-  
-
+  <script src="../components/admin-product-detail/admin-product-detail.js"></script>
 </body>
 </html>

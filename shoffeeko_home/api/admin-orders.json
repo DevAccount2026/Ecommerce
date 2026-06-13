@@ -1,0 +1,44 @@
+{
+  "orders": [
+    {
+      "id": "ORD-1001",
+      "date": "2026-06-13",
+      "customer": "John Smith",
+      "email": "john@example.com",
+      "items": 3,
+      "total": 1250,
+      "payment": "Paid",
+      "status": "Shipped"
+    },
+    {
+      "id": "ORD-1002",
+      "date": "2026-06-13",
+      "customer": "Sarah Cruz",
+      "email": "sarah@example.com",
+      "items": 2,
+      "total": 820,
+      "payment": "Paid",
+      "status": "Processing"
+    },
+    {
+      "id": "ORD-1003",
+      "date": "2026-06-12",
+      "customer": "Mark Reyes",
+      "email": "mark@example.com",
+      "items": 1,
+      "total": 390,
+      "payment": "Pending",
+      "status": "Pending"
+    },
+    {
+      "id": "ORD-1004",
+      "date": "2026-06-12",
+      "customer": "Ana Santos",
+      "email": "ana@example.com",
+      "items": 4,
+      "total": 560,
+      "payment": "Refunded",
+      "status": "Cancelled"
+    }
+  ]
+}

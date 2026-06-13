@@ -1,0 +1,90 @@
+.admin-products__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-primary-btn {
+  border: 0;
+  background: #c9a46b;
+  color: #07111f;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-products-toolbar {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.admin-products-toolbar input,
+.admin-products-toolbar select {
+  height: 44px;
+  background: #132238;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #f5efe6;
+  border-radius: 10px;
+  padding: 0 14px;
+  outline: none;
+}
+
+.admin-products-toolbar input {
+  width: min(520px, 100%);
+}
+
+.admin-products-toolbar select {
+  min-width: 190px;
+}
+
+.admin-product-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-product-thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #0c1829;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-table-btn.admin-edit {
+  background: rgba(201,164,107,0.18);
+  color: #f1c76b;
+}
+
+.admin-table-btn.admin-delete {
+  background: rgba(255,107,107,0.18);
+  color: #ff6b6b;
+}
+
+.admin-status--active {
+  background: rgba(94,224,181,0.18);
+  color: #5ee0b5;
+}
+
+@media (max-width: 700px) {
+  .admin-products__header,
+  .admin-products-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-products-toolbar input,
+  .admin-products-toolbar select,
+  .admin-primary-btn {
+    width: 100%;
+  }
+}

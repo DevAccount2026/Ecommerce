@@ -1,0 +1,47 @@
+<div class="admin-orders">
+  <div class="admin-dashboard__header">
+    <div>
+      <p class="admin-dashboard__eyebrow">ShoffeeKo HQ</p>
+      <h1>Orders</h1>
+    </div>
+  </div>
+
+  <div class="admin-orders-toolbar">
+    <input id="orderSearchInput" type="search" placeholder="Search by order ID, customer, or email..." />
+
+    <select id="orderStatusFilter">
+      <option value="all">All Status</option>
+      <option value="Pending">Pending</option>
+      <option value="Processing">Processing</option>
+      <option value="Shipped">Shipped</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+      <h2>All Orders</h2>
+      <span class="admin-panel__link" id="ordersCount">0 orders</span>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="ordersTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+</div>

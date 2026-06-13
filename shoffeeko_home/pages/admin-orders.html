@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShoffeeKo Admin Orders</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../components/admin-orders/admin-orders.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <span>ShoffeeKo HQ</span>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html" class="active">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="#">Customers</a>
+        <a href="#">Analytics</a>
+        <a href="#">Marketing</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input id="adminOrderTopSearch" type="search" placeholder="Search orders, customers..." />
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">✉️</button>
+
+          <div class="admin-profile">
+            <div class="admin-profile__avatar">A</div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-page">
+        <section id="adminOrdersPage" data-api="../api/admin-orders.json"></section>
+      </main>
+
+    </div>
+
+
+      <div class="admin-modal" id="productEditorModal" aria-hidden="true">
+        <div class="admin-modal__box">
+          <div class="admin-modal__header">
+            <h2>Edit Product</h2>
+            <button class="admin-modal__close" id="closeProductEditor">×</button>
+          </div>
+
+          <form class="admin-product-form" id="productEditorForm">
+            <label>
+              Product Name
+              <input type="text" id="editProductName" required />
+            </label>
+
+            <label>
+              Category
+              <select id="editProductCategory" required>
+                <option value="Arabica">Arabica</option>
+                <option value="Flavored Coffee">Flavored Coffee</option>
+                <option value="Espresso">Espresso</option>
+                <option value="Decaf">Decaf</option>
+              </select>
+            </label>
+
+            <label>
+              Price
+              <input type="number" id="editProductPrice" min="0" required />
+            </label>
+
+            <label>
+              Stock
+              <input type="number" id="editProductStock" min="0" required />
+            </label>
+
+            <label>
+              Status
+              <select id="editProductStatus" required>
+                <option value="Active">Active</option>
+                <option value="Low Stock">Low Stock</option>
+                <option value="Out of Stock">Out of Stock</option>
+              </select>
+            </label>
+
+            <label>
+              Description
+              <textarea id="editProductDescription" rows="4"></textarea>
+            </label>
+
+            <div class="admin-modal__actions">
+              <button type="button" class="admin-secondary-btn" id="cancelProductEditor">Cancel</button>
+              <button type="submit" class="admin-primary-btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+  </div>
+
+  <script src="../components/admin-orders/admin-orders.js"></script>
+</body>
+</html>

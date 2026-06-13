@@ -1,0 +1,128 @@
+<div class="admin-product-detail">
+  <div class="admin-detail-header">
+    <div>
+      <p class="admin-dashboard__eyebrow">ShoffeeKo HQ</p>
+      <h1 id="detailProductName">Product Detail</h1>
+    </div>
+
+    <div class="admin-detail-actions">
+      <a href="admin-products.html" class="admin-secondary-btn">Back to Products</a>
+      <button class="admin-primary-btn" id="editProductBtn">Edit Product</button>
+    </div>
+  </div>
+
+  <section class="admin-detail-grid">
+    <div class="admin-panel admin-detail-image-card">
+      <img id="detailProductImage" src="" alt="">
+      
+
+    </div>
+
+    
+
+    <div class="admin-panel admin-detail-info-card">
+      <div class="admin-panel__header">
+        <h2>Product Information</h2>
+      </div>
+
+      <div class="admin-detail-list">
+        <div><span>Product ID</span><strong id="detailProductId"></strong></div>
+        <div><span>Category</span><strong id="detailProductCategory"></strong></div>
+        <div><span>Price</span><strong id="detailProductPrice"></strong></div>
+        <div><span>Stock</span><strong id="detailProductStock"></strong></div>
+        <div><span>Status</span><strong id="detailProductStatus"></strong></div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <section class="admin-panel admin-description-panel">
+    <div class="admin-panel__header">
+      <h2>Description</h2>
+    </div>
+
+    <p id="detailProductDescription"></p>
+  </section>
+
+  <div class="admin-modal" id="productEditorModal" aria-hidden="true">
+  <div class="admin-modal__box">
+    <div class="admin-modal__header">
+      <h2>Edit Product</h2>
+      <button class="admin-modal__close" id="closeProductEditor">×</button>
+    </div>
+
+    <form class="admin-product-form" id="productEditorForm">
+      <label>
+        Product Name
+        <input type="text" id="editProductName" required />
+      </label>
+
+      <label>
+        Category
+        <select id="editProductCategory" required>
+          <option value="Arabica">Arabica</option>
+          <option value="Flavored Coffee">Flavored Coffee</option>
+          <option value="Espresso">Espresso</option>
+          <option value="Decaf">Decaf</option>
+        </select>
+      </label>
+
+      <label>
+        Price
+        <input type="number" id="editProductPrice" min="0" required />
+      </label>
+
+      <label>
+        Stock
+        <input type="number" id="editProductStock" min="0" required />
+      </label>
+
+      <label>
+        Status
+        <select id="editProductStatus" required>
+          <option value="Active">Active</option>
+          <option value="Low Stock">Low Stock</option>
+          <option value="Out of Stock">Out of Stock</option>
+        </select>
+      </label>
+
+        <label>
+           Product Image
+        </label>
+
+        <div class="admin-image-upload">
+        <img
+            id="editProductImagePreview"
+            src=""
+            alt="Product Preview"
+        />
+
+        <button
+            type="button"
+            class="admin-secondary-btn"
+            id="changeProductImageBtn">
+            Change Product Image
+        </button>
+
+        <input
+            type="file"
+            id="editProductImage"
+            accept="image/*"
+            hidden>
+        </div>
+
+      <label>
+        Description
+        <textarea id="editProductDescription" rows="4"></textarea>
+      </label>
+
+      <div class="admin-modal__actions">
+        <button type="button" class="admin-secondary-btn" id="cancelProductEditor">Cancel</button>
+        <button type="submit" class="admin-primary-btn">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div>

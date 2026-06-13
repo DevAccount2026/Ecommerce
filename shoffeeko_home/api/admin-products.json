@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": "PROD-001",
+      "name": "Arabica Pistachio",
+      "category": "Arabica",
+      "price": 399,
+      "stock": 42,
+      "status": "Active",
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg"
+    },
+    {
+      "id": "PROD-002",
+      "name": "Mocha Blend",
+      "category": "Flavored Coffee",
+      "price": 350,
+      "stock": 12,
+      "status": "Active",
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg"
+    },
+    {
+      "id": "PROD-003",
+      "name": "Caramel Roast",
+      "category": "Flavored Coffee",
+      "price": 420,
+      "stock": 5,
+      "status": "Low Stock",
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg"
+    },
+    {
+      "id": "PROD-004",
+      "name": "Hazelnut Coffee",
+      "category": "Espresso",
+      "price": 380,
+      "stock": 0,
+      "status": "Out of Stock",
+      "image": "../assets/images/Product_Image/Doha_Houseblend.jpg"
+    }
+  ]
+}

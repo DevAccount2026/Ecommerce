@@ -1,0 +1,55 @@
+.admin-orders-toolbar {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.admin-orders-toolbar input,
+.admin-orders-toolbar select {
+  height: 44px;
+  background: #132238;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #f5efe6;
+  border-radius: 10px;
+  padding: 0 14px;
+  outline: none;
+}
+
+.admin-orders-toolbar input {
+  width: min(520px, 100%);
+}
+
+.admin-orders-toolbar select {
+  min-width: 180px;
+}
+
+.admin-action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-table-btn.admin-edit {
+  background: rgba(201,164,107,0.18);
+  color: #f1c76b;
+}
+
+.admin-status--paid {
+  background: rgba(94,224,181,0.18);
+  color: #5ee0b5;
+}
+
+.admin-status--refunded {
+  background: rgba(255,107,107,0.18);
+  color: #ff6b6b;
+}
+
+@media (max-width: 700px) {
+  .admin-orders-toolbar {
+    flex-direction: column;
+  }
+
+  .admin-orders-toolbar input,
+  .admin-orders-toolbar select {
+    width: 100%;
+  }
+}
