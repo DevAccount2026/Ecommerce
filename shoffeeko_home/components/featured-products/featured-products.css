@@ -16,7 +16,16 @@
 /* --- Product Cards --- */
 .product-card {
   cursor: pointer;
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--catalog-border);
+  border-radius: 13px;
+  background: #171717;
+  box-shadow: 0 4px 0 var(--catalog-accent);
 }
+
 
 .product-card img {
   width: 100%;
@@ -24,6 +33,16 @@
   object-fit: cover;
   border-radius: 9px;
   border: 1px solid #fff;
+
+ 
+  display: block;
+  object-fit: cover;
+  transition: transform .35s ease, filter .35s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.035);
+  filter: brightness(1.05);
 }
 
 .product-card h3 {
