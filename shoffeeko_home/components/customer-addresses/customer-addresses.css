@@ -1,0 +1,147 @@
+.addresses-section {
+  padding: 80px 0;
+}
+
+.addresses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.addresses-header h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+.addresses-header a {
+  color: #fff8dc;
+}
+
+.addresses-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+
+.address-form,
+.address-list,
+.address-card {
+  background: #080808;
+  border: 1px solid #fff8dc;
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.address-form h2,
+.address-list h2 {
+  margin-top: 0;
+}
+
+.address-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.address-form label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.address-form input {
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid #fff8dc;
+  background: #050505;
+  color: #fff8dc;
+  padding: 0 14px;
+}
+
+.address-checkbox {
+  display: flex !important;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.address-checkbox input {
+  width: auto;
+  height: auto;
+}
+
+.address-form button,
+.address-actions button {
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid #fff8dc;
+  background: #fff8dc;
+  color: #111;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.address-list {
+  display: grid;
+  gap: 18px;
+}
+
+.address-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.address-card.is-default {
+  border-color: #c9a46b;
+  box-shadow: 0 0 0 2px rgba(201, 164, 107, .2);
+}
+
+.address-card h3 {
+  margin: 0 0 10px;
+}
+
+.address-card p {
+  margin: 5px 0;
+  color: #cfc7b9;
+}
+
+.address-card strong {
+  display: inline-block;
+  margin-top: 12px;
+  color: #c9a46b;
+}
+
+.address-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.address-actions button:nth-child(2) {
+  background: transparent;
+  color: #fff8dc;
+}
+
+.address-empty {
+  color: #cfc7b9;
+}
+
+@media (max-width: 900px) {
+  .addresses-layout,
+  .address-row {
+    grid-template-columns: 1fr;
+  }
+
+  .address-card {
+    flex-direction: column;
+  }
+
+  .address-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

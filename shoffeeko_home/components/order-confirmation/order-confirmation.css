@@ -6,12 +6,18 @@
   border: 1px solid #fff8dc;
   border-radius: 20px;
   background: #080808;
-  padding: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .order-success {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 35px;
+  padding-bottom: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .order-check {
@@ -36,24 +42,35 @@
 .order-success p {
   color: #cfc7b9;
 }
-
 .order-meta {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
   margin-top: 30px;
 }
 
-.order-meta div {
+.order-info-box {
   border: 1px solid #fff8dc;
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 18px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
 }
 
-.order-meta span {
-  display: block;
+.order-info-box div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.order-info-box span {
+  font-size: 13px;
   color: #cfc7b9;
-  margin-bottom: 8px;
+}
+
+.order-info-box strong {
+  font-size: 14px;
+  color: #fff;
 }
 
 .order-layout {
@@ -111,10 +128,27 @@
   font-weight: 700;
 }
 
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(201,164,107,.12);
+  color: #c9a46b;
+  font-weight: 600;
+}
+
+
 @media (max-width: 900px) {
-  .order-layout,
-  .order-meta {
+  .order-layout {
     grid-template-columns: 1fr;
+  }
+
+  .order-info-box {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .order-item {
@@ -125,5 +159,11 @@
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 520px) {
+  .order-info-box {
+    grid-template-columns: 1fr;
   }
 }

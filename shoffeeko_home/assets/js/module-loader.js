@@ -155,6 +155,9 @@ function setActiveNav() {
 async function initModules() {
   await renderShell();
 
+
+  await loadGlobalJS("assets/js/customer-helpers.js", "customer-helpers");
+
   const nodes = [...document.querySelectorAll('[data-module]')];
 
   for (const node of nodes) {
@@ -176,6 +179,25 @@ async function initModules() {
 
   observeReveals();
 }
+
+
+async function loadGlobalJS(path, key) {
+        if (document.querySelector(`script[data-global-js="${key}"]`)) {
+          return Promise.resolve();
+        }
+
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+
+          script.src = `${BASE_PATH}${path}`;
+          script.dataset.globalJs = key;
+          script.onload = resolve;
+          script.onerror = reject;
+
+          document.body.appendChild(script);
+        });
+      }
+
 
 function observeReveals() {
   const observer = new IntersectionObserver(

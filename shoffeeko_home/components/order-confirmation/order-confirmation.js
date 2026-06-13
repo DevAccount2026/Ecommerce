@@ -16,7 +16,27 @@ async function initOrderConfirmation() {
 
   const order = orders.find(item => item.id === orderId);
 
+
+
   if (!order) {
+
+        const formattedDate = new Date(order.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }
+        );
+
+        const formattedTime = new Date(order.createdAt).toLocaleTimeString(
+          "en-US",
+          {
+            hour: "numeric",
+            minute: "2-digit"
+          }
+        );
+
     root.innerHTML = `
       <section class="order-confirmation-section sk-container">
         <div class="order-card">
@@ -45,15 +65,35 @@ async function initOrderConfirmation() {
         <p>${settings.subtitle}</p>
 
         <div class="order-meta">
-          <div>
-            <span>${settings.orderNumberLabel}</span>
-            <strong>${order.id}</strong>
-          </div>
+          <div class="order-info-box">
+            <div>
+              <span>${settings.orderNumberLabel}</span>
+              <strong>${order.id}</strong>
+            </div>
 
-          <div>
-            <span>${settings.customerLabel}</span>
-            <strong>${customerName || "Customer"}</strong>
+            <div>
+              <span>${settings.orderDateLabel}</span>
+              <strong>${new Date(order.createdAt).toLocaleString()}</strong>            
+            </div>
+
+            <div>
+              <span>${settings.paymentMethodLabel}</span>
+              <strong>${order.customer?.paymentMethod || "Cash on Delivery"}</strong>
+            </div>
+
+            <div>
+              <span>${settings.orderStatusLabel}</span>
+              <strong class="status-badge">${order.orderStatus || "Pending"}</strong>
+            </div>
+
+            <div>
+              <span>${settings.customerLabel}</span>
+              <strong>${order.customer?.firstName} ${order.customer?.lastName}</strong>
+            </div>
           </div>
+        </div>
+
+          
         </div>
       </div>
 
