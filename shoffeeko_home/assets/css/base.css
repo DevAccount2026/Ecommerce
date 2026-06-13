@@ -33,6 +33,23 @@ a {
   
 }
 
+
+/* ==========================================================================
+  View Store
+   ========================================================================== */
+
+.admin-switch-link,
+.store-admin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #d8ad61;
+  color: #050505;
+  font-weight: 700;
+  text-decoration: none;
+}
 /* ==========================================================================
    Header & Navigation
    ========================================================================== */
