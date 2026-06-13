@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", initCatalogPage);
 
+const ADMIN_PRODUCTS_KEY = "adminProducts";
+
 async function initCatalogPage() {
   const root = document.getElementById("catalogPage");
   if (!root) return;
@@ -10,6 +12,19 @@ async function initCatalogPage() {
     if (!response.ok) throw new Error(`Unable to load ${jsonPath}`);
 
     const data = await response.json();
+
+    const savedProducts = JSON.parse(localStorage.getItem(ADMIN_PRODUCTS_KEY));
+
+   if (Array.isArray(savedProducts) && savedProducts.length > 0) {
+    data.products = savedProducts.map(product => ({
+      ...product,
+      title: product.title || product.name,
+      price: Number(product.price || 0),
+      image: product.image || product.imageUrl || "",
+      hasOptions: product.hasOptions || false
+    }));
+  }
+
     renderCatalog(root, data);
   } catch (error) {
     console.error("Catalog load error:", error);
