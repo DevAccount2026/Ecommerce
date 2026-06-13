@@ -1,0 +1,42 @@
+
+{
+  "revenueToday": 12450,
+  "revenueChange": 15,
+  "ordersToday": 88,
+  "ordersChange": 5,
+  "totalProducts": 1250,
+  "activeProducts": 1180,
+  "customersToday": 45,
+  "totalCustomers": 540,
+
+  "recentOrders": [
+    {
+      "id": "ORD-1001",
+      "date": "2026-06-13",
+      "customer": "John Smith",
+      "total": 1250,
+      "status": "Shipped"
+    },
+    {
+      "id": "ORD-1002",
+      "date": "2026-06-13",
+      "customer": "Sarah Cruz",
+      "total": 820,
+      "status": "Processing"
+    },
+    {
+      "id": "ORD-1003",
+      "date": "2026-06-12",
+      "customer": "Mark Reyes",
+      "total": 390,
+      "status": "Pending"
+    },
+    {
+      "id": "ORD-1004",
+      "date": "2026-06-12",
+      "customer": "Ana Santos",
+      "total": 560,
+      "status": "Cancelled"
+    }
+  ]
+}
