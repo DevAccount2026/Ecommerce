@@ -4,7 +4,7 @@ async function initOrderHistory() {
   const root = document.getElementById("customerOrderHistoryPage");
   if (!root) return;
 
-  const response = await fetch("../components/customer-orderhistory/customer-orderhistory.json");
+  const response = await fetch("../components/customer_orderhistory/customer_orderhistory.json");
   const data = await response.json();
   const settings = data.settings || {};
 
@@ -23,6 +23,18 @@ async function initOrderHistory() {
   const customerOrders = allOrders.filter(order =>
     order.customer?.email === customer.email
   );
+
+function parsePrice(price) {
+  if (typeof price === "number") return price;
+
+  return Number(
+    String(price)
+      .replace("From", "")
+      .replace("USD", "")
+      .replace("$", "")
+      .trim()
+    ) || 0;
+  }
 
   function formatPrice(value) {
     return `$${Number(value || 0).toFixed(2)} ${settings.currency || "USD"}`;
@@ -91,16 +103,20 @@ async function initOrderHistory() {
             </div>
 
             <div class="orderhistory-items">
-              ${order.items.map(item => `
-                <div class="orderhistory-item">
-                  <img src="${item.image}" alt="${item.title}">
+                 ${order.items.map(item => `
+              <div class="orderhistory-item">
+                <img src="${item.image}" alt="${item.title}">
 
-                  <div>
-                    <h3>${item.title}</h3>
-                    <p>Qty: ${item.quantity}</p>
-                  </div>
+                <div>
+                  <h3>${item.title}</h3>
+                  <p>Qty: ${item.quantity}</p>
                 </div>
-              `).join("")}
+
+                <strong class="orderhistory-line-total">
+                  ${formatPrice(parsePrice(item.price) * Number(item.quantity || 1))}
+                </strong>
+              </div>
+            `).join("")}
             </div>
 
           </article>
