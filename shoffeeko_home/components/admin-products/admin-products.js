@@ -125,13 +125,22 @@ function handleProductActions(event) {
   }
 
   if (action === "delete") {
-    const confirmDelete = confirm(`Delete product ${productId}?`);
+  const confirmDelete = confirm(`Delete product ${productId}?`);
 
-    if (confirmDelete) {
-      allProducts = allProducts.filter(product => product.id !== productId);
-      applyProductFilters();
-    }
+  if (confirmDelete) {
+    allProducts = allProducts.filter(product => product.id !== productId);
+
+    localStorage.setItem(
+      "adminProducts",
+      JSON.stringify(allProducts)
+    );
+
+    applyProductFilters();
+
+    alert("Product deleted locally.");
+   }
   }
+  
 }
 
 async function initAdminProductsPage() {
