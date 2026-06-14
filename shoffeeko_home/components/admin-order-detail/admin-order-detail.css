@@ -45,3 +45,19 @@
   display: flex;
   gap: 12px;
 }
+
+.admin-shipping-address {
+  display: grid;
+  gap: 6px;
+  color: #f5efe6;
+}
+
+.admin-shipping-address strong {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.admin-shipping-address p {
+  margin: 0;
+  color: #cfc7b9;
+}

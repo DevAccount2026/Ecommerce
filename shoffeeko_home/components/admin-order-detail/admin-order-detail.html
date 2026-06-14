@@ -32,6 +32,22 @@
   <div class="admin-panel">
     <h2>Order Summary</h2>
 
+   <section class="admin-panel admin-shipping-panel">
+        <div class="admin-panel__header">
+            <h2>Shipping Address</h2>
+        </div>
+
+        <div class="admin-shipping-address" id="shippingAddressCard">
+            <strong id="shippingCustomerName">Guest Customer</strong>
+            <p id="shippingAddressLine1">No address available</p>
+            <p id="shippingAddressLine2"></p>
+            <p id="shippingCity"></p>
+            <p id="shippingProvince"></p>
+            <p id="shippingZip"></p>
+            <p id="shippingCountry"></p>
+        </div>
+    </section>
+
     <div class="admin-info-row">
       <span>Payment</span>
       <strong id="detailPaymentStatus"></strong>
@@ -42,10 +58,7 @@
       <strong id="detailOrderStatus"></strong>
     </div>
 
-    <div class="admin-summary-item">
-    <span>Payment</span>
-    <strong id="detailPaymentStatus">Pending</strong>
-    </div>
+    
 
     <div class="admin-status-editor">
     <label>Update Payment</label>
