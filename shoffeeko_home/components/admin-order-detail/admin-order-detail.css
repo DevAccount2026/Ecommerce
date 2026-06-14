@@ -36,3 +36,12 @@
   margin-left: 300px;
   
 }
+
+.admin-status-editor {
+  margin-top: 16px;
+}
+
+.admin-status-editor__controls {
+  display: flex;
+  gap: 12px;
+}

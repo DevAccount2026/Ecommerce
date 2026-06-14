@@ -2,6 +2,7 @@ const ORDERS_KEY = "shoffeeko_orders";
 
 let currentOrder = null;
 
+
 async function fetchOrders() {
   const root = document.querySelector("#adminOrderDetailPage");
   const apiUrl = root?.dataset.api;
@@ -69,9 +70,12 @@ function renderOrderDetail(order) {
   document.querySelector("#detailCustomerName").textContent = order.customer || "Guest Customer";
   document.querySelector("#detailCustomerEmail").textContent = order.email || "No email";
   document.querySelector("#detailOrderDate").textContent = formatDate(order.date);
-  document.querySelector("#detailPaymentStatus").textContent = order.payment || "Pending";
+
   document.querySelector("#detailOrderStatus").textContent = order.status || "Pending";
   document.querySelector("#detailOrderTotal").textContent = formatCurrency(order.total || 0);
+
+  document.querySelector("#detailPaymentStatus").textContent =
+  order.paymentStatus || order.payment || "Pending";
 
   const items = Array.isArray(order.items) ? order.items : [];
 
@@ -112,10 +116,53 @@ async function initAdminOrderDetailPage() {
 
   document.querySelector("#orderStatusSelect").value = order?.status || "Pending";
 
+    renderPaymentStatus(order);
+
     document
     .querySelector("#saveOrderStatusBtn")
     ?.addEventListener("click", saveOrderStatus);
+
+    document
+    .querySelector("#savePaymentStatusBtn")
+    ?.addEventListener("click", savePaymentStatus);
+
+
+
+   function renderPaymentStatus(order) {
+    const paymentText = document.querySelector("#detailPaymentStatus");
+    const paymentSelect = document.querySelector("#paymentStatusSelect");
+
+    if (!paymentText || !paymentSelect || !order) return;
+
+    const paymentStatus = order.paymentStatus || order.payment || "Pending";
+
+    paymentText.textContent = paymentStatus;
+    paymentSelect.value = paymentStatus;
     }
+
+    function savePaymentStatus() {
+    if (!currentOrder) return;
+
+    const selectedPayment = document.querySelector("#paymentStatusSelect")?.value;
+    if (!selectedPayment) return;
+
+    const orders = getSavedOrders();
+
+    const updatedOrders = orders.map(order =>
+        String(order.id) === String(currentOrder.id)
+        ? { ...order, paymentStatus: selectedPayment }
+        : order
+    );
+
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(updatedOrders));
+
+    currentOrder.paymentStatus = selectedPayment;
+    document.querySelector("#detailPaymentStatus").textContent = selectedPayment;
+
+    alert("Payment status updated.");
+    }
+
+   }
 
     function saveOrderStatus() {
     if (!currentOrder) return;
@@ -130,6 +177,8 @@ async function initAdminOrderDetailPage() {
         ? { ...order, status: selectedStatus }
         : order
     );
+
+    
 
   localStorage.setItem(ORDERS_KEY, JSON.stringify(updatedOrders));
 

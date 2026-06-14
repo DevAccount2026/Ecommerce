@@ -42,6 +42,28 @@
       <strong id="detailOrderStatus"></strong>
     </div>
 
+    <div class="admin-summary-item">
+    <span>Payment</span>
+    <strong id="detailPaymentStatus">Pending</strong>
+    </div>
+
+    <div class="admin-status-editor">
+    <label>Update Payment</label>
+
+    <div class="admin-status-editor__controls">
+        <select id="paymentStatusSelect">
+        <option value="Paid">Paid</option>
+        <option value="Pending">Pending</option>
+        <option value="Failed">Failed</option>
+        <option value="Refunded">Refunded</option>
+        </select>
+
+        <button id="savePaymentStatusBtn">
+        Save
+        </button>
+    </div>
+    </div>
+
     <div class="admin-info-row">
     <span>Update Status</span>
     <div>
