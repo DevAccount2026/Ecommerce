@@ -65,9 +65,9 @@ function renderProducts(products) {
       <td>${formatCurrency(product.price)}</td>
       <td>${product.stock}</td>
       <td>
-        <span class="admin-status admin-status--${getStatusClass(product.status)}">
-          ${product.status}
-        </span>
+        <span class="admin-status admin-status--${getStatusClass(getAutoStatus(product.stock))}">
+          ${getAutoStatus(product.stock)}
+         </span>
       </td>
       <td>
         <div class="admin-action-group">
@@ -80,6 +80,13 @@ function renderProducts(products) {
   `).join("");
 }
 
+function getAutoStatus(stock) {
+  const quantity = Number(stock);
+
+  if (quantity <= 0) return "Out of Stock";
+  if (quantity <= 10) return "Low Stock";
+  return "Active";
+}
 
 function renderCategoryFilter(products) {
   const categoryFilter = document.querySelector("#productCategoryFilter");

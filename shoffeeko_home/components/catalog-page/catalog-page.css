@@ -237,7 +237,20 @@ body {
   color: rgb(248, 246, 246);
 }
 
-/*-----------------------------------------*/
+/*-------------card stock----------------------------*/
+
+.catalog-card__stock {
+  margin: 8px 0 18px;
+  font-size: 14px;
+  color: #d6b36a;
+  font-weight: 700;
+}
+
+.catalog-card__button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 
 /*-----------Responsive Styling-----------*/
 

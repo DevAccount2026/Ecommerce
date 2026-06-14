@@ -2,6 +2,14 @@ document.addEventListener("DOMContentLoaded", initCatalogPage);
 
 const ADMIN_PRODUCTS_KEY = "adminProducts";
 
+function getInventoryMessage(product) {
+  const stock = Number(product.stock || 0);
+
+  if (stock <= 0) return "Out of Stock";
+  if (stock <= 10) return `Only ${stock} left`;
+  return "In Stock";
+}
+
 async function initCatalogPage() {
   const root = document.getElementById("catalogPage");
   if (!root) return;
@@ -61,24 +69,29 @@ function renderCatalog(root, data) {
 
   root.querySelectorAll("[data-add-to-cart]").forEach(button => {
     button.addEventListener("click", event => {
+      if (button.disabled) return;
+
       const productId = button.dataset.addToCart;
       const product = products.find(item => item.id === productId);
 
       if (product?.hasOptions) {
         window.location.href = getProductUrl(product);
       } else {
-          
-              addToCart(product);
-            
+        addToCart(product);
       }
     });
   });
 }
 
 function renderProductCard(product, settings) {
-  const buttonLabel = product.hasOptions
-    ? (settings.chooseOptionsText || "Choose options")
-    : (settings.buttonText || "Add to cart");
+  const stock = Number(product.stock || 0);
+  const isSoldOut = stock <= 0;
+
+  const buttonLabel = isSoldOut
+    ? "Sold Out"
+    : product.hasOptions
+      ? (settings.chooseOptionsText || "Choose options")
+      : (settings.buttonText || "Add to cart");
 
   const productUrl = getProductUrl(product);
 
@@ -95,9 +108,15 @@ function renderProductCard(product, settings) {
 
       <p class="catalog-card__price">${formatPrice(product, settings.currency || "USD")}</p>
 
-      <button class="catalog-card__button" data-add-to-cart="${escapeHTML(product.id || "")}">
+      <p class="catalog-card__stock">
+        ${escapeHTML(getInventoryMessage(product))}
+      </p>
+
+      <button
+        class="catalog-card__button"
+        data-add-to-cart="${escapeHTML(product.id || "")}"
+        ${isSoldOut ? "disabled" : ""}>
         ${escapeHTML(buttonLabel)}
-   
       </button>
 
       <button

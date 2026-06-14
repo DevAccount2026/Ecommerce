@@ -113,6 +113,15 @@ function closeProductEditor() {
   document.querySelector("#productEditorModal").setAttribute("aria-hidden", "true");
 }
 
+
+function getAutoStatus(stock) {
+  const quantity = Number(stock);
+
+  if (quantity <= 0) return "Out of Stock";
+  if (quantity <= 10) return "Low Stock";
+  return "Active";
+}
+
 async function handleProductEditorSubmit(event) {
   event.preventDefault();
 
@@ -160,7 +169,7 @@ async function handleProductEditorSubmit(event) {
       category: document.querySelector("#editProductCategory").value,
       price: price,
       stock: stock,
-      status: document.querySelector("#editProductStatus").value,
+      status: getAutoStatus(stock),
       description: document.querySelector("#editProductDescription").value.trim(),
       image: previewImage?.src || "",
       hasOptions: false
