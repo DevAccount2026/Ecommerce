@@ -43,6 +43,24 @@
     </div>
 
     <div class="admin-info-row">
+    <span>Update Status</span>
+    <div>
+        <select id="orderStatusSelect">
+        <option>Pending</option>
+        <option>Processing</option>
+        <option>Shipped</option>
+        <option>Delivered</option>
+        <option>Cancelled</option>
+        <option>Refunded</option>
+        </select>
+
+        <button id="saveOrderStatusBtn" class="admin-table-btn admin-edit">
+        Save
+        </button>
+    </div>
+    </div>
+
+    <div class="admin-info-row">
       <span>Total</span>
       <strong id="detailOrderTotal"></strong>
     </div>

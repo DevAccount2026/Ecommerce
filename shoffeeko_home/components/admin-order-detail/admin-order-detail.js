@@ -1,5 +1,7 @@
 const ORDERS_KEY = "shoffeeko_orders";
 
+let currentOrder = null;
+
 async function fetchOrders() {
   const root = document.querySelector("#adminOrderDetailPage");
   const apiUrl = root?.dataset.api;
@@ -52,6 +54,7 @@ function renderOrderDetail(order) {
   const root = document.querySelector("#adminOrderDetailPage");
 
   if (!order) {
+    currentOrder = order;
     root.innerHTML = `
       <div class="admin-panel" style="padding:24px;">
         Order not found.
@@ -59,6 +62,8 @@ function renderOrderDetail(order) {
     `;
     return;
   }
+
+  currentOrder = order;
 
   document.querySelector("#detailOrderId").textContent = order.id;
   document.querySelector("#detailCustomerName").textContent = order.customer || "Guest Customer";
@@ -104,6 +109,34 @@ async function initAdminOrderDetailPage() {
   const order = orders.find(item => item.id === orderId);
 
   renderOrderDetail(order);
+
+  document.querySelector("#orderStatusSelect").value = order?.status || "Pending";
+
+    document
+    .querySelector("#saveOrderStatusBtn")
+    ?.addEventListener("click", saveOrderStatus);
+    }
+
+    function saveOrderStatus() {
+    if (!currentOrder) return;
+
+    const selectedStatus = document.querySelector("#orderStatusSelect")?.value;
+    if (!selectedStatus) return;
+
+    const orders = getSavedOrders();
+
+    const updatedOrders = orders.map(order =>
+        order.id === currentOrder.id
+        ? { ...order, status: selectedStatus }
+        : order
+    );
+
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(updatedOrders));
+
+  currentOrder.status = selectedStatus;
+  document.querySelector("#detailOrderStatus").textContent = selectedStatus;
+
+  alert("Order status updated.");
 }
 
 document.addEventListener("DOMContentLoaded", initAdminOrderDetailPage);
