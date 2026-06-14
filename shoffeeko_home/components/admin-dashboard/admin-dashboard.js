@@ -2,6 +2,8 @@ async function fetchDashboardStats() {
   const root = document.querySelector("#adminDashboard");
   const apiUrl = root?.dataset.api;
 
+
+
   if (!root || !apiUrl) return null;
 
   try {
@@ -29,28 +31,55 @@ function renderDashboardStats(data) {
   const grid = document.querySelector("#adminStatsGrid");
   if (!grid || !data) return;
 
-  const cards = [
-    {
-      label: "Revenue Today",
-      value: formatCurrency(data.revenueToday),
-      note: `${data.revenueChange}% vs yesterday`
-    },
-    {
-      label: "Orders Today",
-      value: data.ordersToday,
-      note: `${data.ordersChange}% vs yesterday`
-    },
-    {
-      label: "Products",
-      value: data.totalProducts,
-      note: `${data.activeProducts} active products`
-    },
-    {
-      label: "Customers",
-      value: data.customersToday,
-      note: `${data.totalCustomers} total customers`
-    }
-  ];
+  function getSavedOrders() {
+  try {
+    return JSON.parse(localStorage.getItem("shoffeeko_orders")) || [];
+  } catch (error) {
+    console.error("Saved orders are broken:", error);
+    return [];
+  }
+}
+
+const orders = getSavedOrders();
+
+const totalOrders = orders.length;
+
+const revenue = orders.reduce((sum, order) => {
+  return sum + Number(order.total || order.subtotal || 0);
+}, 0);
+
+const customers = new Set(
+  orders
+    .map(order => order.customerEmail || order.email)
+    .filter(Boolean)
+).size;
+
+const pendingOrders = orders.filter(order => {
+  return (order.orderStatus || order.status) === "Pending";
+}).length;
+
+const cards = [
+  {
+    label: "Total Orders",
+    value: totalOrders,
+    note: "All saved orders"
+  },
+  {
+    label: "Revenue",
+    value: formatCurrency(revenue),
+    note: "Total order revenue"
+  },
+  {
+    label: "Customers",
+    value: customers,
+    note: "Unique customer emails"
+  },
+  {
+    label: "Pending Orders",
+    value: pendingOrders,
+    note: "Orders awaiting action"
+  }
+];
 
   grid.innerHTML = cards.map(card => `
     <article class="admin-stat-card">
@@ -334,5 +363,47 @@ function renderTopCategoriesChart(items) {
     }
   });
 }
+
+const ORDERS_KEY = "shoffeeko_orders";
+
+function getDashboardOrders() {
+  try {
+    return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+  } catch (error) {
+    console.error("Dashboard orders are broken:", error);
+    return [];
+  }
+}
+
+function formatPeso(amount) {
+  return `₱${Number(amount || 0).toLocaleString("en-PH")}`;
+}
+
+function renderDashboardMetrics() {
+  const orders = getDashboardOrders();
+
+  const totalOrders = orders.length;
+
+  const revenue = orders.reduce((sum, order) => {
+    return sum + Number(order.total || order.subtotal || 0);
+  }, 0);
+
+  const customers = new Set(
+    orders
+      .map(order => order.customerEmail || order.email)
+      .filter(Boolean)
+  ).size;
+
+  const pendingOrders = orders.filter(order => {
+    return (order.orderStatus || order.status) === "Pending";
+  }).length;
+
+  document.querySelector("#metricTotalOrders").textContent = totalOrders;
+  document.querySelector("#metricRevenue").textContent = formatPeso(revenue);
+  document.querySelector("#metricCustomers").textContent = customers;
+  document.querySelector("#metricPendingOrders").textContent = pendingOrders;
+}
+
+document.addEventListener("DOMContentLoaded", renderDashboardMetrics);
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);

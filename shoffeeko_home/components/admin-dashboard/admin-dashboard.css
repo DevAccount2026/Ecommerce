@@ -407,6 +407,47 @@ body {
   padding: 10px 22px 24px;
 }
 
+
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 24px;
+  color: #f5efe6;
+}
+
+.metric-card p {
+  margin: 0 0 10px;
+  color: #c9a46b;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-card h2 {
+  margin: 0;
+  font-size: 34px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1400px) {
   .admin-analytics-grid {
     grid-template-columns: 1fr 1fr;
