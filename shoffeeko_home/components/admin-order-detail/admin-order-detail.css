@@ -1,0 +1,38 @@
+.admin-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-order-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#adminOrderDetailPage {
+  max-width: 1200px;
+}
+
+.admin-info-row,
+.admin-order-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-info-row strong,
+.admin-order-item strong:last-child {
+  text-align: right;
+}
+
+.admin-panel {
+  padding: 35px;
+  margin-left: 300px;
+  
+}

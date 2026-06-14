@@ -121,9 +121,9 @@ function handleOrderActions(event) {
   const action = button.dataset.action;
   const orderId = button.dataset.id;
 
-  if (action === "view") {
-    alert(`Viewing order ${orderId}`);
-  }
+ if (action === "view") {
+  window.location.href = `admin-order-detail.html?id=${orderId}`;
+ }
 
   if (action === "edit") {
     alert(`Editing order ${orderId}`);
