@@ -1,5 +1,7 @@
 let allOrders = [];
 
+const ORDERS_KEY = "shoffeeko_orders";
+
 async function fetchOrders() {
   const root = document.querySelector("#adminOrdersPage");
   const apiUrl = root?.dataset.api;
@@ -62,7 +64,7 @@ function renderOrders(orders) {
       <td>${formatDate(order.date)}</td>
       <td>${order.customer}</td>
       <td>${order.email}</td>
-      <td>${order.items}</td>
+      <td>${Array.isArray(order.items) ? order.items.length : order.items}</td>
       <td>${formatCurrency(order.total)}</td>
       <td>
         <span class="admin-status admin-status--${getStatusClass(order.payment)}">
@@ -128,6 +130,16 @@ function handleOrderActions(event) {
   }
 }
 
+function getSavedOrders() {
+  try {
+    return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+  } catch (error) {
+    console.error("Saved orders are broken:", error);
+    localStorage.removeItem(ORDERS_KEY);
+    return [];
+  }
+}
+
 async function initAdminOrdersPage() {
   const root = document.querySelector("#adminOrdersPage");
   if (!root) return;
@@ -135,7 +147,12 @@ async function initAdminOrdersPage() {
   const htmlResponse = await fetch("../components/admin-orders/admin-orders.html");
   root.innerHTML = await htmlResponse.text();
 
-  allOrders = await fetchOrders();
+  const savedOrders = getSavedOrders();
+
+  allOrders = savedOrders.length
+    ? savedOrders
+    : await fetchOrders();
+
   renderOrders(allOrders);
 
   document.querySelector("#orderSearchInput")?.addEventListener("input", applyOrderFilters);
