@@ -99,7 +99,7 @@ function openProductEditor() {
     currentProduct?.description || "";
 
   const previewImage = document.querySelector("#editProductImagePreview");
-  
+
   if (previewImage) {
     previewImage.src = currentProduct?.image || "";
   }
@@ -117,9 +117,16 @@ async function handleProductEditorSubmit(event) {
   event.preventDefault();
 
   const name = document.querySelector("#editProductName").value.trim();
-  const price = Number(document.querySelector("#editProductPrice").value);
-  const stock = Number(document.querySelector("#editProductStock").value);
   const previewImage = document.querySelector("#editProductImagePreview");
+
+  const price = Number(
+    document.querySelector("#editProductPrice").value.replace(/[^\d.]/g, "")
+  );
+
+  const stock = Number(
+    document.querySelector("#editProductStock").value.replace(/[^\d]/g, "")
+  );
+  
 
   if (!name) {
     alert("Please enter a product name.");
@@ -151,32 +158,39 @@ async function handleProductEditorSubmit(event) {
       name: document.querySelector("#editProductName").value.trim(),
       title: document.querySelector("#editProductName").value.trim(),
       category: document.querySelector("#editProductCategory").value,
-      price: Number(document.querySelector("#editProductPrice").value),
-      stock: Number(document.querySelector("#editProductStock").value),
+      price: price,
+      stock: stock,
       status: document.querySelector("#editProductStatus").value,
       description: document.querySelector("#editProductDescription").value.trim(),
       image: previewImage?.src || "",
       hasOptions: false
     };
 
-    products.push(newProduct);
-    localStorage.setItem("adminProducts", JSON.stringify(products));
+   products.push(newProduct);
 
-    alert("New product added locally.");
+    try {
+      localStorage.setItem("adminProducts", JSON.stringify(products));
 
-    window.location.href = "admin-products.html";
-    return;
+      alert("New product added locally.");
+      window.location.href = "admin-products.html";
+      return;
+
+    } catch (error) {
+      console.error("LocalStorage save failed:", error);
+      alert("Product image is too large. Please upload a smaller image.");
+      return;
+    }
   }
-
   if (!currentProduct) return;
 
   currentProduct.name = document.querySelector("#editProductName").value.trim();
   currentProduct.title = currentProduct.name;
   currentProduct.category = document.querySelector("#editProductCategory").value;
-  currentProduct.price = Number(document.querySelector("#editProductPrice").value);
-  currentProduct.stock = Number(document.querySelector("#editProductStock").value);
   currentProduct.status = document.querySelector("#editProductStatus").value;
   currentProduct.description = document.querySelector("#editProductDescription").value.trim();
+
+  currentProduct.price = price;
+  currentProduct.stock = stock;
 
   if (previewImage?.src) {
     currentProduct.image = previewImage.src;

@@ -80,6 +80,27 @@ function renderProducts(products) {
   `).join("");
 }
 
+
+function renderCategoryFilter(products) {
+  const categoryFilter = document.querySelector("#productCategoryFilter");
+  if (!categoryFilter) return;
+
+  const categories = [
+    ...new Set(
+      products
+        .map(product => product.category)
+        .filter(Boolean)
+    )
+  ];
+
+  categoryFilter.innerHTML = `
+    <option value="all">All Categories</option>
+    ${categories.map(category => `
+      <option value="${category}">${category}</option>
+    `).join("")}
+  `;
+}
+
 function applyProductFilters() {
   const searchInput = document.querySelector("#productSearchInput");
   const topSearch = document.querySelector("#adminProductTopSearch");
@@ -134,7 +155,9 @@ function handleProductActions(event) {
       "adminProducts",
       JSON.stringify(allProducts)
     );
-
+    
+    renderCategoryFilter(allProducts);
+    
     applyProductFilters();
 
     alert("Product deleted locally.");
@@ -155,6 +178,8 @@ async function initAdminProductsPage() {
   await fetchProducts();
 
   renderProducts(allProducts);
+
+  renderCategoryFilter(allProducts);
 
   document.querySelector("#productSearchInput")?.addEventListener("input", applyProductFilters);
   document.querySelector("#adminProductTopSearch")?.addEventListener("input", applyProductFilters);
