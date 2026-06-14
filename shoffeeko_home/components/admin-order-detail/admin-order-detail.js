@@ -45,6 +45,10 @@ function getSavedAddresses() {
   }
 }
 
+function saveOrders(orders) {
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+}
+
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-PH", {
     style: "currency",
@@ -184,24 +188,77 @@ function renderShippingAddress(order) {
     address.country || "";
 }
 
+function createTimelineItem(message) {
+  return {
+    date: new Date().toISOString(),
+    message
+  };
+}
+
+function updateOrderInStorage(orderId, updater) {
+  const orders = getSavedOrders();
+
+  const updatedOrders = orders.map(order => {
+    if (String(order.id) !== String(orderId)) return order;
+
+    return updater(order);
+  });
+
+  saveOrders(updatedOrders);
+  return updatedOrders.find(order => String(order.id) === String(orderId));
+}
+
+function renderOrderTimeline(order) {
+  const timelineRoot = document.querySelector("#orderTimeline");
+  if (!timelineRoot || !order) return;
+
+  const timeline = Array.isArray(order.timeline) ? order.timeline : [];
+
+  if (!timeline.length) {
+    timelineRoot.innerHTML = `
+      <div class="timeline-item">
+        <strong>${formatDate(order.createdAt || order.date)}</strong>
+        <p>Order Created</p>
+      </div>
+    `;
+    return;
+  }
+
+  timelineRoot.innerHTML = timeline.map(item => `
+    <div class="timeline-item">
+      <strong>${formatDate(item.date)}</strong>
+      <p>${item.message}</p>
+    </div>
+  `).join("");
+}
+
 function savePaymentStatus() {
   if (!currentOrder) return;
 
   const selectedPayment = document.querySelector("#paymentStatusSelect")?.value;
   if (!selectedPayment) return;
 
-  const orders = getSavedOrders();
+  const timelineItem = createTimelineItem(`Payment status updated to ${selectedPayment}`);
 
-  const updatedOrders = orders.map(order =>
-    String(order.id) === String(currentOrder.id)
-      ? { ...order, paymentStatus: selectedPayment }
-      : order
-  );
+  const updatedOrder = updateOrderInStorage(currentOrder.id, order => {
+    const timeline = Array.isArray(order.timeline) ? order.timeline : [];
 
-  localStorage.setItem(ORDERS_KEY, JSON.stringify(updatedOrders));
+    return {
+      ...order,
+      paymentStatus: selectedPayment,
+      timeline: [...timeline, timelineItem]
+    };
+  });
 
-  currentOrder.paymentStatus = selectedPayment;
+  currentOrder = updatedOrder || {
+    ...currentOrder,
+    paymentStatus: selectedPayment,
+    timeline: [...(currentOrder.timeline || []), timelineItem]
+  };
+
   document.querySelector("#detailPaymentStatus").textContent = selectedPayment;
+  renderPaymentStatus(currentOrder);
+  renderOrderTimeline(currentOrder);
 
   alert("Payment status updated.");
 }
@@ -212,20 +269,28 @@ function saveOrderStatus() {
   const selectedStatus = document.querySelector("#orderStatusSelect")?.value;
   if (!selectedStatus) return;
 
-  const orders = getSavedOrders();
+  const timelineItem = createTimelineItem(`Order status updated to ${selectedStatus}`);
 
-  const updatedOrders = orders.map(order =>
-    String(order.id) === String(currentOrder.id)
-      ? { ...order, status: selectedStatus, orderStatus: selectedStatus }
-      : order
-  );
+  const updatedOrder = updateOrderInStorage(currentOrder.id, order => {
+    const timeline = Array.isArray(order.timeline) ? order.timeline : [];
 
-  localStorage.setItem(ORDERS_KEY, JSON.stringify(updatedOrders));
+    return {
+      ...order,
+      status: selectedStatus,
+      orderStatus: selectedStatus,
+      timeline: [...timeline, timelineItem]
+    };
+  });
 
-  currentOrder.status = selectedStatus;
-  currentOrder.orderStatus = selectedStatus;
+  currentOrder = updatedOrder || {
+    ...currentOrder,
+    status: selectedStatus,
+    orderStatus: selectedStatus,
+    timeline: [...(currentOrder.timeline || []), timelineItem]
+  };
 
   document.querySelector("#detailOrderStatus").textContent = selectedStatus;
+  renderOrderTimeline(currentOrder);
 
   alert("Order status updated.");
 }
@@ -249,6 +314,7 @@ async function initAdminOrderDetailPage() {
   renderOrderDetail(order);
   renderPaymentStatus(order);
   renderShippingAddress(order);
+  renderOrderTimeline(order);
 
   const orderStatusSelect = document.querySelector("#orderStatusSelect");
   if (orderStatusSelect) {
