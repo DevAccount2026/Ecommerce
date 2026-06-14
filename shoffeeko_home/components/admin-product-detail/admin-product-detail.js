@@ -99,6 +99,7 @@ function openProductEditor() {
     currentProduct?.description || "";
 
   const previewImage = document.querySelector("#editProductImagePreview");
+  
   if (previewImage) {
     previewImage.src = currentProduct?.image || "";
   }
@@ -115,11 +116,34 @@ function closeProductEditor() {
 async function handleProductEditorSubmit(event) {
   event.preventDefault();
 
+  const name = document.querySelector("#editProductName").value.trim();
+  const price = Number(document.querySelector("#editProductPrice").value);
+  const stock = Number(document.querySelector("#editProductStock").value);
+  const previewImage = document.querySelector("#editProductImagePreview");
+
+  if (!name) {
+    alert("Please enter a product name.");
+    return;
+  }
+
+  if (!price || price <= 0) {
+    alert("Please enter a valid product price.");
+    return;
+  }
+
+  if (Number.isNaN(stock) || stock < 0) {
+    alert("Please enter a valid stock quantity.");
+    return;
+  }
+
+  if (isAddingProduct && !previewImage?.src) {
+    alert("Please upload a product image.");
+    return;
+  }
+
   let products =
     JSON.parse(localStorage.getItem("adminProducts")) ||
     await fetchProductData();
-
-  const previewImage = document.querySelector("#editProductImagePreview");
 
   if (isAddingProduct) {
     const newProduct = {

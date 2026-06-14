@@ -7,10 +7,24 @@ async function initProductPage() {
   const params = new URLSearchParams(window.location.search);
   const productId = params.get('id');
 
-  const response = await fetch('../components/product-page/product-page.json');
+  const response = await fetch("../components/product-page/product-page.json");
   const data = await response.json();
 
-  const products = data.products || [];
+  const savedProducts = JSON.parse(localStorage.getItem("adminProducts"));
+
+  const products = Array.isArray(savedProducts) && savedProducts.length > 0
+    ? savedProducts.map(product => ({
+        ...product,
+        title: product.title || product.name,
+        name: product.name || product.title,
+        price: Number(product.price || 0),
+        image: product.image || product.imageUrl || "",
+        vendor: product.vendor || "SHOFFEEKO",
+        collection: product.collection || product.category,
+        hasOptions: product.hasOptions || false
+      }))
+    : data.products || [];
+
   const product = products.find(p => p.id === productId);
 
   if (!product) {
@@ -95,8 +109,8 @@ async function initProductPage() {
       <div class="related-grid">
         ${related.map(item => `
           <a class="related-item" href="product.html?id=${item.id}">
-            <img src="${item.image}" alt="${item.title}">
-            <h3>${item.title}</h3>
+            <img src="${item.image}" alt="${item.title || item.name}">
+            <h3>${item.title || item.name}</h3>
             <p>${item.pricePrefix || ''}$${Number(item.price).toFixed(2)} USD</p>
           </a>
         `).join('')}
@@ -119,7 +133,7 @@ async function initProductPage() {
 
         addToCart({
           id: product.id,
-          title: product.title,
+          title: product.title || product.name,
           price: product.price,
           image: product.image,
           quantity
