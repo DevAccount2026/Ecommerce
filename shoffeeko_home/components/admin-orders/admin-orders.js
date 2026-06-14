@@ -58,32 +58,70 @@ function renderOrders(orders) {
     return;
   }
 
-  tbody.innerHTML = orders.map(order => `
+ tbody.innerHTML = orders.map(order => {
+  const orderId = order.id || order.orderNumber || "No ID";
+  const orderDate = order.date || order.createdAt || new Date().toISOString();
+
+  const customer =
+    order.customer ||
+    order.customerName ||
+    `${order.customer?.firstName || ""} ${order.customer?.lastName || ""}`.trim() ||
+    "Guest Customer";
+
+  const email =
+    order.email ||
+    order.customerEmail ||
+    order.customer?.email ||
+    "No email";
+
+  const itemsCount = Array.isArray(order.items)
+    ? order.items.length
+    : Number(order.items || 0);
+
+  const total =
+    order.total ||
+    order.subtotal ||
+    order.totalAmount ||
+    order.grandTotal ||
+    0;
+
+  const payment =
+    order.payment ||
+    order.paymentStatus ||
+    "Pending";
+
+  const status =
+    order.status ||
+    order.orderStatus ||
+    "Pending";
+
+  return `
     <tr>
-      <td class="admin-order-id">${order.id}</td>
-      <td>${formatDate(order.date)}</td>
-      <td>${order.customer}</td>
-      <td>${order.email}</td>
-      <td>${Array.isArray(order.items) ? order.items.length : order.items}</td>
-      <td>${formatCurrency(order.total)}</td>
+      <td class="admin-order-id">${orderId}</td>
+      <td>${formatDate(orderDate)}</td>
+      <td>${customer}</td>
+      <td>${email}</td>
+      <td>${itemsCount}</td>
+      <td>${formatCurrency(total)}</td>
       <td>
-        <span class="admin-status admin-status--${getStatusClass(order.payment)}">
-          ${order.payment}
+        <span class="admin-status admin-status--${getStatusClass(payment)}">
+          ${payment}
         </span>
       </td>
       <td>
-        <span class="admin-status admin-status--${getStatusClass(order.status)}">
-          ${order.status}
+        <span class="admin-status admin-status--${getStatusClass(status)}">
+          ${status}
         </span>
       </td>
       <td>
         <div class="admin-action-group">
-          <button class="admin-table-btn" data-action="view" data-id="${order.id}">View</button>
-          <button class="admin-table-btn admin-edit" data-action="edit" data-id="${order.id}">Edit</button>
+          <button class="admin-table-btn" data-action="view" data-id="${orderId}">View</button>
+          <button class="admin-table-btn admin-edit" data-action="edit" data-id="${orderId}">Edit</button>
         </div>
       </td>
     </tr>
-  `).join("");
+    `;
+  }).join("");
 }
 
 function applyOrderFilters() {
