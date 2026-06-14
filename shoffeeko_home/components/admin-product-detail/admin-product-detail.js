@@ -1,4 +1,5 @@
 let currentProduct = null;
+let isAddingProduct = false;
 
 async function fetchProductData() {
   const root = document.querySelector("#adminProductDetailPage");
@@ -23,11 +24,26 @@ function getProductIdFromUrl() {
   return params.get("id");
 }
 
+function isAddMode() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("add") === "true";
+}
+
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-PH", {
     style: "currency",
     currency: "PHP"
   }).format(amount);
+}
+
+function generateProductId(products) {
+  const numbers = products
+    .map(product => Number(String(product.id).replace("PROD-", "")))
+    .filter(number => !Number.isNaN(number));
+
+  const nextNumber = numbers.length ? Math.max(...numbers) + 1 : 1;
+
+  return `PROD-${String(nextNumber).padStart(3, "0")}`;
 }
 
 function renderProductDetail(product) {
@@ -55,22 +71,41 @@ function renderProductDetail(product) {
 }
 
 function openProductEditor() {
-  if (!currentProduct) return;
+  if (!currentProduct && !isAddingProduct) return;
 
-  document.querySelector("#editProductName").value = currentProduct.name;
-  document.querySelector("#editProductCategory").value = currentProduct.category;
-  document.querySelector("#editProductPrice").value = currentProduct.price;
-  document.querySelector("#editProductStock").value = currentProduct.stock;
-  document.querySelector("#editProductStatus").value = currentProduct.status;
+  const submitBtn =
+  document.querySelector("#productEditorSubmitBtn");
+
+  if (submitBtn) {
+    submitBtn.textContent = isAddingProduct
+      ? "Add Product"
+      : "Save Changes";
+  }
+
+  const title = document.querySelector("#productEditorTitle");
+
+    if (title) {
+      title.textContent = isAddingProduct
+        ? "Add Product"
+        : "Edit Product";
+    }
+
+  document.querySelector("#editProductName").value = currentProduct?.name || "";
+  document.querySelector("#editProductCategory").value = currentProduct?.category || "Arabica";
+  document.querySelector("#editProductPrice").value = currentProduct?.price || "";
+  document.querySelector("#editProductStock").value = currentProduct?.stock || "";
+  document.querySelector("#editProductStatus").value = currentProduct?.status || "Active";
   document.querySelector("#editProductDescription").value =
-    currentProduct.description || "";
+    currentProduct?.description || "";
+
+  const previewImage = document.querySelector("#editProductImagePreview");
+  if (previewImage) {
+    previewImage.src = currentProduct?.image || "";
+  }
 
   document.querySelector("#productEditorModal").classList.add("is-open");
   document.querySelector("#productEditorModal").setAttribute("aria-hidden", "false");
-
-  document.querySelector("#editProductImagePreview").src = currentProduct.image;
-
-  }
+}
 
 function closeProductEditor() {
   document.querySelector("#productEditorModal").classList.remove("is-open");
@@ -80,24 +115,48 @@ function closeProductEditor() {
 async function handleProductEditorSubmit(event) {
   event.preventDefault();
 
+  let products =
+    JSON.parse(localStorage.getItem("adminProducts")) ||
+    await fetchProductData();
+
+  const previewImage = document.querySelector("#editProductImagePreview");
+
+  if (isAddingProduct) {
+    const newProduct = {
+      id: generateProductId(products),
+      name: document.querySelector("#editProductName").value.trim(),
+      title: document.querySelector("#editProductName").value.trim(),
+      category: document.querySelector("#editProductCategory").value,
+      price: Number(document.querySelector("#editProductPrice").value),
+      stock: Number(document.querySelector("#editProductStock").value),
+      status: document.querySelector("#editProductStatus").value,
+      description: document.querySelector("#editProductDescription").value.trim(),
+      image: previewImage?.src || "",
+      hasOptions: false
+    };
+
+    products.push(newProduct);
+    localStorage.setItem("adminProducts", JSON.stringify(products));
+
+    alert("New product added locally.");
+
+    window.location.href = "admin-products.html";
+    return;
+  }
+
   if (!currentProduct) return;
 
   currentProduct.name = document.querySelector("#editProductName").value.trim();
+  currentProduct.title = currentProduct.name;
   currentProduct.category = document.querySelector("#editProductCategory").value;
   currentProduct.price = Number(document.querySelector("#editProductPrice").value);
   currentProduct.stock = Number(document.querySelector("#editProductStock").value);
   currentProduct.status = document.querySelector("#editProductStatus").value;
   currentProduct.description = document.querySelector("#editProductDescription").value.trim();
 
-  const previewImage = document.querySelector("#editProductImagePreview");
-
   if (previewImage?.src) {
     currentProduct.image = previewImage.src;
   }
-
-  let products =
-    JSON.parse(localStorage.getItem("adminProducts")) ||
-    await fetchProductData();
 
   products = products.map(product =>
     product.id === currentProduct.id
@@ -113,7 +172,6 @@ async function handleProductEditorSubmit(event) {
   alert("Product saved locally.");
 }
 
-
 async function initProductDetailPage() {
   const root = document.querySelector("#adminProductDetailPage");
   if (!root) return;
@@ -124,25 +182,51 @@ async function initProductDetailPage() {
   const productId = getProductIdFromUrl();
 
   let products =
-  JSON.parse(localStorage.getItem("adminProducts")) ||
-  await fetchProductData();
-
-  const product = products.find(item => item.id === productId);
-
-  renderProductDetail(product);
+    JSON.parse(localStorage.getItem("adminProducts")) ||
+    await fetchProductData();
 
   const params = new URLSearchParams(window.location.search);
 
-  if (params.get("edit") === "true") {
+  if (isAddMode()) {
+    isAddingProduct = true;
+    currentProduct = null;
+
+    document.querySelector("#detailProductName").textContent = "Add Product";
+    document.querySelector("#detailProductImage").src = "";
+    document.querySelector("#detailProductImage").alt = "New product";
+    document.querySelector("#detailProductId").textContent = "New";
+    document.querySelector("#detailProductCategory").textContent = "-";
+    document.querySelector("#detailProductPrice").textContent = "-";
+    document.querySelector("#detailProductStock").textContent = "-";
+    document.querySelector("#detailProductStatus").textContent = "-";
+    document.querySelector("#detailProductDescription").textContent =
+      "Fill out the form to create a new product.";
+
     setTimeout(() => {
       openProductEditor();
     }, 100);
+  } else {
+     isAddingProduct = false;
+
+    const product = products.find(item => item.id === productId);
+    renderProductDetail(product);
+
+    if (params.get("edit") === "true") {
+      setTimeout(() => {
+        openProductEditor();
+      }, 100);
+    }
   }
 
-  document.querySelector("#editProductBtn")?.addEventListener("click", openProductEditor);
+ 
   document.querySelector("#closeProductEditor")?.addEventListener("click", closeProductEditor);
   document.querySelector("#cancelProductEditor")?.addEventListener("click", closeProductEditor);
   document.querySelector("#productEditorForm")?.addEventListener("submit", handleProductEditorSubmit);
+
+  document.querySelector("#editProductBtn")?.addEventListener("click", () => {
+    isAddingProduct = false;
+    openProductEditor();
+  });
 
   document.querySelector("#productEditorModal")?.addEventListener("click", event => {
     if (event.target.id === "productEditorModal") {
@@ -150,10 +234,10 @@ async function initProductDetailPage() {
     }
   });
 
- document.querySelector("#changeProductImageBtn")?.addEventListener("click", () => {
+  document.querySelector("#changeProductImageBtn")?.addEventListener("click", () => {
     document.querySelector("#editProductImage").click();
   });
-
+  
 }
 
 document.addEventListener("change", event => {
@@ -166,9 +250,7 @@ document.addEventListener("change", event => {
   const reader = new FileReader();
 
   reader.onload = function (e) {
-    document.querySelector(
-      "#editProductImagePreview"
-    ).src = e.target.result;
+    document.querySelector("#editProductImagePreview").src = e.target.result;
   };
 
   reader.readAsDataURL(file);

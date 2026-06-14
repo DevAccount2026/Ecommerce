@@ -1,5 +1,9 @@
 let allProducts = [];
 
+let currentProduct = null;
+
+let isAddingProduct = false;
+
 async function fetchProducts() {
   const root = document.querySelector("#adminProductsPage");
   const apiUrl = root?.dataset.api;
@@ -21,7 +25,7 @@ async function fetchProducts() {
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-PH", {
     style: "currency",
-    currency: "PHP"
+    currency: "USD"
   }).format(amount);
 }
 
@@ -149,7 +153,7 @@ async function initAdminProductsPage() {
   document.querySelector("#productsTableBody")?.addEventListener("click", handleProductActions);
 
   document.querySelector("#addProductBtn")?.addEventListener("click", () => {
-    alert("Add Product form will be built next.");
+  window.location.href = "admin-product-detail.html?add=true";
   });
 }
 
