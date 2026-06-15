@@ -31,16 +31,7 @@ function renderDashboardStats(data) {
   const grid = document.querySelector("#adminStatsGrid");
   if (!grid || !data) return;
 
-  function getSavedOrders() {
-  try {
-    return JSON.parse(localStorage.getItem("shoffeeko_orders")) || [];
-  } catch (error) {
-    console.error("Saved orders are broken:", error);
-    return [];
-  }
-}
-
-const orders = getSavedOrders();
+ const orders = getSavedOrders();
 
 const totalOrders = orders.length;
 
@@ -364,46 +355,14 @@ function renderTopCategoriesChart(items) {
   });
 }
 
-const ORDERS_KEY = "shoffeeko_orders";
 
-function getDashboardOrders() {
+function getSavedOrders() {
   try {
-    return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+    return JSON.parse(localStorage.getItem("shoffeeko_orders")) || [];
   } catch (error) {
-    console.error("Dashboard orders are broken:", error);
+    console.error("Saved orders are broken:", error);
     return [];
   }
 }
-
-function formatPeso(amount) {
-  return `₱${Number(amount || 0).toLocaleString("en-PH")}`;
-}
-
-function renderDashboardMetrics() {
-  const orders = getDashboardOrders();
-
-  const totalOrders = orders.length;
-
-  const revenue = orders.reduce((sum, order) => {
-    return sum + Number(order.total || order.subtotal || 0);
-  }, 0);
-
-  const customers = new Set(
-    orders
-      .map(order => order.customerEmail || order.email)
-      .filter(Boolean)
-  ).size;
-
-  const pendingOrders = orders.filter(order => {
-    return (order.orderStatus || order.status) === "Pending";
-  }).length;
-
-  document.querySelector("#metricTotalOrders").textContent = totalOrders;
-  document.querySelector("#metricRevenue").textContent = formatPeso(revenue);
-  document.querySelector("#metricCustomers").textContent = customers;
-  document.querySelector("#metricPendingOrders").textContent = pendingOrders;
-}
-
-document.addEventListener("DOMContentLoaded", renderDashboardMetrics);
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);

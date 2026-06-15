@@ -1,6 +1,6 @@
 let allOrders = [];
 
-const ORDERS_KEY = "shoffeeko_orders";
+const ORDER_DETAIL_KEY = "shoffeeko_orders";
 
 async function fetchOrders() {
   const root = document.querySelector("#adminOrdersPage");
@@ -170,7 +170,7 @@ function handleOrderActions(event) {
 
 function getSavedOrders() {
   try {
-    return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+    return JSON.parse(localStorage.getItem(ORDER_DETAIL_KEY)) || [];
   } catch (error) {
     console.error("Saved orders are broken:", error);
     localStorage.removeItem(ORDERS_KEY);
