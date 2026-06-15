@@ -62,11 +62,12 @@ function renderOrders(orders) {
   const orderId = order.id || order.orderNumber || "No ID";
   const orderDate = order.date || order.createdAt || new Date().toISOString();
 
-  const customer =
-    order.customer ||
-    order.customerName ||
-    `${order.customer?.firstName || ""} ${order.customer?.lastName || ""}`.trim() ||
-    "Guest Customer";
+const customer =
+  order.customerName ||
+  order.customer?.name ||
+  `${order.customer?.firstName || ""} ${order.customer?.lastName || ""}`.trim() ||
+  (typeof order.customer === "string" ? order.customer : "") ||
+  "Guest Customer";
 
   const email =
     order.email ||
@@ -75,8 +76,10 @@ function renderOrders(orders) {
     "No email";
 
   const itemsCount = Array.isArray(order.items)
-    ? order.items.length
-    : Number(order.items || 0);
+  ? order.items.reduce((sum, item) => {
+      return sum + Number(item.quantity || 1);
+    }, 0)
+  : Number(order.items || 0);
 
   const total =
     order.total ||
@@ -173,7 +176,7 @@ function getSavedOrders() {
     return JSON.parse(localStorage.getItem(ORDER_DETAIL_KEY)) || [];
   } catch (error) {
     console.error("Saved orders are broken:", error);
-    localStorage.removeItem(ORDERS_KEY);
+    localStorage.removeItem(ORDER_DETAIL_KEY);
     return [];
   }
 }

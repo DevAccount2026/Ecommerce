@@ -97,6 +97,9 @@ function renderRecentOrders(orders) {
   const tableBody = document.querySelector("#recentOrdersTable");
   if (!tableBody || !Array.isArray(orders)) return;
 
+
+  
+
   tableBody.innerHTML = orders.map(order => `
     <tr>
       <td class="admin-order-id">${order.id}</td>
