@@ -90,25 +90,6 @@ function formatDate(dateValue) {
   });
 }
 
-/*function getOrderDisplayStatus(order) {
-  return (
-    order.deliveryStatus ||
-    order.orderStatus ||
-    order.status ||
-    "Pending"
-  );
-}*/
-
-
-/*function getOrderDisplayStatus(order) {
-  return (
-    order.orderStatus ||
-    order.deliveryStatus ||
-    order.status ||
-    "Pending"
-  );
-}*/
-
 
 function getOrderDisplayStatus(order) {
   return (
@@ -259,8 +240,8 @@ async function initAdminDashboard() {
   const data = await fetchDashboardStats();
 
   renderDashboardStats(data);
-  renderSalesPerformanceChart(data?.salesPerformance);
 
+  renderSalesPerformanceChart(getSalesPerformanceData());
 
   renderTopCategoriesChart(await getTopCategoryData());
 
@@ -274,6 +255,56 @@ async function initAdminDashboard() {
 }
 
 //--------------//
+
+function getSalesPerformanceData() {
+  const orders = getSavedOrders();
+
+  const days = [];
+  const today = new Date();
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+
+    const dateKey = date.toISOString().split("T")[0];
+
+    days.push({
+      key: dateKey,
+      date: date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric"
+      }),
+      revenue: 0,
+      orders: 0
+    });
+  }
+
+  orders.forEach(order => {
+    const orderDate = new Date(order.createdAt || order.date);
+    if (isNaN(orderDate)) return;
+
+    const orderKey = orderDate.toISOString().split("T")[0];
+
+    const day = days.find(item => item.key === orderKey);
+    if (!day) return;
+
+    day.revenue += Number(
+      order.total ||
+      order.subtotal ||
+      order.totalAmount ||
+      order.grandTotal ||
+      0
+    );
+
+    day.orders += 1;
+  });
+
+  return days.map(day => ({
+    date: day.date,
+    revenue: day.revenue,
+    orders: day.orders
+  }));
+}
 
 function renderSalesPerformanceChart(items) {
   const canvas = document.querySelector("#salesPerformanceChart");
@@ -345,12 +376,18 @@ function renderSalesPerformanceChart(items) {
           }
         },
 
-        revenueAxis: {
+       revenueAxis: {
           type: "linear",
           position: "left",
+
           ticks: {
-            color: "#5ee0b5"
+            color: "#5ee0b5",
+
+            callback: value => {
+              return "$" + value.toLocaleString();
+            }
           },
+
           grid: {
             color: "rgba(255,255,255,0.06)"
           }
@@ -462,11 +499,15 @@ function renderOrderStatusChart(items) {
           backgroundColor: "#f5efe6",
           titleColor: "#07111f",
           bodyColor: "#07111f",
+
           callbacks: {
             label: context => {
-              const value = context.raw;
-              const percent = total ? Math.round((value / total) * 100) : 0;
-              return `${context.label}: ${value} orders (${percent}%)`;
+
+              if (context.dataset.label === "Revenue") {
+                return `Revenue: $${Number(context.raw).toLocaleString()}`;
+              }
+
+              return `Orders: ${context.raw}`;
             }
           }
         }
