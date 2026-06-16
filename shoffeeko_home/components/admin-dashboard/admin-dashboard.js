@@ -413,7 +413,7 @@ function getSavedOrders() {
   }
 }
 
-//--------Top Products Category Widgets-------------//
+//--------Top Products Widgets-------------//
 
 function renderTopProducts() {
   const tableBody = document.querySelector("#topProductsTable");

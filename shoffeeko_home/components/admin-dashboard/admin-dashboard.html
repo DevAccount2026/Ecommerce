@@ -14,7 +14,7 @@
 
 
 
-  <div class="admin-stats-grid" id="adminStatsGrid"></div>
+<div class="admin-stats-grid" id="adminStatsGrid"></div>
 
   <div class="admin-analytics-grid">
 
@@ -53,69 +53,69 @@
 
   <div class="admin-dashboard-grid">
 
-    <section class="admin-panel admin-recent-orders">
-      <div class="admin-panel__header">
-        <h2>Recent Orders  - Latest 5 Orders</h2>
-        <a href="admin-orders.html" class="admin-panel-link">View All</a>
-      </div>
+      <section class="admin-panel admin-recent-orders">
+        <div class="admin-panel__header">
+          <h2>Recent Orders  - Latest 5 Orders</h2>
+          <a href="admin-orders.html" class="admin-panel-link">View All</a>
+        </div>
 
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Date</th>
-              <th>Customer</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-          <tbody id="recentOrdersTable"></tbody>
-        </table>
-      </div>
-    </section>
+            <tbody id="recentOrdersTable"></tbody>
+          </table>
+        </div>
+      </section>
 
-    <section class="admin-panel admin-low-stock">
-          <div class="admin-panel__header">
-            <h2>Low Stock Alerts</h2>
-            <a href="#" class="admin-panel__link">Inventory</a>
-          </div>
+      <section class="admin-panel admin-low-stock">
+            <div class="admin-panel__header">
+              <h2>Low Stock Alerts</h2>
+              <a href="#" class="admin-panel__link">Inventory</a>
+            </div>
 
-          <section class="admin-panel">
-      <div class="admin-panel__header">
-        <h2>Top Products</h2>
-        <span>Top 5 by quantity sold</span>
-      </div>
+          <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
 
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Sold</th>
-          </tr>
-        </thead>
-        <tbody id="topProductsTable"></tbody>
-      </table>
-    </section>
+            <tbody id="lowStockTable"></tbody>
+          </table>
+        </div>
+      </section>
 
-      <div class="admin-table-wrap">
+      <section class="admin-panel">
+        <div class="admin-panel__header">
+          <h2>Top Products</h2>
+          <span>Top 5 by quantity sold</span>
+        </div>
+
         <table class="admin-table">
           <thead>
             <tr>
               <th>Product</th>
-              <th>SKU</th>
-              <th>Stock</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Sold</th>
             </tr>
           </thead>
-
-          <tbody id="lowStockTable"></tbody>
+          <tbody id="topProductsTable"></tbody>
         </table>
-      </div>
-    </section>
+    </section>   
 
   </div>
 </div>
