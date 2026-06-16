@@ -282,10 +282,22 @@ async function initCheckoutPage() {
       customerEmail: customer?.email || formData.get("email"),
       customer: Object.fromEntries(formData.entries()),
       selectedAddressId: savedAddressSelect?.value || null,
-      items: cart,
+      
       subtotal,
       paymentStatus: "Pending",
-      orderStatus: "Pending"
+      orderStatus: "Pending",
+
+      items: cart.map(item => ({
+        id: item.id,
+        sku: item.sku,
+        title: item.title || item.name,
+        category: item.category || "Uncategorized",
+        price: Number(item.price || 0),
+        quantity: Number(item.quantity || 1),
+        image: item.image
+      }))
+
+      
     };
 
     const orders = JSON.parse(localStorage.getItem(ordersKey)) || [];

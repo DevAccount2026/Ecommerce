@@ -18,12 +18,15 @@ const qtyToAdd = Number(product.quantity || 1);
 if (existingItem) {
   existingItem.quantity += qtyToAdd;
 } else {
+ 
   cart.push({
     id: product.id,
-    title: product.title,
+    sku: product.sku || product.productId || product.id,
+    title: product.title || product.name,
+    category: product.category || product.productCategory || "Uncategorized",
     price: product.price,
     image: product.image,
-    quantity: qtyToAdd
+    quantity: 1
   });
 }
 

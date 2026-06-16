@@ -1,3 +1,4 @@
+
 async function fetchDashboardStats() {
   const root = document.querySelector("#adminDashboard");
   const apiUrl = root?.dataset.api;
@@ -46,7 +47,7 @@ const customers = new Set(
 ).size;
 
 const pendingOrders = orders.filter(order => {
-  return (order.orderStatus || order.status) === "Pending";
+ return getOrderDisplayStatus(order) === "Pending";
 }).length;
 
 const cards = [
@@ -87,6 +88,35 @@ function formatDate(dateValue) {
     month: "short",
     day: "numeric"
   });
+}
+
+/*function getOrderDisplayStatus(order) {
+  return (
+    order.deliveryStatus ||
+    order.orderStatus ||
+    order.status ||
+    "Pending"
+  );
+}*/
+
+
+/*function getOrderDisplayStatus(order) {
+  return (
+    order.orderStatus ||
+    order.deliveryStatus ||
+    order.status ||
+    "Pending"
+  );
+}*/
+
+
+function getOrderDisplayStatus(order) {
+  return (
+    order.status ||
+    order.orderStatus ||
+    order.deliveryStatus ||
+    "Pending"
+  );
 }
 
 function getStatusClass(status) {
@@ -132,10 +162,7 @@ function renderRecentOrders() {
       order.grandTotal ||
       0;
 
-    const status =
-      order.orderStatus ||
-      order.status ||
-      "Pending";
+   const status = getOrderDisplayStatus(order);
 
     return `
       <tr>
@@ -161,25 +188,64 @@ function renderRecentOrders() {
   }).join("");
 }
 
-function renderLowStockAlerts(items) {
-  const tableBody = document.querySelector("#lowStockTable");
-  if (!tableBody || !Array.isArray(items)) return;
+const PRODUCTS_KEY = "shoffeeko_products";
 
-  tableBody.innerHTML = items.map(item => `
-    <tr>
-      <td>${item.name}</td>
-      <td class="admin-order-id">${item.sku}</td>
-      <td>${item.stock}</td>
-      <td>
-        <span class="admin-status admin-status--${getStatusClass(item.status)}">
-          ${item.status}
-        </span>
-      </td>
-      <td>
-        <button class="admin-table-btn">Add Stock</button>
-      </td>
-    </tr>
-  `).join("");
+async function fetchProducts() {
+  try {
+    const savedProducts = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+    if (savedProducts.length) {
+      return savedProducts;
+    }
+
+   const response = await fetch("../api/admin-products.json");
+    if (!response.ok) throw new Error("Failed to fetch products");
+
+    const data = await response.json();
+    return data.products || [];
+  } catch (error) {
+    console.error("Products fetch error:", error);
+    return [];
+  }
+}
+
+function renderLowStockAlerts(products) {
+  const tableBody = document.querySelector("#lowStockTable");
+  if (!tableBody || !Array.isArray(products)) return;
+
+  const lowStockProducts = products.filter(product => {
+    return Number(product.stock || 0) <= 5;
+  });
+
+  if (!lowStockProducts.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">No low stock products found.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tableBody.innerHTML = lowStockProducts.map(product => {
+    const stock = Number(product.stock || 0);
+    const status = stock === 0 ? "Out of Stock" : "Low Stock";
+
+    return `
+      <tr>
+        <td>${product.name || product.title || "Unnamed Product"}</td>
+        <td class="admin-order-id">${product.sku || product.id || "No SKU"}</td>
+        <td>${stock}</td>
+        <td>
+          <span class="admin-status admin-status--${getStatusClass(status)}">
+            ${status}
+          </span>
+        </td>
+        <td>
+          <button class="admin-table-btn">Add Stock</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
 }
 
 
@@ -194,9 +260,14 @@ async function initAdminDashboard() {
 
   renderDashboardStats(data);
   renderSalesPerformanceChart(data?.salesPerformance);
-  renderTopCategoriesChart(data?.topProductCategories);
-  renderOrderStatusChart(data?.orderStatusDistribution);
-  renderLowStockAlerts(data?.lowStockAlerts);
+
+
+  renderTopCategoriesChart(await getTopCategoryData());
+
+  renderOrderStatusChart(getOrderStatusData());
+  
+  const products = await fetchProducts();
+  renderLowStockAlerts(products);
 
   renderRecentOrders();
   renderTopProducts();
@@ -300,6 +371,21 @@ function renderSalesPerformanceChart(items) {
   });
 }
 
+function getOrderStatusData() {
+  const orders = getSavedOrders();
+  const statusMap = new Map();
+
+  orders.forEach(order => {
+       const status = getOrderDisplayStatus(order);
+    statusMap.set(status, (statusMap.get(status) || 0) + 1);
+  });
+
+  return [...statusMap.entries()].map(([status, count]) => ({
+    status,
+    count
+  }));
+}
+
 function renderOrderStatusChart(items) {
   const canvas = document.querySelector("#orderStatusChart");
 
@@ -307,6 +393,7 @@ function renderOrderStatusChart(items) {
 
   const labels = items.map(item => item.status);
   const values = items.map(item => item.count);
+  const total = values.reduce((sum, value) => sum + value, 0);
 
   new Chart(canvas, {
     type: "doughnut",
@@ -319,7 +406,8 @@ function renderOrderStatusChart(items) {
             "#5ee0b5",
             "#3fb7d9",
             "#f1c76b",
-            "#ff6b6b"
+            "#ff6b6b",
+            "#8aa4c8"
           ],
           borderColor: "#132238",
           borderWidth: 4,
@@ -327,28 +415,139 @@ function renderOrderStatusChart(items) {
         }
       ]
     },
+    plugins: typeof ChartDataLabels !== "undefined" ? [ChartDataLabels] : [],
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "72%",
+      cutout: "70%",
+
       plugins: {
-        legend: {
-          position: "bottom",
-          labels: {
-            color: "#f5efe6",
-            padding: 16,
-            usePointStyle: true,
-            pointStyle: "circle"
-          }
+       legend: {
+        position: "bottom",
+        labels: {
+          color: "#f5efe6",
+          padding: 14,
+          usePointStyle: true,
+          pointStyle: "circle"
+        }
+      },
+
+       datalabels: {
+        display: (context) => {
+          return context.chart.data.labels.length > 1;
         },
+
+        color: "#f5efe6",
+
+        font: {
+          weight: "700",
+          size: 12
+        },
+
+        anchor: "end",
+        align: "end",
+        offset: 18,
+
+        formatter: (value, context) => {
+          const label = context.chart.data.labels[context.dataIndex];
+
+          const percent = total
+            ? Math.round((value / total) * 100)
+            : 0;
+
+          return `${label}\n${value} Orders (${percent}%)`;
+        }
+      },
         tooltip: {
           backgroundColor: "#f5efe6",
           titleColor: "#07111f",
-          bodyColor: "#07111f"
+          bodyColor: "#07111f",
+          callbacks: {
+            label: context => {
+              const value = context.raw;
+              const percent = total ? Math.round((value / total) * 100) : 0;
+              return `${context.label}: ${value} orders (${percent}%)`;
+            }
+          }
         }
       }
     }
   });
+}
+
+async function getTopCategoryData() {
+  const orders = getSavedOrders();
+  const products = await fetchProducts();
+
+  const productMap = new Map();
+
+  products.forEach(product => {
+    const keys = [
+      product.id,
+      product.productId,
+      product.sku,
+      product.name,
+      product.title
+    ].filter(Boolean);
+
+    keys.forEach(key => {
+      productMap.set(String(key).toLowerCase(), product);
+    });
+  });
+
+  const categoryMap = new Map();
+
+  const categoryAliases = {
+  "arabica coffee": "Arabica",
+  "haraaz red mocha": "Flavored Coffee",
+  "hazelnut coffee": "Flavored Coffee",
+  "red mocha": "Flavored Coffee",
+  "tiramisu": "Flavored Coffee",
+  "caramel roast": "Espresso",
+  "pine and juniper": "Arabica"
+};
+
+  orders.forEach(order => {
+    if (!Array.isArray(order.items)) return;
+
+    order.items.forEach(item => {
+      const lookupKey = String(
+        item.id ||
+        item.productId ||
+        item.sku ||
+        item.name ||
+        item.title ||
+        ""
+      ).toLowerCase();
+
+      const matchedProduct = productMap.get(lookupKey);
+
+     const itemName = String(item.name || item.title || "").toLowerCase();
+
+      // TEMPORARY:
+      
+      const category =
+        item.category ||
+        item.productCategory ||
+        matchedProduct?.category ||
+        matchedProduct?.productCategory ||
+        categoryAliases[itemName] ||
+        "Uncategorized";
+      // Used to map old order data that does not contain category.
+      // Remove after migrating to database-backed orders.
+
+
+
+      const quantity = Number(item.quantity || 1);
+
+      categoryMap.set(category, (categoryMap.get(category) || 0) + quantity);
+    });
+  });
+
+  return [...categoryMap.entries()].map(([category, count]) => ({
+    category,
+    count
+  }));
 }
 
 function renderTopCategoriesChart(items) {
