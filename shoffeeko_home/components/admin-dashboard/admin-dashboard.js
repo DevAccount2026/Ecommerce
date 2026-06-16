@@ -93,29 +93,72 @@ function getStatusClass(status) {
   return status.toLowerCase().replace(/\s+/g, "-");
 }
 
-function renderRecentOrders(orders) {
+function renderRecentOrders() {
   const tableBody = document.querySelector("#recentOrdersTable");
-  if (!tableBody || !Array.isArray(orders)) return;
+  if (!tableBody) return;
 
+  const orders = getSavedOrders();
 
-  
+  if (!orders.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">No recent orders found.</td>
+      </tr>
+    `;
+    return;
+  }
 
-  tableBody.innerHTML = orders.map(order => `
-    <tr>
-      <td class="admin-order-id">${order.id}</td>
-      <td>${formatDate(order.date)}</td>
-      <td>${order.customer}</td>
-      <td>${formatCurrency(order.total)}</td>
-      <td>
-        <span class="admin-status admin-status--${getStatusClass(order.status)}">
-          ${order.status}
-        </span>
-      </td>
-      <td>
-        <button class="admin-table-btn">View</button>
-      </td>
-    </tr>
-  `).join("");
+  const latestOrders = [...orders]
+    .sort((a, b) => {
+      return new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date);
+    })
+    .slice(0, 5);
+
+  tableBody.innerHTML = latestOrders.map(order => {
+    const orderId = order.id || order.orderNumber || "No ID";
+    const orderDate = order.createdAt || order.date || new Date().toISOString();
+
+    const customer =
+      order.customerName ||
+      order.customer?.name ||
+      `${order.customer?.firstName || ""} ${order.customer?.lastName || ""}`.trim() ||
+      (typeof order.customer === "string" ? order.customer : "") ||
+      "Guest Customer";
+
+    const total =
+      order.total ||
+      order.subtotal ||
+      order.totalAmount ||
+      order.grandTotal ||
+      0;
+
+    const status =
+      order.orderStatus ||
+      order.status ||
+      "Pending";
+
+    return `
+      <tr>
+        <td class="admin-order-id">${orderId}</td>
+        <td>${formatDate(orderDate)}</td>
+        <td>${customer}</td>
+        <td>${formatCurrency(total)}</td>
+        <td>
+          <span class="admin-status admin-status--${getStatusClass(status)}">
+            ${status}
+          </span>
+        </td>
+        <td>
+          <button
+            class="admin-table-btn"
+            onclick="window.location.href='admin-order-detail.html?id=${orderId}'"
+          >
+            View
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
 }
 
 function renderLowStockAlerts(items) {
@@ -153,8 +196,10 @@ async function initAdminDashboard() {
   renderSalesPerformanceChart(data?.salesPerformance);
   renderTopCategoriesChart(data?.topProductCategories);
   renderOrderStatusChart(data?.orderStatusDistribution);
-  renderRecentOrders(data?.recentOrders);
   renderLowStockAlerts(data?.lowStockAlerts);
+
+  renderRecentOrders();
+  renderTopProducts();
 }
 
 //--------------//
@@ -367,5 +412,49 @@ function getSavedOrders() {
     return [];
   }
 }
+
+//--------Top Products Category Widgets-------------//
+
+function renderTopProducts() {
+  const tableBody = document.querySelector("#topProductsTable");
+  if (!tableBody) return;
+
+  const orders = getSavedOrders();
+  const productMap = new Map();
+
+  orders.forEach(order => {
+    if (!Array.isArray(order.items)) return;
+
+    order.items.forEach(item => {
+      const name = item.title || item.name || "Unnamed Product";
+      const quantity = Number(item.quantity || 1);
+
+      productMap.set(name, (productMap.get(name) || 0) + quantity);
+    });
+  });
+
+  const topProducts = [...productMap.entries()]
+    .map(([name, quantity]) => ({ name, quantity }))
+    .sort((a, b) => b.quantity - a.quantity)
+    .slice(0, 5);
+
+  if (!topProducts.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="2">No product sales yet.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tableBody.innerHTML = topProducts.map((product, index) => `
+    <tr>
+      <td>${index + 1}. ${product.name}</td>
+      <td>${product.quantity} sold</td>
+    </tr>
+  `).join("");
+}
+
+
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);
