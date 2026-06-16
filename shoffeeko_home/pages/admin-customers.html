@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ShoffeeKo Admin Customers</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/admin-customers.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <span>ShoffeeKo HQ</span>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="admin-customers.html" class="active">Customers</a>
+        <a href="admin-analytics.html">Analytics</a>
+        <a href="#">Marketing</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input type="search" placeholder="Search customers..." id="customerTopSearch" />
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">✉️</button>
+
+          <div class="admin-profile">
+            <div class="admin-profile__avatar">A</div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-page" id="adminCustomersPage">
+
+        <section class="admin-page__header">
+          <p class="eyebrow">ShoffeeKo HQ</p>
+          <h1>Customers</h1>
+          <p>View customer profiles, order activity, and spending history.</p>
+        </section>
+
+        <section class="customers-stats-grid">
+          <article class="customers-stat-card">
+            <span>Total Customers</span>
+            <strong id="customersTotal">0</strong>
+          </article>
+
+          <article class="customers-stat-card">
+            <span>New This Month</span>
+            <strong id="customersNewThisMonth">0</strong>
+          </article>
+
+          <article class="customers-stat-card">
+            <span>Returning Customers</span>
+            <strong id="customersReturning">0</strong>
+          </article>
+
+          <article class="customers-stat-card">
+            <span>Average Spend</span>
+            <strong id="customersAverageSpend">₱0</strong>
+          </article>
+        </section>
+
+        <section class="customers-toolbar">
+          <input
+            type="search"
+            id="customerSearch"
+            placeholder="Search by name or email..."
+          />
+
+          <select id="customerFilter">
+            <option value="all">All Customers</option>
+            <option value="returning">Returning Customers</option>
+            <option value="new">New Customers</option>
+          </select>
+        </section>
+
+        <section class="customers-table-panel">
+          <div class="customers-table-header">
+            <h2>Customer List</h2>
+            <span id="customersCountLabel">0 customers</span>
+          </div>
+
+          <div class="customers-table">
+            <div class="customers-row customers-row--head">
+              <span>Customer</span>
+              <span>Email</span>
+              <span>Orders</span>
+              <span>Total Spend</span>
+              <span>Last Order</span>
+              <span>Action</span>
+            </div>
+
+            <div id="customersTableBody"></div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="../assets/js/admin-customers.js"></script>
+
+</body>
+</html>

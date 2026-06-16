@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShoffeeKo Admin Analytics</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/admin-analytics.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <span>ShoffeeKo HQ</span>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="admin-customers.html">Customers</a>
+        <a href="admin-analytics.html" class="active">Analytics</a>
+        <a href="#">Marketing</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input type="search" placeholder="Search orders, products..." />
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">✉️</button>
+
+          <div class="admin-profile">
+            <div class="admin-profile__avatar">A</div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-analytics-page" id="adminAnalyticsPage">
+
+        <section class="analytics-header">
+          <div>
+            <p class="eyebrow">ShoffeeKo HQ</p>
+            <h1>Analytics Overview</h1>
+          </div>
+
+          <select class="analytics-range">
+            <option>Last 30 Days</option>
+            <option>Last 7 Days</option>
+            <option>This Month</option>
+            <option>This Year</option>
+          </select>
+        </section>
+
+        <section class="analytics-kpi-grid">
+          <article class="analytics-kpi-card">
+            <span>Average Order Value (AOV)</span>
+            <strong id="analyticsAOV">₱0</strong>
+            <small class="positive">+0% vs last month</small>
+          </article>
+
+          <article class="analytics-kpi-card">
+            <span>Total Revenue</span>
+            <strong id="analyticsTotalRevenue">₱0</strong>
+            <small class="positive">Saved order revenue</small>
+          </article>
+
+          <article class="analytics-kpi-card">
+            <span>Total Orders</span>
+            <strong id="analyticsTotalOrders">0</strong>
+            <small>Completed checkout records</small>
+          </article>
+
+          <article class="analytics-kpi-card analytics-mini-donut-card">
+            <span>New vs Recurring Customers</span>
+            <div class="mini-donut-row">
+              <canvas id="newRecurringChart"></canvas>
+              <div>
+                <strong id="analyticsCustomers">0</strong>
+                <small>Unique customers</small>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="analytics-main-grid">
+
+        <article class="analytics-panel analytics-panel--wide">
+            <div class="analytics-panel__header">
+            <h2>Revenue & Orders Trend</h2>
+            <span>Last 30 Days</span>
+            </div>
+            <canvas id="revenueTrendChart"></canvas>
+        </article>
+
+        <article class="analytics-panel">
+            <h2>Top Categories</h2>
+            <canvas id="topCategoriesChart"></canvas>
+        </article>
+
+        <article class="analytics-panel analytics-panel--wide">
+            <h2>Product Performance Matrix</h2>
+
+            <div class="heatmap-table">
+            <div class="heatmap-row heatmap-head">
+                <span>Product</span>
+                <span>Sold</span>
+                <span>Revenue</span>
+            </div>
+
+            <div id="analyticsProductMatrix"></div>
+            </div>
+        </article>
+
+        <article class="analytics-panel analytics-coming-soon">
+            <h2>Customer Lifetime Value (CLV)</h2>
+
+            <div class="coming-soon-box">
+            <span>Coming Soon</span>
+            <p>Requires customer purchase history database and repeat customer tracking.</p>
+            </div>
+        </article>
+
+        <article class="analytics-panel analytics-coming-soon">
+            <h2>Conversion Rate</h2>
+
+            <div class="coming-soon-box">
+            <span>Coming Soon</span>
+            <p>Requires website visitor tracking and completed purchase events.</p>
+            </div>
+        </article>
+
+        <article class="analytics-panel analytics-coming-soon">
+            <h2>Marketing Attribution</h2>
+
+            <div class="coming-soon-box">
+            <span>Coming Soon</span>
+            <p>Requires campaign tracking, UTM parameters and referral sources.</p>
+            </div>
+        </article>
+
+        <article class="analytics-panel analytics-coming-soon">
+            <h2>Customer Behavior Funnel</h2>
+
+            <div class="coming-soon-box">
+            <span>Coming Soon</span>
+            <p>Requires visitor events, product views, add-to-cart tracking and checkout analytics.</p>
+            </div>
+        </article>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../assets/js/admin-analytics.js"></script>
+
+</body>
+</html>

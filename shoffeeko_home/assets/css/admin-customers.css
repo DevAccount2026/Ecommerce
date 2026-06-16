@@ -1,0 +1,278 @@
+.admin-page {
+  padding: 28px;
+}
+
+.admin-page__header {
+  margin-bottom: 24px;
+}
+
+.admin-page__header h1 {
+  margin: 6px 0;
+  font-size: 38px;
+  color: #ffffff;
+}
+
+.admin-page__header p {
+  color: #93a8bc;
+}
+
+.eyebrow {
+  color: #31c7bd;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+
+.customers-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.customers-stat-card {
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155, 209, 255, 0.12);
+  border-radius: 12px;
+
+  padding: 22px;
+}
+
+.customers-stat-card span {
+  display: block;
+  color: #b7c7d8;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.customers-stat-card strong {
+  display: block;
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.customers-toolbar {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.customers-toolbar input,
+.customers-toolbar select {
+  height: 44px;
+
+  background: #162537;
+  color: #e7f1fb;
+
+  border: 1px solid rgba(145, 210, 255, 0.15);
+  border-radius: 10px;
+
+  padding: 0 14px;
+}
+
+.customers-toolbar input {
+  flex: 1;
+}
+
+.customers-toolbar input:focus,
+.customers-toolbar select:focus {
+  outline: none;
+  border-color: #31c7bd;
+}
+
+/* =========================
+   TABLE PANEL
+========================= */
+
+.customers-table-panel {
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155, 209, 255, 0.12);
+  border-radius: 12px;
+
+  overflow: hidden;
+}
+
+.customers-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.customers-table-header h2 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.customers-table-header span {
+  color: #9cb1c4;
+  font-size: 14px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.customers-table {
+  width: 100%;
+}
+
+.customers-row {
+  display: grid;
+  grid-template-columns:
+    1.2fr
+    1.6fr
+    0.7fr
+    1fr
+    1fr
+    0.7fr;
+
+  align-items: center;
+
+  min-height: 72px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.customers-row:last-child {
+  border-bottom: none;
+}
+
+.customers-row span,
+.customers-row div {
+  padding: 0 16px;
+}
+
+.customers-row--head {
+  min-height: 52px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: #c4d4e3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.customer-name {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.customer-email {
+  color: #9fb5c8;
+  font-size: 14px;
+}
+
+.customer-orders {
+  color: #ffffff;
+}
+
+.customer-spend {
+  color: #31c7bd;
+  font-weight: 700;
+}
+
+.customer-date {
+  color: #b7c7d8;
+}
+
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.customer-view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 72px;
+  height: 34px;
+
+  background: rgba(49, 199, 189, 0.12);
+  color: #31c7bd;
+
+  border: 1px solid rgba(49, 199, 189, 0.25);
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.customer-view-btn:hover {
+  background: #31c7bd;
+  color: #08131f;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.customers-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #8ca1b4;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+
+  .customers-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .customers-row {
+    grid-template-columns:
+      1.3fr
+      1.5fr
+      .8fr
+      .9fr
+      .9fr
+      .8fr;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .customers-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customers-toolbar {
+    flex-direction: column;
+  }
+
+  .customers-table {
+    overflow-x: auto;
+  }
+
+  .customers-row {
+    min-width: 900px;
+  }
+}
