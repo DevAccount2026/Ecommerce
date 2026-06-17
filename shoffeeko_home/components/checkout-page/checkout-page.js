@@ -77,8 +77,9 @@ const payments = {
 const paymentDescriptions = {
   cod: "Pay when your order arrives.",
   gcash: "Pay using your GCash wallet.",
-  stripe: "Pay securely using card via Stripe.",
-  paypal: "Pay using your PayPal account.",
+  stripe: "Pay securely using credit/debit card via Stripe.",
+  paypal: "Pay securely using your PayPal account.",
+  
   bankTransfer: "Pay directly through bank transfer."
 };
 
@@ -276,9 +277,22 @@ const enabledPayments = Object.entries(payments)
                     </label>
                   `).join("")}
 
-                  <div id="paymentInstructionsWrap">
-                    ${enabledPayments.map(([key, payment]) => getPaymentInstructionHTML(key, payment)).join("")}
-                  </div>
+                 <div id="paymentInstructionsWrap">
+                  ${enabledPayments.map(([key, payment]) => getPaymentInstructionHTML(key, payment)).join("")}
+                </div>
+
+                <div class="payment-proof-upload" id="paymentProofUpload" style="display:none;">
+                  <h3>Upload Payment Proof</h3>
+                  <p>Please upload your payment screenshot or receipt.</p>
+
+                  <input
+                    type="file"
+                    id="paymentProofInput"
+                    accept="image/*"
+                  >
+
+                  <img id="paymentProofPreview" alt="Payment proof preview" style="display:none;">
+                </div>
                 `
                 : `
                   <p class="checkout-note">
@@ -333,20 +347,58 @@ const enabledPayments = Object.entries(payments)
   const form = document.getElementById("checkoutForm");
   const savedAddressSelect = document.getElementById("savedAddressSelect");
 
-  function updatePaymentInstructions() {
-  const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+    function updatePaymentInstructions() {
+      const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+      const proofUpload = document.querySelector("#paymentProofUpload");
+      const proofInput = document.querySelector("#paymentProofInput");
 
-  document.querySelectorAll("[data-payment-instruction]").forEach(box => {
-    box.style.display =
-      box.dataset.paymentInstruction === selectedPayment ? "block" : "none";
-  });
-  }
+      document.querySelectorAll("[data-payment-instruction]").forEach(box => {
+        box.style.display =
+          box.dataset.paymentInstruction === selectedPayment ? "block" : "none";
+      });
 
-  document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
-    input.addEventListener("change", updatePaymentInstructions);
-  });
+      const needsProof = ["gcash", "bankTransfer"].includes(selectedPayment);
 
-  updatePaymentInstructions();            
+      if (proofUpload) {
+        proofUpload.style.display = needsProof ? "block" : "none";
+      }
+
+      if (proofInput) {
+        proofInput.required = needsProof;
+      }
+    }
+
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+      input.addEventListener("change", updatePaymentInstructions);
+    });
+
+    let paymentProofData = null;
+
+    const paymentProofInput = document.querySelector("#paymentProofInput");
+    const paymentProofPreview = document.querySelector("#paymentProofPreview");
+
+    paymentProofInput?.addEventListener("change", e => {
+      const file = e.target.files[0];
+
+      if (!file) {
+        paymentProofData = null;
+        paymentProofPreview.style.display = "none";
+        paymentProofPreview.src = "";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        paymentProofData = reader.result;
+        paymentProofPreview.src = paymentProofData;
+        paymentProofPreview.style.display = "block";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+      updatePaymentInstructions();            
 
 
   function fillAddressForm(address) {
@@ -380,6 +432,10 @@ const enabledPayments = Object.entries(payments)
     const selectedPaymentMethod = selectedPaymentInput?.value || "";
     const selectedPaymentLabel = selectedPaymentInput?.dataset.label || selectedPaymentMethod;
 
+    const automaticPaymentMethods = ["stripe", "paypal"];
+
+    const isAutomaticPayment = automaticPaymentMethods.includes(selectedPaymentMethod);
+
     const order = {
       id: "SK-" + Date.now(),
       createdAt: new Date().toISOString(),
@@ -391,8 +447,18 @@ const enabledPayments = Object.entries(payments)
       paymentMethod: selectedPaymentMethod,
       paymentLabel: selectedPaymentLabel,
       paymentDetails: payments[selectedPaymentMethod] || null,
-      paymentStatus: "Pending",
+      paymentProof: paymentProofData,
+      paymentProofUploadedAt: paymentProofData ? new Date().toISOString() : null,
+
+      paymentType: isAutomaticPayment ? "automatic" : "manual",
+      paymentStatus: isAutomaticPayment ? "Pending Payment" : "Pending Verification",
+      gatewayStatus: isAutomaticPayment ? "awaiting_gateway" : "manual_verification",
+      transactionId: null,
+      paidAt: null,
+
       orderStatus: "Pending",
+
+      
 
       items: cart.map(item => ({
         id: item.id,
@@ -403,6 +469,8 @@ const enabledPayments = Object.entries(payments)
         quantity: Number(item.quantity || 1),
         image: item.image
       }))
+
+    
 
       
     };

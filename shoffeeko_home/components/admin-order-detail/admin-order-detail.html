@@ -32,6 +32,8 @@
   <div class="admin-panel">
     <h2>Order Summary</h2>
 
+     
+
    <section class="admin-panel admin-shipping-panel">
         <div class="admin-panel__header">
             <h2>Shipping Address</h2>
@@ -47,6 +49,11 @@
             <p id="shippingCountry"></p>
         </div>
     </section>
+
+    <div class="admin-info-row">
+      <span>Payment Method</span>
+      <strong id="detailPaymentMethod" class="payment-method-wrap"></strong>
+    </div>
 
     <div class="admin-info-row">
       <span>Payment</span>
@@ -106,6 +113,17 @@
   <h2>Items Purchased</h2>
 
   <div id="detailOrderItems"></div>
+</section>
+
+<section class="admin-panel admin-payment-proof-panel">
+  <h2>Payment Proof</h2>
+
+  <div id="paymentProofStatus"></div>
+
+  <div id="paymentProofBox">
+    <p>No payment proof uploaded.</p>
+  </div>
+
 </section>
 
 <section class="admin-panel admin-timeline-panel">

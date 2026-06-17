@@ -38,6 +38,46 @@ function formatDate(dateValue) {
 function getStatusClass(status) {
   return status.toLowerCase().replace(/\s+/g, "-");
 }
+function getPaymentMethodBadge(order) {
+  const method = order.paymentMethod || order.customer?.paymentMethod || "cod";
+
+  const badgeMap = {
+    cod: "💵 Cash on Delivery",
+    gcash: "📱 GCash",
+    bankTransfer: "🏦 Bank Transfer",
+    stripe: "💳 Stripe",
+    paypal: "🅿️ PayPal"
+  };
+
+  const manualMethods = ["gcash", "bankTransfer"];
+  const automaticMethods = ["stripe", "paypal"];
+
+  let verificationText = "No Verification";
+  let verificationClass = "verification-badge--none";
+
+  if (manualMethods.includes(method)) {
+    verificationText = "Requires Proof";
+    verificationClass = "verification-badge--manual";
+  }
+
+  if (automaticMethods.includes(method)) {
+    verificationText = "Auto";
+    verificationClass = "verification-badge--auto";
+  }
+
+  const methodClass = method === "bankTransfer" ? "bank" : method;
+
+  return `
+    <div class="payment-method-table-wrap">
+      <span class="payment-method-badge payment-method--${methodClass}">
+        ${badgeMap[method] || order.paymentLabel || method}
+      </span>
+      <span class="verification-badge ${verificationClass}">
+        ${verificationText}
+      </span>
+    </div>
+  `;
+}
 
 function renderOrders(orders) {
   const tbody = document.querySelector("#ordersTableBody");
@@ -107,9 +147,7 @@ const customer =
       <td>${itemsCount}</td>
       <td>${formatCurrency(total)}</td>
       <td>
-        <span class="admin-status admin-status--${getStatusClass(payment)}">
-          ${payment}
-        </span>
+        ${getPaymentMethodBadge(order)}
       </td>
       <td>
         <span class="admin-status admin-status--${getStatusClass(status)}">

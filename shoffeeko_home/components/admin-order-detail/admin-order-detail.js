@@ -108,6 +108,77 @@ function renderOrderDetail(order) {
   document.querySelector("#detailOrderDate").textContent =
     formatDate(order.createdAt || order.date);
 
+  const paymentMethod =
+  order.paymentLabel ||
+  order.customer?.paymentMethod ||
+  order.paymentMethod ||
+  "Not selected";
+
+const paymentMethodEl = document.querySelector("#detailPaymentMethod");
+
+if (paymentMethodEl) {
+  const badgeMap = {
+    cod: {
+      label: "💵 Cash on Delivery",
+      className: "payment-method--cod"
+    },
+    gcash: {
+      label: "📱 GCash",
+      className: "payment-method--gcash"
+    },
+    bankTransfer: {
+      label: "🏦 Bank Transfer",
+      className: "payment-method--bank"
+    },
+    stripe: {
+      label: "💳 Stripe",
+      className: "payment-method--stripe"
+    },
+    paypal: {
+      label: "🅿️ PayPal",
+      className: "payment-method--paypal"
+    }
+  };
+
+  const manualMethods = ["gcash", "bankTransfer"];
+  const automaticMethods = ["stripe", "paypal"];
+
+  const config =
+    badgeMap[order.paymentMethod] || {
+      label: paymentMethod,
+      className: "payment-method--default"
+    };
+
+  let verificationBadge = `
+    <span class="verification-badge verification-badge--none">
+      No Verification Needed
+    </span>
+  `;
+
+  if (manualMethods.includes(order.paymentMethod)) {
+    verificationBadge = `
+      <span class="verification-badge verification-badge--manual">
+        Requires Proof
+      </span>
+    `;
+  }
+
+  if (automaticMethods.includes(order.paymentMethod)) {
+    verificationBadge = `
+      <span class="verification-badge verification-badge--auto">
+        Auto Verification
+      </span>
+    `;
+  }
+
+  paymentMethodEl.innerHTML = `
+    <span class="payment-method-badge ${config.className}">
+      ${config.label}
+    </span>
+    ${verificationBadge}
+  `;
+}
+
   document.querySelector("#detailPaymentStatus").textContent =
     order.paymentStatus || order.payment || "Pending";
 
@@ -317,6 +388,7 @@ async function initAdminOrderDetailPage() {
   renderPaymentStatus(order);
   renderShippingAddress(order);
   renderOrderTimeline(order);
+  renderPaymentProof(order);
 
   const orderStatusSelect = document.querySelector("#orderStatusSelect");
   if (orderStatusSelect) {
@@ -330,6 +402,45 @@ async function initAdminOrderDetailPage() {
   document
     .querySelector("#savePaymentStatusBtn")
     ?.addEventListener("click", savePaymentStatus);
+}
+
+function renderPaymentProof(order) {
+  const proofBox = document.querySelector("#paymentProofBox");
+  const proofStatus = document.querySelector("#paymentProofStatus");
+
+  if (!proofBox || !proofStatus || !order) return;
+
+  if (!order.paymentProof) {
+
+    proofStatus.innerHTML = `
+      <span class="payment-proof-badge payment-proof-badge--missing">
+        ⚠ No Proof Uploaded
+      </span>
+    `;
+
+    proofBox.innerHTML = `
+      <p>No payment proof uploaded.</p>
+    `;
+
+    return;
+  }
+
+  proofStatus.innerHTML = `
+    <span class="payment-proof-badge payment-proof-badge--uploaded">
+      ✓ Proof Uploaded
+    </span>
+  `;
+
+  proofBox.innerHTML = `
+    <div class="admin-payment-proof">
+      <img src="${order.paymentProof}" alt="Payment proof">
+
+      <p>
+        Uploaded:
+        ${formatDate(order.paymentProofUploadedAt)}
+      </p>
+    </div>
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", initAdminOrderDetailPage);

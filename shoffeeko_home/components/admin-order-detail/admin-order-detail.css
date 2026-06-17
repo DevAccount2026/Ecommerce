@@ -82,3 +82,78 @@
   margin: 4px 0 0;
   color: #cfc7b9;
 }
+
+.admin-payment-proof {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-payment-proof img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+.admin-payment-proof p {
+  margin: 0;
+  color: #cfc7b9;
+}
+
+.payment-proof-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.payment-proof-badge--uploaded {
+  background: rgba(34,197,94,.15);
+  color: #22c55e;
+  border: 1px solid rgba(34,197,94,.25);
+}
+
+.payment-proof-badge--missing {
+  background: rgba(245,158,11,.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245,158,11,.25);
+}
+
+.payment-method-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.verification-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.verification-badge--manual {
+  background: rgba(245,158,11,.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245,158,11,.25);
+}
+
+.verification-badge--auto {
+  background: rgba(34,197,94,.15);
+  color: #22c55e;
+  border: 1px solid rgba(34,197,94,.25);
+}
+
+.verification-badge--none {
+  background: rgba(255,255,255,.08);
+  color: #cfc7b9;
+  border: 1px solid rgba(255,255,255,.12);
+}
