@@ -368,6 +368,60 @@ function saveOrderStatus() {
   alert("Order status updated.");
 }
 
+function renderPaymentNotes(order) {
+  const notesInput = document.querySelector("#paymentVerificationNotes");
+  if (!notesInput || !order) return;
+
+  notesInput.value = order.paymentVerificationNotes || "";
+}
+
+function savePaymentNotes() {
+  if (!currentOrder) {
+    alert("No order loaded.");
+    return;
+  }
+
+  const notesInput = document.querySelector("#paymentVerificationNotes");
+  const notes = notesInput?.value.trim() || "";
+
+  const timelineItem = createTimelineItem("Payment verification notes updated");
+
+  const orders = getSavedOrders();
+
+  const orderExists = orders.some(order =>
+    String(order.id) === String(currentOrder.id)
+  );
+
+  if (!orderExists) {
+    alert("This order was not found in localStorage.");
+    return;
+  }
+
+  const updatedOrders = orders.map(order => {
+    if (String(order.id) !== String(currentOrder.id)) return order;
+
+    const timeline = Array.isArray(order.timeline) ? order.timeline : [];
+
+    return {
+      ...order,
+      paymentVerificationNotes: notes,
+      paymentNotesUpdatedAt: new Date().toISOString(),
+      timeline: [...timeline, timelineItem]
+    };
+  });
+
+  saveOrders(updatedOrders);
+
+  currentOrder = updatedOrders.find(order =>
+    String(order.id) === String(currentOrder.id)
+  );
+
+  renderPaymentNotes(currentOrder);
+  renderOrderTimeline(currentOrder);
+
+  alert("Payment notes saved.");
+}
+
 async function initAdminOrderDetailPage() {
   const root = document.querySelector("#adminOrderDetailPage");
   if (!root) return;
@@ -389,6 +443,8 @@ async function initAdminOrderDetailPage() {
   renderShippingAddress(order);
   renderOrderTimeline(order);
   renderPaymentProof(order);
+  renderPaymentNotes(order);
+
 
   const orderStatusSelect = document.querySelector("#orderStatusSelect");
   if (orderStatusSelect) {
@@ -402,6 +458,10 @@ async function initAdminOrderDetailPage() {
   document
     .querySelector("#savePaymentStatusBtn")
     ?.addEventListener("click", savePaymentStatus);
+
+  document
+  .querySelector("#savePaymentNotesBtn")
+  ?.addEventListener("click", savePaymentNotes);
 }
 
 function renderPaymentProof(order) {

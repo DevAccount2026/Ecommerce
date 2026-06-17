@@ -436,6 +436,14 @@ const enabledPayments = Object.entries(payments)
 
     const isAutomaticPayment = automaticPaymentMethods.includes(selectedPaymentMethod);
 
+    const manualProofMethods = ["gcash", "bankTransfer"];
+    const requiresPaymentProof = manualProofMethods.includes(selectedPaymentMethod);
+
+    if (requiresPaymentProof && !paymentProofData) {
+      alert("Please upload your payment proof before placing your order.");
+      return;
+    }
+
     const order = {
       id: "SK-" + Date.now(),
       createdAt: new Date().toISOString(),

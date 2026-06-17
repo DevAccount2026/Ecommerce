@@ -56,8 +56,13 @@ function getPaymentMethodBadge(order) {
   let verificationClass = "verification-badge--none";
 
   if (manualMethods.includes(method)) {
-    verificationText = "Requires Proof";
-    verificationClass = "verification-badge--manual";
+    if (order.paymentProof) {
+      verificationText = "Proof Uploaded";
+      verificationClass = "verification-badge--uploaded";
+    } else {
+      verificationText = "Waiting Proof";
+      verificationClass = "verification-badge--manual";
+    }
   }
 
   if (automaticMethods.includes(method)) {
