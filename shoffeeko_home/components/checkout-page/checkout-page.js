@@ -82,6 +82,36 @@ const paymentDescriptions = {
   bankTransfer: "Pay directly through bank transfer."
 };
 
+function getPaymentInstructionHTML(key, payment) {
+  if (key === "gcash") {
+    return `
+      <div class="payment-instructions" data-payment-instruction="${key}">
+        <h3>GCash Payment Instructions</h3>
+        <p><strong>Merchant Name:</strong> ${payment.merchantName || "Not set"}</p>
+        <p><strong>GCash Number:</strong> ${payment.accountNumber || "Not set"}</p>
+        <p>${payment.instructions || "Please send your payment using the GCash details above."}</p>
+      </div>
+    `;
+  }
+
+  if (key === "bankTransfer") {
+    return `
+      <div class="payment-instructions" data-payment-instruction="${key}">
+        <h3>Bank Transfer Instructions</h3>
+        <p><strong>Bank Name:</strong> ${payment.bankName || "Not set"}</p>
+        <p><strong>Account Name:</strong> ${payment.accountName || "Not set"}</p>
+        <p><strong>Account Number:</strong> ${payment.accountNumber || "Not set"}</p>
+        <p>${payment.instructions || "Please transfer your payment using the bank details above."}</p>
+      </div>
+    `;
+  }
+
+  return "";
+}
+
+
+
+
 const enabledPayments = Object.entries(payments)
   .filter(([_, payment]) => payment.enabled === true);
   
@@ -228,22 +258,28 @@ const enabledPayments = Object.entries(payments)
 
             ${
               enabledPayments.length
-                ? enabledPayments.map(([key, payment], index) => `
-                  <label class="payment-option">
-                    <div class="payment-option__left">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="${key}"
-                        data-label="${payment.label || paymentLabels[key]}"
-                        ${index === 0 ? "checked" : ""}
-                        required
-                      >
-                      <span>${payment.label || paymentLabels[key]}</span>
-                      <small>${paymentDescriptions[key] || ""}</small>
-                    </div>
-                  </label>
-                `).join("")
+                ? `
+                  ${enabledPayments.map(([key, payment], index) => `
+                    <label class="payment-option">
+                      <div class="payment-option__left">
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="${key}"
+                          data-label="${payment.label || paymentLabels[key]}"
+                          ${index === 0 ? "checked" : ""}
+                          required
+                        >
+                        <span>${payment.label || paymentLabels[key]}</span>
+                        <small>${paymentDescriptions[key] || ""}</small>
+                      </div>
+                    </label>
+                  `).join("")}
+
+                  <div id="paymentInstructionsWrap">
+                    ${enabledPayments.map(([key, payment]) => getPaymentInstructionHTML(key, payment)).join("")}
+                  </div>
+                `
                 : `
                   <p class="checkout-note">
                     No payment methods are currently available. Please contact store support.
@@ -297,6 +333,22 @@ const enabledPayments = Object.entries(payments)
   const form = document.getElementById("checkoutForm");
   const savedAddressSelect = document.getElementById("savedAddressSelect");
 
+  function updatePaymentInstructions() {
+  const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+
+  document.querySelectorAll("[data-payment-instruction]").forEach(box => {
+    box.style.display =
+      box.dataset.paymentInstruction === selectedPayment ? "block" : "none";
+  });
+  }
+
+  document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+    input.addEventListener("change", updatePaymentInstructions);
+  });
+
+  updatePaymentInstructions();            
+
+
   function fillAddressForm(address) {
     if (!address) return;
 
@@ -338,6 +390,7 @@ const enabledPayments = Object.entries(payments)
       subtotal,
       paymentMethod: selectedPaymentMethod,
       paymentLabel: selectedPaymentLabel,
+      paymentDetails: payments[selectedPaymentMethod] || null,
       paymentStatus: "Pending",
       orderStatus: "Pending",
 
