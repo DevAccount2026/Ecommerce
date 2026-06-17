@@ -1,0 +1,279 @@
+.admin-page {
+  padding: 28px;
+}
+
+.customer-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #31c7bd;
+  text-decoration: none;
+  font-weight: 600;
+
+  margin-bottom: 24px;
+}
+
+.customer-back-link:hover {
+  opacity: 0.8;
+}
+
+.customer-detail-header {
+  margin-bottom: 24px;
+}
+
+.customer-detail-header h1 {
+  margin: 8px 0;
+  color: #ffffff;
+  font-size: 42px;
+}
+
+.customer-detail-header p {
+  color: #9cb1c4;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #31c7bd;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+/* ==================================
+   STATS CARDS
+================================== */
+
+.customer-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+
+  margin-bottom: 24px;
+}
+
+.customer-detail-stats article {
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155, 209, 255, 0.12);
+  border-radius: 12px;
+
+  padding: 22px;
+}
+
+.customer-detail-stats span {
+  display: block;
+  color: #aebdca;
+  margin-bottom: 10px;
+}
+
+.customer-detail-stats strong {
+  color: #ffffff;
+  font-size: 30px;
+}
+
+/* ==================================
+   PROFILE GRID
+================================== */
+
+.customer-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+
+  margin-bottom: 24px;
+}
+
+.customer-detail-panel {
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155, 209, 255, 0.12);
+  border-radius: 12px;
+
+  padding: 22px;
+}
+
+.customer-detail-panel h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+
+  color: #ffffff;
+}
+
+.detail-list {
+  display: grid;
+  gap: 16px;
+}
+
+.detail-list p {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin: 0;
+}
+
+.detail-list span {
+  color: #9cb1c4;
+}
+
+.detail-list strong {
+  color: #ffffff;
+  text-align: right;
+}
+
+/* ==================================
+   ORDER HISTORY
+================================== */
+
+.customer-orders-panel {
+  overflow: hidden;
+}
+
+.customer-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.customer-orders-header h2 {
+  margin: 0;
+}
+
+.customer-orders-header span {
+  color: #9cb1c4;
+}
+
+.customer-orders-table {
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.customer-order-row {
+  display: grid;
+  grid-template-columns:
+    1fr
+    1fr
+    .7fr
+    .8fr
+    .8fr
+    .7fr;
+
+  align-items: center;
+
+  min-height: 64px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.customer-order-row:last-child {
+  border-bottom: none;
+}
+
+.customer-order-row span,
+.customer-order-row div {
+  padding: 0 14px;
+}
+
+.customer-order-row--head {
+  min-height: 52px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: #c4d4e3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.customer-order-id {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.customer-order-total {
+  color: #31c7bd;
+  font-weight: 700;
+}
+
+.customer-order-status {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+/* ==================================
+   VIEW BUTTON
+================================== */
+
+.customer-order-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 70px;
+  height: 34px;
+
+  background: rgba(49,199,189,0.12);
+  color: #31c7bd;
+
+  border: 1px solid rgba(49,199,189,0.22);
+  border-radius: 8px;
+
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.customer-order-view:hover {
+  background: #31c7bd;
+  color: #08131f;
+}
+
+/* ==================================
+   EMPTY STATE
+================================== */
+
+.customer-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #8ca1b4;
+}
+
+/* ==================================
+   RESPONSIVE
+================================== */
+
+@media (max-width: 1200px) {
+
+  .customer-detail-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .customer-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .customer-detail-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-order-row {
+    min-width: 900px;
+  }
+
+  .customer-orders-table {
+    overflow-x: auto;
+  }
+}

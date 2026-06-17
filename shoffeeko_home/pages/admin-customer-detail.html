@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ShoffeeKo Admin Customer Detail</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/admin-customer-detail.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <span>ShoffeeKo HQ</span>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="admin-customers.html" class="active">Customers</a>
+        <a href="admin-analytics.html">Analytics</a>
+        <a href="#">Marketing</a>
+        <a href="admin-settings.html">Settings</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input type="search" placeholder="Search customers..." />
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">✉️</button>
+
+          <div class="admin-profile">
+            <div class="admin-profile__avatar">A</div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-page" id="adminCustomerDetailPage">
+
+        <a href="admin-customers.html" class="customer-back-link">← Back to Customers</a>
+
+        <section class="customer-detail-header">
+          <div>
+            <p class="eyebrow">Customer Profile</p>
+            <h1 id="customerDetailName">Customer</h1>
+            <p id="customerDetailEmail">—</p>
+          </div>
+        </section>
+
+        <section class="customer-detail-stats">
+          <article>
+            <span>Total Orders</span>
+            <strong id="customerTotalOrders">0</strong>
+          </article>
+
+          <article>
+            <span>Total Spend</span>
+            <strong id="customerTotalSpend">₱0</strong>
+          </article>
+
+          <article>
+            <span>Average Order Value</span>
+            <strong id="customerAOV">₱0</strong>
+          </article>
+
+          <article>
+            <span>Last Order</span>
+            <strong id="customerLastOrder">—</strong>
+          </article>
+        </section>
+
+        <section class="customer-detail-grid">
+
+          <article class="customer-detail-panel">
+            <h2>Profile Details</h2>
+
+            <div class="detail-list">
+              <p><span>Name</span><strong id="profileName">—</strong></p>
+              <p><span>Email</span><strong id="profileEmail">—</strong></p>
+              <p><span>Phone</span><strong id="profilePhone">—</strong></p>
+            </div>
+          </article>
+
+          <article class="customer-detail-panel">
+            <h2>Saved Address</h2>
+
+            <div class="detail-list">
+              <p><span>Address</span><strong id="profileAddress">—</strong></p>
+              <p><span>City</span><strong id="profileCity">—</strong></p>
+              <p><span>Postal Code</span><strong id="profilePostal">—</strong></p>
+              <p><span>Country</span><strong id="profileCountry">—</strong></p>
+            </div>
+          </article>
+
+        </section>
+
+        <section class="customer-detail-panel customer-orders-panel">
+          <div class="customer-orders-header">
+            <h2>Order History</h2>
+            <span id="customerOrdersCount">0 orders</span>
+          </div>
+
+          <div class="customer-orders-table">
+            <div class="customer-order-row customer-order-row--head">
+              <span>Order ID</span>
+              <span>Date</span>
+              <span>Items</span>
+              <span>Total</span>
+              <span>Status</span>
+              <span>Action</span>
+            </div>
+
+            <div id="customerOrdersBody"></div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="../assets/js/admin-customer-detail.js"></script>
+
+</body>
+</html>

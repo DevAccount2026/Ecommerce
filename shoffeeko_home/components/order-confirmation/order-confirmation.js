@@ -78,7 +78,7 @@ async function initOrderConfirmation() {
 
             <div>
               <span>${settings.paymentMethodLabel}</span>
-              <strong>${order.customer?.paymentMethod || "Cash on Delivery"}</strong>
+              <strong>${order.paymentLabel || order.paymentMethod || "Cash on Delivery"}</strong>
             </div>
 
             <div>

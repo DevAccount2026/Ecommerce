@@ -13,6 +13,81 @@ async function initCheckoutPage() {
   const customerKey = "shoffeeko_current_customer";
   const addressesKey = "shoffeeko_addresses";
 
+  const settingsKey = "shoffeeko_settings";
+
+const defaultPaymentSettings = {
+  cod: {
+    enabled: true,
+    label: "Cash on Delivery"
+  },
+  gcash: {
+    enabled: false,
+    label: "GCash"
+  },
+  stripe: {
+    enabled: false,
+    label: "Stripe"
+  },
+  paypal: {
+    enabled: false,
+    label: "PayPal"
+  },
+  bankTransfer: {
+    enabled: false,
+    label: "Bank Transfer"
+  }
+};
+
+const paymentLabels = {
+  cod: "Cash on Delivery",
+  gcash: "GCash",
+  stripe: "Stripe",
+  paypal: "PayPal",
+  bankTransfer: "Bank Transfer"
+};
+
+const savedStoreSettings =
+  JSON.parse(localStorage.getItem(settingsKey)) || {};
+
+const savedPayments = savedStoreSettings.payments || {};
+
+const payments = {
+  cod: {
+    ...defaultPaymentSettings.cod,
+    ...savedPayments.cod
+  },
+  gcash: {
+    ...defaultPaymentSettings.gcash,
+    ...savedPayments.gcash
+  },
+  stripe: {
+    ...defaultPaymentSettings.stripe,
+    ...savedPayments.stripe
+  },
+  paypal: {
+    ...defaultPaymentSettings.paypal,
+    ...savedPayments.paypal
+  },
+  bankTransfer: {
+    ...defaultPaymentSettings.bankTransfer,
+    ...savedPayments.bankTransfer
+  }
+};
+
+const paymentDescriptions = {
+  cod: "Pay when your order arrives.",
+  gcash: "Pay using your GCash wallet.",
+  stripe: "Pay securely using card via Stripe.",
+  paypal: "Pay using your PayPal account.",
+  bankTransfer: "Pay directly through bank transfer."
+};
+
+const enabledPayments = Object.entries(payments)
+  .filter(([_, payment]) => payment.enabled === true);
+  
+/*const enabledPayments = Object.entries(adminSettings.payments || {})
+  .filter(([key, payment]) => payment?.enabled); */
+
   const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
   const customer = JSON.parse(localStorage.getItem(customerKey));
   const allAddresses = JSON.parse(localStorage.getItem(addressesKey)) || [];
@@ -148,62 +223,34 @@ async function initCheckoutPage() {
             </label>
           </div>
          
-           <div class="checkout-card">
-              <h2>Payment Method</h2>
+          <div class="checkout-card">
+            <h2>Payment Method</h2>
 
-            <label class="payment-option">
-              <div class="payment-option__left">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="Cash on Delivery"
-                  checked
-                >
-                <span>Cash on Delivery</span>   -    <small>Pay when your order arrives.</small>
-               
-              </div>
-
-             
-
-            </label>  
-             
-           <label class="payment-option payment-option--disabled">
-              <div class="payment-option__left">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="GCash"
-                  disabled
-                >
-                <span>GCash (Coming Soon)</span>
-              </div>
-            </label>
-
-            <label class="payment-option payment-option--disabled">
-              <div class="payment-option__left">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="Bank Transfer"
-                  disabled
-                >
-                <span>Bank Transfer (Coming Soon)</span>
-              </div>
-            </label>
-
-            <label class="payment-option payment-option--disabled">
-              <div class="payment-option__left">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="Maya"
-                  disabled
-                >
-                <span>Maya (Coming Soon)</span>
-              </div>
-            </label>
-
-            </div>
+            ${
+              enabledPayments.length
+                ? enabledPayments.map(([key, payment], index) => `
+                  <label class="payment-option">
+                    <div class="payment-option__left">
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="${key}"
+                        data-label="${payment.label || paymentLabels[key]}"
+                        ${index === 0 ? "checked" : ""}
+                        required
+                      >
+                      <span>${payment.label || paymentLabels[key]}</span>
+                      <small>${paymentDescriptions[key] || ""}</small>
+                    </div>
+                  </label>
+                `).join("")
+                : `
+                  <p class="checkout-note">
+                    No payment methods are currently available. Please contact store support.
+                  </p>
+                `
+            }
+          </div>
 
           <button class="checkout-submit" type="submit">
             ${settings.placeOrderText}
@@ -276,6 +323,11 @@ async function initCheckoutPage() {
 
     const formData = new FormData(form);
 
+    const selectedPaymentInput = document.querySelector('input[name="paymentMethod"]:checked');
+
+    const selectedPaymentMethod = selectedPaymentInput?.value || "";
+    const selectedPaymentLabel = selectedPaymentInput?.dataset.label || selectedPaymentMethod;
+
     const order = {
       id: "SK-" + Date.now(),
       createdAt: new Date().toISOString(),
@@ -284,6 +336,8 @@ async function initCheckoutPage() {
       selectedAddressId: savedAddressSelect?.value || null,
       
       subtotal,
+      paymentMethod: selectedPaymentMethod,
+      paymentLabel: selectedPaymentLabel,
       paymentStatus: "Pending",
       orderStatus: "Pending",
 

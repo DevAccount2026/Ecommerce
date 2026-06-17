@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShoffeeKo Admin Dashboard</title>
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css">
-  <link rel="stylesheet" href="../components/admin-orders/admin-orders.css">
-  <link rel="stylesheet" href="../components/admin-order-detail/admin-order-detail.css">
-  
+  <title>ShoffeeKo Admin Settings</title>
 
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../components/admin-settings/admin-settings.css" />
 </head>
 <body>
 
   <div class="admin-shell">
-
     <aside class="admin-sidebar">
       <div class="admin-sidebar__brand">
         <span class="admin-sidebar__logo">S</span>
@@ -22,23 +19,23 @@
       </div>
 
       <nav class="admin-sidebar__nav">
-        <a href="admin-dashboard.html" >Dashboard</a>
-        <a href="admin-orders.html" class="active">Orders</a>
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
         <a href="admin-products.html">Products</a>
-        <a href="#">Customers</a>
-        <a href="#">Analytics</a>
+        <a href="admin-customers.html">Customers</a>
+        <a href="admin-analytics.html">Analytics</a>
         <a href="#">Marketing</a>
-        <a href="admin-settings.html">Settings</a>
+        <a href="admin-settings.html" class="active admin-nav-settings">
+              Settings
+        </a>
       </nav>
-      
     </aside>
 
     <div class="admin-main">
-
       <header class="admin-topbar">
         <div class="admin-search">
           <span>⌕</span>
-          <input type="search" placeholder="Search orders, products..." />
+          <input type="search" placeholder="Search settings..." />
         </div>
 
         <div class="admin-topbar__actions">
@@ -53,24 +50,14 @@
       </header>
 
       <main class="admin-page">
-        
-         <section
-            id="adminOrderDetailPage"
-            data-api="../api/admin-orders.json">
+        <section 
+          id="adminSettingsPage" 
+          data-api="../api/admin-settings.json">
         </section>
       </main>
-
     </div>
-
   </div>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="../components/admin-dashboard/admin-dashboard.js"></script>
-  <script src="../components/admin-order-detail/admin-order-detail.js"></script>
-  
-
+  <script src="../components/admin-settings/admin-settings.js"></script>
 </body>
 </html>
-
-

@@ -1,0 +1,51 @@
+{
+  "store": {
+    "name": "ShoffeeKo HQ",
+    "email": "ncowork2020@gmail.com",
+    "phone": "",
+    "currency": "USD"
+  },
+  "payments": {
+    "cod": {
+      "enabled": true,
+      "label": "Cash on Delivery"
+    },
+    "gcash": {
+      "enabled": false,
+      "label": "GCash",
+      "merchantName": "",
+      "accountNumber": "",
+      "instructions": "Send payment to the listed GCash account and upload proof of payment."
+    },
+    "stripe": {
+      "enabled": false,
+      "label": "Stripe",
+      "testMode": true,
+      "publicKey": "",
+      "secretKey": ""
+    },
+    "paypal": {
+      "enabled": false,
+      "label": "PayPal",
+      "testMode": true,
+      "clientId": "",
+      "secretKey": ""
+    },
+    "bankTransfer": {
+      "enabled": false,
+      "label": "Bank Transfer",
+      "bankName": "",
+      "accountName": "",
+      "accountNumber": "",
+      "instructions": "Send payment to the listed bank account and upload proof of payment."
+    }
+  },
+  "shipping": {
+    "defaultFee": 80,
+    "freeShippingMinimum": 1500
+  },
+  "orders": {
+    "defaultStatus": "Pending",
+    "defaultPaymentStatus": "Pending"
+  }
+}

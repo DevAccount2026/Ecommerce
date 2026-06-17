@@ -1,0 +1,203 @@
+<div class="admin-settings">
+  <a href="./admin-dashboard.html" class="admin-back-link">← Back to Dashboard</a>
+
+  <div class="admin-settings__header">
+    <span class="admin-eyebrow">Store Configuration</span>
+    <h1>Settings</h1>
+    <p>Manage store details, payment options, shipping rules, and default order settings.</p>
+  </div>
+
+  <form class="admin-settings-form"  id="adminSettingsForm"  autocomplete="off">
+
+    <section class="admin-panel">
+      <div class="admin-panel__header">
+        <h2>Store Details</h2>
+      </div>
+
+      <div class="admin-form-grid">
+        <label>
+          Store Name
+          <input type="text" id="storeName" />
+        </label>
+
+        <label>
+          Store Email
+          <input type="email" id="storeEmail" />
+        </label>
+
+        <label>
+          Store Phone
+          <input type="text" id="storePhone" />
+        </label>
+
+        <label>
+          Currency
+          <select id="storeCurrency">
+            <option value="PHP">PHP</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="CAD">CAD</option>
+            <option value="AUD">AUD</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+   
+
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+        <h2>Payment Gateway</h2>
+        <p>Enable payment methods and manage gateway details.</p>
+    </div>
+
+    <div class="payment-gateway-grid">
+
+        <article class="payment-gateway-card">
+        <label class="payment-gateway-card__toggle">
+            <input type="checkbox" id="paymentCod" />
+            <span>Cash on Delivery</span>
+        </label>
+        <p>Allow customers to pay when the order is delivered.</p>
+        </article>
+
+        <article class="payment-gateway-card">
+        <label class="payment-gateway-card__toggle">
+            <input type="checkbox" id="paymentGcash" />
+            <span>GCash</span>
+        </label>
+
+        <div class="payment-gateway-fields">
+            <input type="text" id="gcashMerchantName" placeholder="Merchant Name" />
+            <input type="text" id="gcashAccountNumber" placeholder="GCash Account Number" />
+            <textarea id="gcashInstructions" placeholder="Payment instructions"></textarea>
+        </div>
+        </article>
+
+        <article class="payment-gateway-card">
+        <label class="payment-gateway-card__toggle">
+            <input type="checkbox" id="paymentStripe" />
+            <span>Stripe</span>
+        </label>
+
+        <label class="gateway-test-mode">
+            <input type="checkbox" id="stripeTestMode" />
+            Test Mode
+        </label>
+
+        <div class="payment-gateway-fields">
+            <input type="text" id="stripePublicKey" placeholder="Stripe Public Key" />
+            <input type="password" id="stripeSecretKey" placeholder="Stripe Secret Key" />
+        </div>
+        </article>
+
+        <article class="payment-gateway-card">
+        <label class="payment-gateway-card__toggle">
+            <input type="checkbox" id="paymentPaypal" />
+            <span>PayPal</span>
+        </label>
+
+        <label class="gateway-test-mode">
+            <input type="checkbox" id="paypalTestMode" />
+            Test Mode
+        </label>
+
+        <div class="payment-gateway-fields">
+            <input type="text" id="paypalClientId" placeholder="PayPal Client ID" />
+            <input type="password" id="paypalSecretKey" placeholder="PayPal Secret Key" />
+        </div>
+        </article>
+
+        <article class="payment-gateway-card">
+        <label class="payment-gateway-card__toggle">
+            <input type="checkbox" id="paymentBankTransfer" />
+            <span>Bank Transfer</span>
+        </label>
+
+        <div class="payment-gateway-fields">
+
+            <input
+                type="text"
+                id="bankAccountName"
+                name="settings_bank_account_holder"
+                placeholder="Account Name"
+                autocomplete="new-password"
+            />
+
+           <input
+                type="text"
+                id="bankName"
+                name="settings_bank_name"
+                placeholder="Bank Name"
+                autocomplete="new-password"
+            />
+
+            <input
+                type="text"
+                id="bankAccountNumber"
+                name="settings_bank_account_number"
+                placeholder="Account Number"
+                autocomplete="new-password"
+            />
+                
+            <textarea id="bankInstructions" placeholder="Payment instructions"></textarea>
+        </div>
+        </article>
+
+        </div>
+    </section>
+
+    <section class="admin-panel">
+        <div class="admin-panel__header">
+            <h2>Shipping Rules</h2>
+        </div>
+
+        <div class="admin-form-grid">
+            <label>
+            Default Shipping Fee
+            <input type="number" id="shippingFee" min="0" />
+            </label>
+
+            <label>
+            Free Shipping Minimum
+            <input type="number" id="freeShippingMinimum" min="0" />
+            </label>
+        </div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel__header">
+        <h2>Order Defaults</h2>
+      </div>
+
+      <div class="admin-form-grid">
+        <label>
+          Default Order Status
+          <select id="defaultOrderStatus">
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </label>
+
+        <label>
+          Default Payment Status
+          <select id="defaultPaymentStatus">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Failed">Failed</option>
+            <option value="Refunded">Refunded</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <div class="admin-settings-actions">
+      <button type="submit" class="admin-btn admin-btn--primary">Save Settings</button>
+      <button type="button" class="admin-btn admin-btn--ghost" id="resetSettingsBtn">Reset</button>
+    </div>
+
+  </form>
+</div>

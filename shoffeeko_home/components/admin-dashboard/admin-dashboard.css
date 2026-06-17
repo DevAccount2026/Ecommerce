@@ -511,3 +511,10 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+.admin-sidebar__nav a.admin-nav-settings.active {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+  border-left: 3px solid #d4af37;
+}

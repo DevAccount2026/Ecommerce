@@ -1,0 +1,294 @@
+.admin-settings {
+  padding: 24px;
+}
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  color: #58f5d0;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.admin-back-link:hover {
+  opacity: 0.8;
+}
+
+.admin-settings__header {
+  margin-bottom: 24px;
+}
+
+.admin-eyebrow {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8fa8c9;
+  margin-bottom: 10px;
+}
+
+.admin-settings__header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.admin-settings__header p {
+  color: #9fb5d3;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+.admin-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.admin-panel__header {
+  margin-bottom: 20px;
+}
+
+.admin-panel__header h2 {
+  font-size: 24px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-form-grid label,
+.admin-toggle-list label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #d8e6f5;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-form-grid input,
+.admin-form-grid select {
+  background: #0d1b34;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 12px 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+.admin-form-grid input:focus,
+.admin-form-grid select:focus {
+  border-color: #58f5d0;
+}
+
+.admin-toggle-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.admin-toggle-list label {
+  flex-direction: row;
+  align-items: center;
+  background: #0d1b34;
+  padding: 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.admin-toggle-list input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  accent-color: #58f5d0;
+}
+
+.admin-settings-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+}
+
+.admin-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-btn--primary {
+  background: #58f5d0;
+  color: #08131f;
+}
+
+.admin-btn--primary:hover {
+  opacity: 0.9;
+}
+
+.admin-btn--ghost {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.admin-btn--ghost:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+@media (max-width: 992px) {
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-toggle-list {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .admin-settings {
+    padding: 16px;
+  }
+
+  .admin-settings__header h1 {
+    font-size: 34px;
+  }
+
+  .admin-settings-actions {
+    flex-direction: column;
+  }
+
+  .admin-btn {
+    width: 100%;
+  }
+
+}
+
+.admin-settings-message {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(88, 245, 208, 0.12);
+  border: 1px solid rgba(88, 245, 208, 0.35);
+  color: #58f5d0;
+  font-weight: 600;
+}
+
+.admin-settings-message[data-type="error"] {
+  background: rgba(255, 87, 87, 0.12);
+  border-color: rgba(255, 87, 87, 0.35);
+  color: #ff7777;
+}
+
+.admin-panel__header p {
+  margin-top: 6px;
+  color: #9fb5d3;
+  font-size: 14px;
+}
+
+.payment-gateway-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.payment-gateway-grid {
+  align-items: start;
+}
+
+.payment-gateway-card {
+  height: auto;
+}
+
+.payment-gateway-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.payment-gateway-card__toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.payment-gateway-card__toggle input,
+.gateway-test-mode input {
+  width: 18px;
+  height: 18px;
+  accent-color: #58f5d0;
+}
+
+.payment-gateway-card p {
+  color: #9fb5d3;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.gateway-test-mode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d8e6f5;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.payment-gateway-fields {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.payment-gateway-fields input,
+.payment-gateway-fields textarea {
+  width: 100%;
+  background: rgba(88,245,208,0.05);
+  border: 1px solid rgba(88,245,208,0.15);
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 12px 14px;
+  font-size: 14px;
+  outline: none;
+}
+
+.payment-gateway-fields textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.payment-gateway-fields input:focus,
+.payment-gateway-fields textarea:focus {
+  border-color: #58f5d0;
+  box-shadow: 0 0 0 3px rgba(88,245,208,0.12);
+}
+
+@media (max-width: 992px) {
+  .payment-gateway-grid {
+    grid-template-columns: 1fr;
+  }
+}
