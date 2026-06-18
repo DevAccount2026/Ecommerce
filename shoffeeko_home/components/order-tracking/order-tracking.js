@@ -63,13 +63,48 @@ function renderTimeline(order) {
       </div>
     `;
   }
-
+ 
   return timeline.map(item => `
     <div class="tracking-timeline-item">
       <strong>${formatDate(item.date)}</strong>
       <p>${item.message}</p>
     </div>
   `).join("");
+}
+
+function renderProgressTracker(order) {
+  const status = order.orderStatus || order.status || "Pending";
+
+  const steps = ["Pending", "Processing", "Shipped", "Delivered"];
+  const currentIndex = steps.findIndex(step =>
+    step.toLowerCase() === String(status).toLowerCase()
+  );
+
+  return `
+    <div class="tracking-progress">
+      ${steps.map((step, index) => {
+        let stepClass = "tracking-step--upcoming";
+        let marker = "○";
+
+        if (index < currentIndex) {
+          stepClass = "tracking-step--complete";
+          marker = "✓";
+        }
+
+        if (index === currentIndex) {
+          stepClass = "tracking-step--active";
+          marker = "●";
+        }
+
+        return `
+          <div class="tracking-step ${stepClass}">
+            <div class="tracking-step__marker">${marker}</div>
+            <span>${step}</span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
 }
 
 function initOrderTrackingPage() {
@@ -83,17 +118,47 @@ function initOrderTrackingPage() {
   const order = orders.find(item => String(item.id) === String(orderId));
 
   if (!order) {
-    root.innerHTML = `
-      <section class="tracking-section sk-container">
-        <div class="tracking-card">
-          <h1>Order not found</h1>
-          <p>Please check your order link and try again.</p>
-          <a href="catalog-page.html" class="tracking-btn">Continue Shopping</a>
-        </div>
-      </section>
-    `;
+  root.innerHTML = `
+    <section class="tracking-section sk-container">
+      <div class="tracking-card tracking-lookup-card">
+        <h1>Track Your Order</h1>
+        <p>Enter your order number to check your order status.</p>
+
+        <form id="orderLookupForm" class="tracking-lookup-form">
+          <input
+            type="text"
+            id="orderLookupInput"
+            placeholder="Example: SK-1781752727459"
+            value="${orderId || ""}"
+            required
+          >
+
+          <button type="submit" class="tracking-btn">
+            Track Order
+          </button>
+        </form>
+
+        ${
+          orderId
+            ? `<p class="tracking-error">Order not found. Please check your order number.</p>`
+            : ""
+        }
+      </div>
+    </section>
+  `;
+
+  document.querySelector("#orderLookupForm")?.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const value = document.querySelector("#orderLookupInput")?.value.trim();
+
+    if (!value) return;
+
+        window.location.href = `order-tracking.html?id=${encodeURIComponent(value)}`;
+    });
+
     return;
-  }
+    }
 
   root.innerHTML = `
     <section class="tracking-section sk-container">
@@ -106,6 +171,7 @@ function initOrderTrackingPage() {
       <div class="tracking-grid">
         <div class="tracking-card">
           <h2>Order Status</h2>
+          ${renderProgressTracker(order)}
 
           <div class="tracking-info-row">
             <span>Payment Method</span>
@@ -139,6 +205,22 @@ function initOrderTrackingPage() {
             ${renderTimeline(order)}
           </div>
         </div>
+
+      <div class="tracking-card">
+        <h2>Delivery Address</h2>
+
+        <div class="tracking-address">
+          <strong>
+            ${order.customer?.firstName || ""} ${order.customer?.lastName || ""}
+          </strong>
+
+          <p>${order.customer?.address || "No address available"}</p>
+          <p>${order.customer?.city || ""} ${order.customer?.postalCode || ""}</p>
+          <p>${order.customer?.country || ""}</p>
+          <p>${order.customer?.phone || ""}</p>
+        </div>
+      </div>
+
       </div>
 
       <div class="tracking-card">

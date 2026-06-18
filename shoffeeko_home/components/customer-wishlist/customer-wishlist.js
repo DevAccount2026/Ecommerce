@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", initWishlistPage);
+WishListdocument.addEventListener("DOMContentLoaded", initWishlistPage);
 
 async function initWishlistPage() {
   const root = document.getElementById("customerWishlistPage");

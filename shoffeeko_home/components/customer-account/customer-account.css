@@ -36,6 +36,11 @@
 }
 
 .account-btn {
+  min-width: 160px;
+  text-align: center;
+}
+
+.account-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -103,13 +108,6 @@
 
 .account-welcome p {
   color: #cfc7b9;
-}
-
-.account-actions {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 28px;
 }
 
 .account-btn {

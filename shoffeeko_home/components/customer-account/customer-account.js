@@ -31,7 +31,9 @@ async function initCustomerAccount() {
             <a href="cust_orderhistory.html" class="account-btn">
               ${settings.orderHistoryText}
             </a>
-
+            <a href="order-tracking.html" class="account-btn">
+              Track Order
+            </a>
             <a href="cust_wishlist.html" class="account-btn">
               My Wishlist
             </a>
