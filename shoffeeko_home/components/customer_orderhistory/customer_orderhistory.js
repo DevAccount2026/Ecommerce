@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", initOrderHistory);
 
+function getOrderIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+}
+
 async function initOrderHistory() {
   const root = document.getElementById("customerOrderHistoryPage");
   if (!root) return;
@@ -19,20 +24,27 @@ async function initOrderHistory() {
   }
 
   const allOrders = JSON.parse(localStorage.getItem(ordersKey)) || [];
+  const selectedOrderId = getOrderIdFromUrl();
 
-  const customerOrders = allOrders.filter(order =>
+  let customerOrders = allOrders.filter(order =>
     order.customer?.email === customer.email
   );
 
-function parsePrice(price) {
-  if (typeof price === "number") return price;
+  if (selectedOrderId) {
+    customerOrders = customerOrders.filter(order =>
+      order.id === selectedOrderId || order.orderId === selectedOrderId
+    );
+  }
 
-  return Number(
-    String(price)
-      .replace("From", "")
-      .replace("USD", "")
-      .replace("$", "")
-      .trim()
+  function parsePrice(price) {
+    if (typeof price === "number") return price;
+
+    return Number(
+      String(price)
+        .replace("From", "")
+        .replace("USD", "")
+        .replace("$", "")
+        .trim()
     ) || 0;
   }
 
@@ -52,12 +64,12 @@ function parsePrice(price) {
     root.innerHTML = `
       <section class="orderhistory-section sk-container">
         <div class="orderhistory-empty">
-          <h1>${settings.emptyTitle}</h1>
-          <p>${settings.emptyText}</p>
+          <h1>No purchased items found</h1>
+          <p>This order may not belong to the current logged-in customer.</p>
 
           <div class="orderhistory-actions">
-            <a href="catalog-page.html" class="orderhistory-btn">
-              ${settings.continueShoppingText}
+            <a href="order-history.html" class="orderhistory-btn">
+              Back to Order History
             </a>
 
             <a href="cust_account.html" class="orderhistory-btn orderhistory-btn-outline">
@@ -74,10 +86,10 @@ function parsePrice(price) {
     <section class="orderhistory-section sk-container">
 
       <div class="orderhistory-header">
-        <h1>${settings.title}</h1>
+        <h1>${selectedOrderId ? "Purchased Items" : settings.title}</h1>
 
-        <a href="cust_account.html" class="orderhistory-link">
-          ${settings.backToAccountText}
+        <a href="${selectedOrderId ? "order-history.html" : "cust_account.html"}" class="orderhistory-link">
+          ${selectedOrderId ? "Back to Order History" : settings.backToAccountText}
         </a>
       </div>
 
@@ -88,7 +100,7 @@ function parsePrice(price) {
             <div class="orderhistory-card__top">
               <div>
                 <span>Order Number</span>
-                <strong>${order.id}</strong>
+                <strong>${order.id || order.orderId}</strong>
               </div>
 
               <div>
@@ -98,25 +110,25 @@ function parsePrice(price) {
 
               <div>
                 <span>Total</span>
-                <strong>${formatPrice(order.subtotal)}</strong>
+                <strong>${formatPrice(order.total || order.subtotal)}</strong>
               </div>
             </div>
 
             <div class="orderhistory-items">
-                 ${order.items.map(item => `
-              <div class="orderhistory-item">
-                <img src="${item.image}" alt="${item.title}">
+              ${(order.items || []).map(item => `
+                <div class="orderhistory-item">
+                  <img src="${item.image}" alt="${item.title}">
 
-                <div>
-                  <h3>${item.title}</h3>
-                  <p>Qty: ${item.quantity}</p>
+                  <div>
+                    <h3>${item.title}</h3>
+                    <p>Qty: ${item.quantity}</p>
+                  </div>
+
+                  <strong class="orderhistory-line-total">
+                    ${formatPrice(parsePrice(item.price) * Number(item.quantity || 1))}
+                  </strong>
                 </div>
-
-                <strong class="orderhistory-line-total">
-                  ${formatPrice(parsePrice(item.price) * Number(item.quantity || 1))}
-                </strong>
-              </div>
-            `).join("")}
+              `).join("")}
             </div>
 
           </article>

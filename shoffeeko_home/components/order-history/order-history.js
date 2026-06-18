@@ -98,11 +98,20 @@ function renderOrders() {
         <td>${getPaymentLabel(order)}</td>
         <td><span class="status-badge">${status}</span></td>
         <td>${formatPrice(total)}</td>
-        <td>
+       <td>
         <a class="track-btn" href="./order-tracking.html?id=${encodeURIComponent(orderId)}">
             Track
         </a>
         </td>
+
+        <td>
+        <a
+            class="track-btn"
+            href="./cust_orderhistory.html?id=${encodeURIComponent(orderId)}"
+            >
+            View
+        </a>
+     </td>
     </tr>
     `;
   }).join("");

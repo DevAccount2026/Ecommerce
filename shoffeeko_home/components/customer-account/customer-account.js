@@ -28,7 +28,7 @@ async function initCustomerAccount() {
           <p>You are now logged in to your ShoffeeKo account.</p>
 
           <div class="account-actions">
-            <a href="cust_orderhistory.html" class="account-btn">
+            <a href="order-history.html" class="account-btn">
               ${settings.orderHistoryText}
             </a>
             <a href="order-tracking.html" class="account-btn">

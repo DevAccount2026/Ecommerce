@@ -11,14 +11,24 @@
 <body>
 
   <main class="order-history-page">
-    <section class="order-history-header">
-      <p class="eyebrow">My Account</p>
-      <h1>Order History</h1>
-      <p>View and track all your previous orders.</p>
+   <section class="order-history-header">
+
+    <div class="order-history-header__top">
+        <div>
+        <p class="eyebrow">My Account</p>
+        <h1>Order History</h1>
+        <p>View and track all your previous orders.</p>
+        </div>
+
+        
+    </div>
+
     </section>
+    
 
     <section class="order-history-tools">
       <input type="search" id="orderSearch" placeholder="Search order number..." />
+      
 
       <select id="statusFilter">
         <option value="all">All Status</option>
@@ -28,19 +38,34 @@
         <option value="Delivered">Delivered</option>
         <option value="Cancelled">Cancelled</option>
       </select>
+
+      <div class="order-history-header__actions">
+        <a href="./cust_account.html" class="order-header-btn">
+            Back to My Account
+        </a>
+
+        <a href="./catalog-page.html" class="order-header-btn order-header-btn--primary">
+            Continue Shopping
+        </a>
+
+    </div>
+    
     </section>
+
+    
 
     <section class="order-history-card">
       <table>
         <thead>
-          <tr>
+          <tr>       
             <th>Order #</th>
             <th>Date</th>
             <th>Items</th>
             <th>Payment</th>
             <th>Status</th>
             <th>Total</th>
-            <th>Action</th>
+            <th>Track</th>
+            <th>Purchased Items</th>         
           </tr>
         </thead>
 
