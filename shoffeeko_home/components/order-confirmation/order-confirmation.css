@@ -150,6 +150,16 @@
   font-weight: 600;
 }
 
+.order-track-btn {
+  background: #fff8dc;
+  color: #111;
+  margin-right: 12px;
+}
+
+.order-track-btn:hover {
+  background: #c9a46b;
+  color: #111;
+}
 
 @media (max-width: 900px) {
   .order-layout {
@@ -176,3 +186,4 @@
     grid-template-columns: 1fr;
   }
 }
+

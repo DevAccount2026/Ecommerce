@@ -20,23 +20,6 @@ async function initOrderConfirmation() {
 
   if (!order) {
 
-        const formattedDate = new Date(order.createdAt).toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          }
-        );
-
-        const formattedTime = new Date(order.createdAt).toLocaleTimeString(
-          "en-US",
-          {
-            hour: "numeric",
-            minute: "2-digit"
-          }
-        );
-
     root.innerHTML = `
       <section class="order-confirmation-section sk-container">
         <div class="order-card">
@@ -132,9 +115,14 @@ async function initOrderConfirmation() {
           <p>${order.customer.email}</p>
           <p>${order.customer.phone}</p>
 
+          <a class="order-btn order-track-btn" href="order-tracking.html?id=${order.id}">
+            Track Order
+          </a>
+
           <a class="order-btn" href="catalog-page.html">
             ${settings.continueShoppingText}
           </a>
+
         </div>
 
       </div>

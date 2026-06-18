@@ -1,0 +1,133 @@
+.tracking-section {
+  padding: 80px 0;
+  color: #fff8dc;
+}
+
+.tracking-card {
+  border: 1px solid #fff8dc;
+  border-radius: 20px;
+  background: #080808;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+
+.tracking-header {
+  text-align: center;
+}
+
+.tracking-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: #c9a46b;
+  font-size: 13px;
+}
+
+.tracking-header h1 {
+  font-size: 42px;
+  margin: 10px 0;
+}
+
+.tracking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.tracking-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.tracking-info-row span {
+  color: #cfc7b9;
+}
+
+.tracking-info-row strong {
+  text-align: right;
+}
+
+.tracking-timeline {
+  display: grid;
+  gap: 16px;
+}
+
+.tracking-timeline-item {
+  border-left: 3px solid #c9a46b;
+  padding-left: 14px;
+}
+
+.tracking-timeline-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tracking-timeline-item p {
+  margin: 0;
+  color: #cfc7b9;
+}
+
+.tracking-items {
+  display: grid;
+  gap: 18px;
+}
+
+.tracking-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.tracking-item img {
+  width: 90px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.tracking-item h3 {
+  margin: 0 0 6px;
+}
+
+.tracking-item p {
+  margin: 0;
+  color: #cfc7b9;
+}
+
+.tracking-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  font-size: 20px;
+}
+
+.tracking-btn {
+  display: inline-block;
+  padding: 15px 24px;
+  border-radius: 999px;
+  background: #fff8dc;
+  color: #111;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .tracking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-item {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}
