@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order History</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/order-history/order-history.css" />
+</head>
+<body>
+
+  <main class="order-history-page">
+    <section class="order-history-header">
+      <p class="eyebrow">My Account</p>
+      <h1>Order History</h1>
+      <p>View and track all your previous orders.</p>
+    </section>
+
+    <section class="order-history-tools">
+      <input type="search" id="orderSearch" placeholder="Search order number..." />
+
+      <select id="statusFilter">
+        <option value="all">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Processing">Processing</option>
+        <option value="Shipped">Shipped</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </section>
+
+    <section class="order-history-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="orderHistoryBody"></tbody>
+      </table>
+
+      <p class="empty-orders" id="emptyOrders" hidden>No orders found.</p>
+    </section>
+  </main>
+
+  <script src="../components/order-history/order-history.js"></script>
+</body>
+</html>
