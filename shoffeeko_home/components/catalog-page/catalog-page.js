@@ -37,6 +37,8 @@ async function initCatalogPage() {
   } catch (error) {
     console.error("Catalog load error:", error);
     root.innerHTML = `<p class="catalog-error">Catalog failed to load. Please check your JSON path.</p>`;
+
+    
   }
 }
 
@@ -66,6 +68,8 @@ function renderCatalog(root, data) {
       </div>
     </div>
   `;
+  
+     updateWishlistHearts();
 
   root.querySelectorAll("[data-add-to-cart]").forEach(button => {
     button.addEventListener("click", event => {
@@ -214,29 +218,31 @@ document.addEventListener("click", e => {
     wishlistKey,
     JSON.stringify(wishlist)
   );
+
+  updateWishlistHearts();
 });
 
-const customer = JSON.parse(
-  localStorage.getItem("shoffeeko_current_customer")
-);
 
-if (customer) {
+function updateWishlistHearts() {
+  const customer = JSON.parse(
+    localStorage.getItem("shoffeeko_current_customer")
+  );
+
+  if (!customer) return;
 
   const wishlist =
-    JSON.parse(localStorage.getItem("shoffeeko_wishlist"))
-    || [];
+    JSON.parse(localStorage.getItem("shoffeeko_wishlist")) || [];
 
-  document
-    .querySelectorAll("[data-wishlist]")
-    .forEach(btn => {
+  document.querySelectorAll("[data-wishlist]").forEach(btn => {
+    const exists = wishlist.find(item =>
+      item.customerEmail === customer.email &&
+      String(item.productId) === String(btn.dataset.wishlist)
+    );
 
-      const exists = wishlist.find(item =>
-        item.customerEmail === customer.email &&
-        item.productId === btn.dataset.wishlist
-      );
-
-      if (exists) {
-        btn.classList.add("active");
-      }
-    });
+    if (exists) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
 }

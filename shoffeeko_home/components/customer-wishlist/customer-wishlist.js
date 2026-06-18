@@ -1,4 +1,6 @@
-WishListdocument.addEventListener("DOMContentLoaded", initWishlistPage);
+document.addEventListener("DOMContentLoaded", initWishlistPage);
+
+const ADMIN_PRODUCTS_KEY = "adminProducts";
 
 async function initWishlistPage() {
   const root = document.getElementById("customerWishlistPage");
@@ -20,11 +22,28 @@ async function initWishlistPage() {
 
   const productResponse = await fetch(settings.productDataPath);
   const productData = await productResponse.json();
-  const products = productData.products || [];
 
-  function getWishlist() {
-    return JSON.parse(localStorage.getItem(wishlistKey)) || [];
-  }
+    let products =
+      productData.products ||
+      productData.items ||
+      productData.catalog ||
+      [];
+
+    const savedProducts = JSON.parse(localStorage.getItem(ADMIN_PRODUCTS_KEY));
+
+    if (Array.isArray(savedProducts) && savedProducts.length > 0) {
+      products = savedProducts.map(product => ({
+        ...product,
+        title: product.title || product.name,
+        price: Number(product.price || 0),
+        image: product.image || product.imageUrl || "",
+        hasOptions: product.hasOptions || false
+      }));
+    }
+
+    function getWishlist() {
+      return JSON.parse(localStorage.getItem(wishlistKey)) || [];
+    }
 
   function saveWishlist(wishlist) {
     localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
@@ -33,8 +52,8 @@ async function initWishlistPage() {
   function formatPrice(product) {
     return `${product.pricePrefix || ""}$${Number(product.price || 0).toFixed(2)} ${settings.currency || "USD"}`;
   }
-
-  function renderWishlist() {
+  
+    function renderWishlist() {
     const wishlist = getWishlist();
 
     const customerWishlist = wishlist.filter(item =>
@@ -42,7 +61,15 @@ async function initWishlistPage() {
     );
 
     const wishlistProducts = customerWishlist
-      .map(item => products.find(product => product.id === item.productId))
+      .map(item => {
+       const product = products.find(product =>
+        String(product.id) === String(item.productId)
+      );
+
+        return product
+          ? { ...product, wishlistProductId: item.productId }
+          : null;
+      })
       .filter(Boolean);
 
     if (!wishlistProducts.length) {
@@ -79,20 +106,21 @@ async function initWishlistPage() {
             <article class="wishlist-card" data-id="${product.id}">
               <img src="${product.image}" alt="${product.title}">
 
-              <div class="wishlist-card__body">
-                <h2>${product.title}</h2>
-                <p>${formatPrice(product)}</p>
+             <div class="wishlist-card__body">
+              <h2>${product.title}</h2>
+              <p>${formatPrice(product)}</p>
 
-                <div class="wishlist-card__actions">
-                  <a href="product.html?id=${product.id}" class="wishlist-btn">
-                    View Product
-                  </a>
+              <div class="wishlist-card__actions">
+               
+                <a href="./product.html?id=${encodeURIComponent(product.wishlistProductId)}" class="wishlist-btn">
+                  View Product
+                </a>
 
-                  <button type="button" class="wishlist-remove" data-remove="${product.id}">
-                    Remove
-                  </button>
-                </div>
+                <button type="button" class="wishlist-remove" data-remove="${product.wishlistProductId}">
+                  Remove
+                </button>
               </div>
+            </div>
             </article>
           `).join("")}
         </div>
@@ -100,19 +128,22 @@ async function initWishlistPage() {
     `;
   }
 
-  root.addEventListener("click", e => {
-    const removeBtn = e.target.closest("[data-remove]");
-    if (!removeBtn) return;
+      root.addEventListener("click", e => {
+      const removeBtn = e.target.closest("[data-remove]");
+      if (!removeBtn) return;
 
-    const productId = removeBtn.dataset.remove;
+      const productId = removeBtn.dataset.remove;
 
-    const wishlist = getWishlist().filter(item =>
-      !(item.customerEmail === customer.email && item.productId === productId)
-    );
+      const wishlist = getWishlist().filter(item =>
+        !(
+          item.customerEmail === customer.email &&
+          String(item.productId) === String(productId)
+        )
+      );
 
-    saveWishlist(wishlist);
-    renderWishlist();
-  });
+      saveWishlist(wishlist);
+      renderWishlist();
+    });
 
   renderWishlist();
 }

@@ -7,7 +7,7 @@
     "backToAccountText": "Back to Account",
     "wishlistKey": "shoffeeko_wishlist",
     "sessionStorageKey": "shoffeeko_current_customer",
-    "productDataPath": "../components/product-page/product-page.json",
+    "productDataPath": "../components/catalog-page/catalog-page.json",
     "currency": "USD"
   }
 }
