@@ -91,21 +91,31 @@ function renderOrders() {
     const total = order.total || order.subtotal || 0;
 
     return `
-      <tr>
+    <tr>
         <td><strong>${orderId}</strong></td>
         <td>${formatDate(order.createdAt)}</td>
+        <td>${getItemCount(order)}</td>
         <td>${getPaymentLabel(order)}</td>
         <td><span class="status-badge">${status}</span></td>
         <td>${formatPrice(total)}</td>
         <td>
-          <a class="track-btn" href="./order-tracking.html?id=${encodeURIComponent(orderId)}">
+        <a class="track-btn" href="./order-tracking.html?id=${encodeURIComponent(orderId)}">
             Track
-          </a>
+        </a>
         </td>
-      </tr>
+    </tr>
     `;
   }).join("");
 }
+
+function getItemCount(order) {
+  if (!Array.isArray(order.items)) return 0;
+
+  return order.items.reduce((total, item) => {
+    return total + Number(item.quantity || 1);
+  }, 0);
+}
+
 
 function initOrderHistory() {
   const searchInput = document.querySelector("#orderSearch");
