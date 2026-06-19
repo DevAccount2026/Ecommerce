@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", initCheckoutPage);
 
 const ADMIN_PRODUCTS_KEY = "adminProducts";
 const CART_KEY = "shoffeeko_cart";
+const INVENTORY_LOG_KEY = "shoffeeko_inventory_logs";
 
 function getAdminProducts() {
   try {
@@ -16,8 +17,34 @@ function saveAdminProducts(products) {
   localStorage.setItem(ADMIN_PRODUCTS_KEY, JSON.stringify(products));
 }
 
-function deductInventoryFromOrder(orderItems = []) {
+function getInventoryLogs() {
+  try {
+    return JSON.parse(localStorage.getItem(INVENTORY_LOG_KEY)) || [];
+  } catch (error) {
+    console.error("Inventory logs are broken:", error);
+    return [];
+  }
+}
+
+function saveInventoryLogs(logs) {
+  localStorage.setItem(INVENTORY_LOG_KEY, JSON.stringify(logs));
+}
+
+function addInventoryLog(log) {
+  const logs = getInventoryLogs();
+
+  logs.unshift({
+    id: "INV-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+    createdAt: new Date().toISOString(),
+    ...log
+  });
+
+  saveInventoryLogs(logs);
+}
+
+function deductInventoryFromOrder(orderItems = [], orderId = "") {
   const products = getAdminProducts();
+  const logsToAdd = [];
 
   const updatedProducts = products.map(product => {
     const orderedItem = orderItems.find(item => String(item.id) === String(product.id));
@@ -28,6 +55,19 @@ function deductInventoryFromOrder(orderItems = []) {
     const quantityBought = Number(orderedItem.quantity || 1);
     const newStock = Math.max(currentStock - quantityBought, 0);
 
+    logsToAdd.push({
+      id: "INV-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+      createdAt: new Date().toISOString(),
+      productId: product.id,
+      sku: product.sku || product.id,
+      productName: product.name || product.title || orderedItem.title || "Unnamed Product",
+      type: "Deduction",
+      quantity: -quantityBought,
+      previousStock: currentStock,
+      newStock,
+      reason: orderId ? `Order ${orderId}` : "Customer order"
+    });
+
     return {
       ...product,
       stock: newStock,
@@ -36,6 +76,11 @@ function deductInventoryFromOrder(orderItems = []) {
   });
 
   saveAdminProducts(updatedProducts);
+
+  if (logsToAdd.length) {
+    const logs = getInventoryLogs();
+    saveInventoryLogs([...logsToAdd, ...logs]);
+  }
 }
 
 async function initCheckoutPage() {
@@ -523,7 +568,7 @@ const enabledPayments = Object.entries(payments)
 
     localStorage.setItem(ordersKey, JSON.stringify(orders));
 
-    deductInventoryFromOrder(order.items || []);
+    deductInventoryFromOrder(order.items || [], order.id);
 
     localStorage.removeItem(cartKey);
 

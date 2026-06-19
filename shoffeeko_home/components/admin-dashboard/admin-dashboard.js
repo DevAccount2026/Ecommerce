@@ -171,6 +171,7 @@ function renderRecentOrders() {
 
 const INVENTORY_LOG_KEY = "shoffeeko_inventory_logs";
 
+
 function getInventoryLogs() {
   try {
     return JSON.parse(localStorage.getItem(INVENTORY_LOG_KEY)) || [];
@@ -235,6 +236,7 @@ function restockProduct(productId) {
   });
 
   renderLowStockAlerts(products);
+  renderInventoryHistory();
 }
 
 const PRODUCTS_KEY = "adminProducts";
@@ -328,6 +330,8 @@ async function initAdminDashboard() {
 
   renderRecentOrders();
   renderTopProducts();
+  renderInventoryHistory();
+
 }
 
 //--------------//
@@ -777,6 +781,35 @@ function renderTopProducts() {
     }); 
 }
 
+const INVENTORY_HISTORY_LIMIT = 5;
+
+function renderInventoryHistory() {
+  const tableBody = document.querySelector("#inventoryHistoryTable");
+  if (!tableBody) return;
+
+  const logs = getInventoryLogs().slice(0, INVENTORY_HISTORY_LIMIT);
+
+  if (!logs.length) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7">No inventory movements yet.</td>
+      </tr>
+    `;
+    return;
+  }
+
+  tableBody.innerHTML = logs.map(log => `
+    <tr>
+      <td>${formatDate(log.createdAt)}</td>
+      <td>${log.productName || "Unnamed Product"}</td>
+      <td>${log.type || "Movement"}</td>
+      <td>${Number(log.quantity || 0)}</td>
+      <td>${Number(log.previousStock || 0)}</td>
+      <td>${Number(log.newStock || 0)}</td>
+      <td>${log.reason || "No reason"}</td>
+    </tr>
+  `).join("");
+}
 
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);
