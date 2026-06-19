@@ -29,10 +29,6 @@ function formatCurrency(amount) {
   }).format(amount);
 }
 
-function getStatusClass(status) {
-  return status.toLowerCase().replace(/\s+/g, "-");
-}
-
 function renderProducts(products) {
   const tbody = document.querySelector("#productsTableBody");
   const count = document.querySelector("#productsCount");
@@ -63,15 +59,22 @@ function renderProducts(products) {
       <td class="admin-order-id">${product.id}</td>
       <td>${product.category}</td>
       <td>${formatCurrency(product.price)}</td>
-      <td>${product.stock}</td>
       <td>
-        <span class="admin-status admin-status--${getStatusClass(getAutoStatus(product.stock))}">
-          ${getAutoStatus(product.stock)}
-         </span>
+        <span class="admin-status admin-status--${getStatusClass(getInventoryStatus(product.stock))}">
+          ${getInventoryStatus(product.stock)}
+        </span>
       </td>
+
+      <td>
+        <span class="admin-status admin-status--${getStatusClass(product.status)}">
+          ${product.status}
+        </span>
+      </td>
+
       <td>
         <div class="admin-action-group">
           <button class="admin-table-btn" data-action="view" data-id="${product.id}">View</button>
+          <button class="admin-table-btn" data-action="inventory" data-id="${product.id}">Inventory</button>
           <button class="admin-table-btn admin-edit" data-action="edit" data-id="${product.id}">Edit</button>
           <button class="admin-table-btn admin-delete" data-action="delete" data-id="${product.id}">Delete</button>
         </div>
@@ -80,12 +83,20 @@ function renderProducts(products) {
   `).join("");
 }
 
-function getAutoStatus(stock) {
-  const quantity = Number(stock);
+const LOW_STOCK_LIMIT = 10;
 
-  if (quantity <= 0) return "Out of Stock";
-  if (quantity <= 10) return "Low Stock";
-  return "Active";
+function getInventoryStatus(stockValue) {
+  const stock = Number(stockValue || 0);
+
+  if (stock <= 0) return "Out of Stock";
+  if (stock <= LOW_STOCK_LIMIT) return "Low Stock";
+  return "In Stock";
+}
+
+function getStatusClass(status) {
+  return String(status || "")
+    .toLowerCase()
+    .replace(/\s+/g, "-");
 }
 
 function renderCategoryFilter(products) {
@@ -142,6 +153,10 @@ function handleProductActions(event) {
 
   const action = button.dataset.action;
   const productId = button.dataset.id;
+
+  if (action === "inventory") {
+  window.location.href = `admin-inventory.html?productId=${productId}`;
+  }
 
   if (action === "view") {
   window.location.href = `admin-product-detail.html?id=${productId}`;

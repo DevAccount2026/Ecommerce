@@ -1,0 +1,313 @@
+.admin-marketing-page {
+  padding: 28px;
+  color: #eaf4ff;
+}
+
+.marketing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.marketing-header h1 {
+  margin: 4px 0;
+  color: #fff;
+  font-size: 32px;
+}
+
+.marketing-header p {
+  color: #9cb1c4;
+}
+
+.eyebrow {
+  color: #31c7bd;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: 12px;
+}
+
+.marketing-primary-btn {
+  border: none;
+  cursor: pointer;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+
+  background: #31c7bd;
+  color: #08131f;
+}
+
+.marketing-primary-btn:hover {
+  opacity: .9;
+}
+
+.marketing-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.marketing-kpi-grid article {
+  padding: 20px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155,209,255,.12);
+}
+
+.marketing-kpi-grid span {
+  display: block;
+  color: #9cb1c4;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.marketing-kpi-grid strong {
+  color: #31c7bd;
+  font-size: 34px;
+}
+
+.marketing-panel {
+  padding: 20px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(155,209,255,.12);
+}
+
+.marketing-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.marketing-panel__header h2 {
+  margin: 0;
+}
+
+.marketing-panel__header span {
+  color: #9cb1c4;
+}
+
+.marketing-table {
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(155,209,255,.12);
+}
+
+.marketing-table__head,
+.marketing-row {
+  display: grid;
+  grid-template-columns:
+    2fr
+    1.2fr
+    1fr
+    1fr
+    100px;
+
+  align-items: center;
+}
+
+.marketing-table__head {
+  background: rgba(255,255,255,.05);
+  font-weight: 700;
+}
+
+.marketing-table__head span,
+.marketing-row span {
+  padding: 14px;
+}
+
+.marketing-row {
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.marketing-row:hover {
+  background: rgba(255,255,255,.03);
+}
+
+.marketing-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.marketing-status--draft {
+  background: rgba(255,193,7,.12);
+  color: #ffc107;
+}
+
+.marketing-status--ready {
+  background: rgba(49,199,189,.12);
+  color: #31c7bd;
+}
+
+.marketing-action-btn {
+  cursor: pointer;
+
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  background: rgba(49,199,189,.15);
+  color: #31c7bd;
+}
+
+.marketing-action-btn:hover {
+  background: rgba(49,199,189,.25);
+}
+
+.marketing-empty {
+  padding: 40px;
+  text-align: center;
+  color: #8fa4b8;
+}
+
+.marketing-modal {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,0,0,.7);
+  z-index: 1000;
+}
+
+.marketing-modal.active {
+  display: flex;
+}
+
+.marketing-modal__box {
+  width: min(760px, 92vw);
+
+  border-radius: 14px;
+
+  background: #172434;
+  border: 1px solid rgba(155,209,255,.12);
+
+  overflow: hidden;
+}
+
+.marketing-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.marketing-modal__header h2 {
+  margin: 0;
+}
+
+.marketing-modal__header button {
+  border: none;
+  background: none;
+
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.campaign-form {
+  padding: 20px;
+
+  display: grid;
+  gap: 16px;
+}
+
+.campaign-form label {
+  display: grid;
+  gap: 8px;
+
+  color: #d8e5f0;
+  font-size: 14px;
+}
+
+.campaign-form input,
+.campaign-form textarea,
+.campaign-form select {
+  width: 100%;
+
+  padding: 12px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.12);
+
+  background: #0f1b29;
+  color: white;
+}
+
+.campaign-form textarea {
+  resize: vertical;
+}
+
+.campaign-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.campaign-form__actions button {
+  cursor: pointer;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 12px 18px;
+}
+
+.campaign-form__actions button[type="submit"] {
+  background: #31c7bd;
+  color: #08131f;
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+
+  .marketing-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .marketing-table__head,
+  .marketing-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .marketing-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .marketing-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -23,9 +23,10 @@
         <a href="admin-dashboard.html">Dashboard</a>
         <a href="admin-orders.html">Orders</a>
         <a href="admin-products.html">Products</a>
+        <a href="admin-inventory.html">Inventory</a>
         <a href="admin-customers.html">Customers</a>
         <a href="admin-analytics.html" class="active">Analytics</a>
-        <a href="#">Marketing</a>
+        <a href="admin-marketing.html">Marketing</a>
         <a href="admin-settings.html">Settings</a>
       </nav>
     </aside>
@@ -84,81 +85,156 @@
             <small>Completed checkout records</small>
           </article>
 
-          <article class="analytics-kpi-card analytics-mini-donut-card">
-            <span>New vs Recurring Customers</span>
-            <div class="mini-donut-row">
-              <canvas id="newRecurringChart"></canvas>
-              <div>
-                <strong id="analyticsCustomers">0</strong>
-                <small>Unique customers</small>
-              </div>
-            </div>
+         <article class="analytics-kpi-card analytics-mini-donut-card">
+            <span>Repeat Purchase Rate</span>
+            <strong id="analyticsRepeatRate">0%</strong>
+            <small>Customers with more than 1 order</small>
           </article>
+
         </section>
 
         <section class="analytics-main-grid">
 
-        <article class="analytics-panel analytics-panel--wide">
-            <div class="analytics-panel__header">
-            <h2>Revenue & Orders Trend</h2>
-            <span>Last 30 Days</span>
-            </div>
-            <canvas id="revenueTrendChart"></canvas>
+       <article class="analytics-panel">
+          <h2>Revenue by Category</h2>
+          <div class="analytics-list" id="revenueByCategoryList"></div>
         </article>
 
         <article class="analytics-panel">
-            <h2>Top Categories</h2>
-            <canvas id="topCategoriesChart"></canvas>
+          <h2>Revenue by Product</h2>
+          <div class="analytics-list" id="revenueByProductList"></div>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Top Customers</h2>
+          <div class="analytics-list" id="topCustomersList"></div>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Best Selling Products</h2>
+          <div class="analytics-list" id="bestSellingProductsList"></div>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Worst Selling Products</h2>
+          <div class="analytics-list" id="worstSellingProductsList"></div>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Monthly Revenue Comparison</h2>
+          <canvas id="monthlyRevenueChart"></canvas>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Order Trends</h2>
+          <canvas id="orderTrendsChart"></canvas>
+        </article>
+
+        <article class="analytics-panel">
+          <h2>Inventory Value</h2>
+          <div class="analytics-big-number">
+            <strong id="analyticsInventoryValue">₱0</strong>
+            <span>Total value of current product stock</span>
+          </div>
         </article>
 
         <article class="analytics-panel analytics-panel--wide">
-            <h2>Product Performance Matrix</h2>
+          <h2>Marketing Attribution</h2>
 
-            <div class="heatmap-table">
-            <div class="heatmap-row heatmap-head">
-                <span>Product</span>
-                <span>Sold</span>
-                <span>Revenue</span>
+          <div class="analytics-attribution-grid">
+            <div class="analytics-attribution-card">
+              <span>Top Source</span>
+              <strong id="topTrafficSource">Direct</strong>
+              <small>Highest revenue source</small>
             </div>
 
-            <div id="analyticsProductMatrix"></div>
+            <div class="analytics-attribution-card">
+              <span>Attributed Revenue</span>
+              <strong id="attributedRevenue">₱0</strong>
+              <small>Revenue with source data</small>
             </div>
+
+            <div class="analytics-attribution-card">
+              <span>Attributed Orders</span>
+              <strong id="attributedOrders">0</strong>
+              <small>Orders with source data</small>
+            </div>
+          </div>
+
+          <div class="analytics-list" id="marketingAttributionList"></div>
         </article>
 
-        <article class="analytics-panel analytics-coming-soon">
-            <h2>Customer Lifetime Value (CLV)</h2>
+       <article class="analytics-panel">
+        <h2>Customer Lifetime Value (CLV)</h2>
 
-            <div class="coming-soon-box">
-            <span>Coming Soon</span>
-            <p>Requires customer purchase history database and repeat customer tracking.</p>
+        <div class="analytics-big-number">
+          <strong id="analyticsCLV">₱0</strong>
+          <span>Average revenue per customer</span>
+        </div>
+      </article>
+
+        <article class="analytics-panel">
+          <h2>Sales Conversion Summary</h2>
+
+          <div class="analytics-summary-grid">
+            <div>
+              <span>Total Orders</span>
+              <strong id="summaryTotalOrders">0</strong>
             </div>
+
+            <div>
+              <span>Repeat Purchase Rate</span>
+              <strong id="summaryRepeatRate">0%</strong>
+            </div>
+
+            <div>
+              <span>Average Order Value</span>
+              <strong id="summaryAOV">₱0</strong>
+            </div>
+
+            <div>
+              <span>Total Customers</span>
+              <strong id="summaryCustomers">0</strong>
+            </div>
+          </div>
         </article>
 
-        <article class="analytics-panel analytics-coming-soon">
-            <h2>Conversion Rate</h2>
+       <article class="analytics-panel analytics-panel--wide">
+          <h2>Customer Segmentation</h2>
 
-            <div class="coming-soon-box">
-            <span>Coming Soon</span>
-            <p>Requires website visitor tracking and completed purchase events.</p>
+          <div class="customer-segment-grid">
+            <div class="customer-segment-card">
+              <span>VIP Customers</span>
+              <strong id="segmentVipCustomers">0</strong>
+              <small>Spent ₱5,000 or more</small>
             </div>
+
+            <div class="customer-segment-card">
+              <span>Active Customers</span>
+              <strong id="segmentActiveCustomers">0</strong>
+              <small>2 or more orders</small>
+            </div>
+
+            <div class="customer-segment-card">
+              <span>At Risk Customers</span>
+              <strong id="segmentAtRiskCustomers">0</strong>
+              <small>Only 1 order so far</small>
+            </div>
+
+            <div class="customer-segment-card">
+              <span>New Customers</span>
+              <strong id="segmentNewCustomers">0</strong>
+              <small>First-time buyers</small>
+            </div>
+          </div>
+
+          <div class="analytics-list" id="customerSegmentList"></div>
         </article>
 
-        <article class="analytics-panel analytics-coming-soon">
-            <h2>Marketing Attribution</h2>
+        <article class="analytics-panel">
+          <h2>Sales Funnel</h2>
 
-            <div class="coming-soon-box">
-            <span>Coming Soon</span>
-            <p>Requires campaign tracking, UTM parameters and referral sources.</p>
-            </div>
-        </article>
-
-        <article class="analytics-panel analytics-coming-soon">
-            <h2>Customer Behavior Funnel</h2>
-
-            <div class="coming-soon-box">
-            <span>Coming Soon</span>
-            <p>Requires visitor events, product views, add-to-cart tracking and checkout analytics.</p>
-            </div>
+          <div id="salesFunnel"></div>
         </article>
 
         </section>

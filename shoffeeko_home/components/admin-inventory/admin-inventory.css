@@ -1,0 +1,60 @@
+.admin-inventory {
+  width: 100%;
+}
+
+.inventory-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.inventory-toolbar {
+  display: flex;
+  gap: 14px;
+  padding: 0 22px 20px;
+}
+
+.inventory-toolbar input,
+.inventory-toolbar select {
+  background: #132238;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #f5efe6;
+  border-radius: 10px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.inventory-toolbar input {
+  min-width: 320px;
+}
+
+.inventory-toolbar select {
+  min-width: 180px;
+}
+
+.inventory-stock-panel,
+.inventory-history-panel {
+  margin-top: 26px;
+}
+
+@media (max-width: 900px) {
+  .inventory-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .inventory-toolbar {
+    flex-direction: column;
+  }
+
+  .inventory-toolbar input,
+  .inventory-toolbar select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .inventory-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

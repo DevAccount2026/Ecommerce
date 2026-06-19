@@ -1,12 +1,20 @@
 const ORDERS_KEY = "shoffeeko_orders";
+const PRODUCTS_KEY = "adminProducts";
 
 let analyticsCharts = [];
 
 function getOrders() {
   try {
     return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-  } catch (error) {
-    console.error("Orders data is broken:", error);
+  } catch {
+    return [];
+  }
+}
+
+function getProducts() {
+  try {
+    return JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+  } catch {
     return [];
   }
 }
@@ -19,17 +27,11 @@ function formatCurrency(amount) {
 }
 
 function getOrderTotal(order) {
-  return Number(
-    order.total ||
-    order.subtotal ||
-    order.totalAmount ||
-    order.amount ||
-    0
-  );
+  return Number(order.total || order.subtotal || order.totalAmount || 0);
 }
 
-function getOrderDate(order) {
-  return new Date(order.createdAt || order.date || Date.now());
+function getOrderItems(order) {
+  return order.items || order.cart || order.products || [];
 }
 
 function getCustomerEmail(order) {
@@ -41,8 +43,13 @@ function getCustomerEmail(order) {
   ).toLowerCase();
 }
 
-function getOrderItems(order) {
-  return order.items || order.cart || order.products || [];
+function getCustomerName(order) {
+  return (
+    order.customerName ||
+    order.customer?.name ||
+    `${order.customer?.firstName || ""} ${order.customer?.lastName || ""}`.trim() ||
+    getCustomerEmail(order)
+  );
 }
 
 function getItemName(item) {
@@ -72,356 +79,428 @@ function clearOldCharts() {
 
 function makeChart(canvasId, config) {
   const canvas = document.querySelector(`#${canvasId}`);
-
   if (!canvas || typeof Chart === "undefined") return;
 
   const chart = new Chart(canvas, config);
   analyticsCharts.push(chart);
 }
 
-function getChartOptions(extraOptions = {}) {
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: {
-          color: "#d7e6f6",
-          boxWidth: 12,
-          font: {
-            size: 11
-          }
-        }
-      },
-      tooltip: {
-        backgroundColor: "#0a1422",
-        titleColor: "#ffffff",
-        bodyColor: "#d7e6f6",
-        borderColor: "rgba(77, 214, 201, 0.35)",
-        borderWidth: 1
-      }
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: "#aebdca",
-          font: {
-            size: 10
-          }
-        },
-        grid: {
-          color: "rgba(255,255,255,0.06)"
-        }
-      },
-      y: {
-        ticks: {
-          color: "#aebdca",
-          font: {
-            size: 10
-          }
-        },
-        grid: {
-          color: "rgba(255,255,255,0.06)"
-        }
-      }
-    },
-    ...extraOptions
-  };
-}
+function renderTable(selector, rows, emptyMessage = "No data yet") {
+  const container = document.querySelector(selector);
+  if (!container) return;
 
-function getLast30DaysRevenueAndOrders(orders) {
-  const result = {};
-
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-
-    const key = date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric"
-    });
-
-    result[key] = {
-      revenue: 0,
-      orders: 0
-    };
+  if (!rows.length) {
+    container.innerHTML = `<div class="analytics-empty">${emptyMessage}</div>`;
+    return;
   }
 
-  orders.forEach(order => {
-    const orderDate = getOrderDate(order);
-    const key = orderDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric"
-    });
-
-    if (!result[key]) return;
-
-    result[key].revenue += getOrderTotal(order);
-    result[key].orders += 1;
-  });
-
-  return result;
+  container.innerHTML = rows.join("");
 }
 
 function getProductStats(orders) {
-  const products = {};
+  const stats = {};
 
   orders.forEach(order => {
     getOrderItems(order).forEach(item => {
       const name = getItemName(item);
 
-      if (!products[name]) {
-        products[name] = {
+      if (!stats[name]) {
+        stats[name] = {
           name,
+          category: getItemCategory(item),
           sold: 0,
           revenue: 0
         };
       }
 
-      products[name].sold += getItemQuantity(item);
-      products[name].revenue += getItemRevenue(item);
+      stats[name].sold += getItemQuantity(item);
+      stats[name].revenue += getItemRevenue(item);
     });
   });
 
-  return Object.values(products).sort((a, b) => b.sold - a.sold);
+  return Object.values(stats);
 }
 
-function getCategoryStats(orders) {
-  const categories = {};
+function getCategoryRevenue(orders) {
+  const stats = {};
 
   orders.forEach(order => {
     getOrderItems(order).forEach(item => {
       const category = getItemCategory(item);
-      categories[category] = (categories[category] || 0) + getItemQuantity(item);
+      stats[category] = (stats[category] || 0) + getItemRevenue(item);
     });
   });
 
-  return categories;
+  return Object.entries(stats)
+    .map(([category, revenue]) => ({ category, revenue }))
+    .sort((a, b) => b.revenue - a.revenue);
 }
 
 function getCustomerStats(orders) {
-  const customerOrders = {};
+  const stats = {};
 
   orders.forEach(order => {
     const email = getCustomerEmail(order);
 
-    if (!customerOrders[email]) {
-      customerOrders[email] = 0;
+    if (!stats[email]) {
+      stats[email] = {
+        name: getCustomerName(order),
+        email,
+        orders: 0,
+        spend: 0
+      };
     }
 
-    customerOrders[email] += 1;
+    stats[email].orders += 1;
+    stats[email].spend += getOrderTotal(order);
   });
 
-  const emails = Object.keys(customerOrders);
-  const recurring = emails.filter(email => customerOrders[email] > 1).length;
-  const fresh = emails.length - recurring;
-
-  return {
-    total: emails.length,
-    fresh,
-    recurring
-  };
+  return Object.values(stats).sort((a, b) => b.spend - a.spend);
 }
 
-function renderKpis(orders) {
-  const totalOrders = orders.length;
-  const totalRevenue = orders.reduce((sum, order) => sum + getOrderTotal(order), 0);
-  const aov = totalOrders ? totalRevenue / totalOrders : 0;
+function getRepeatPurchaseRate(orders) {
   const customers = getCustomerStats(orders);
+  if (!customers.length) return 0;
 
-  document.querySelector("#analyticsTotalRevenue").textContent = formatCurrency(totalRevenue);
-  document.querySelector("#analyticsTotalOrders").textContent = totalOrders;
-  document.querySelector("#analyticsAOV").textContent = formatCurrency(aov);
-  document.querySelector("#analyticsCustomers").textContent = customers.total;
+  const repeatCustomers = customers.filter(customer => customer.orders > 1).length;
+  return (repeatCustomers / customers.length) * 100;
 }
 
-function renderRevenueTrendChart(orders) {
-  const grouped = getLast30DaysRevenueAndOrders(orders);
-  const labels = Object.keys(grouped);
+function getInventoryValue(products) {
+  return products.reduce((sum, product) => {
+    const price = Number(product.price || 0);
+    const stock = Number(product.stock || product.inventory || 0);
+    return sum + price * stock;
+  }, 0);
+}
 
-  makeChart("revenueTrendChart", {
+function setText(selector, value) {
+  const element = document.querySelector(selector);
+  if (element) element.textContent = value;
+}
+
+function renderKpis(orders, products) {
+  const totalRevenue = orders.reduce((sum, order) => sum + getOrderTotal(order), 0);
+  const totalOrders = orders.length;
+  const customers = getCustomerStats(orders);
+  const repeatRate = getRepeatPurchaseRate(orders);
+  const inventoryValue = getInventoryValue(products);
+  const aov = totalOrders ? totalRevenue / totalOrders : 0;
+  const clv = getCustomerLifetimeValue(orders);
+        
+  setText("#analyticsCLV", formatCurrency(clv));
+  setText("#analyticsTotalRevenue", formatCurrency(totalRevenue));
+  setText("#analyticsTotalOrders", totalOrders);
+  setText("#analyticsAOV", formatCurrency(aov));
+  setText("#analyticsCustomers", customers.length);
+  setText("#analyticsRepeatRate", `${repeatRate.toFixed(1)}%`);
+  setText("#analyticsInventoryValue", formatCurrency(inventoryValue));
+}
+
+function renderRevenueByCategory(orders) {
+  const rows = getCategoryRevenue(orders).slice(0, 8).map(item => `
+    <div class="analytics-row">
+      <span>${item.category}</span>
+      <strong>${formatCurrency(item.revenue)}</strong>
+    </div>
+  `);
+
+  renderTable("#revenueByCategoryList", rows);
+}
+
+function renderRevenueByProduct(orders) {
+  const rows = getProductStats(orders)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 8)
+    .map(product => `
+      <div class="analytics-row">
+        <span>${product.name}</span>
+        <strong>${formatCurrency(product.revenue)}</strong>
+      </div>
+    `);
+
+  renderTable("#revenueByProductList", rows);
+}
+
+function renderTopCustomers(orders) {
+  const rows = getCustomerStats(orders).slice(0, 8).map(customer => `
+    <div class="analytics-row">
+      <span>
+        ${customer.name}
+        <small>${customer.email}</small>
+      </span>
+      <strong>${formatCurrency(customer.spend)}</strong>
+    </div>
+  `);
+
+  renderTable("#topCustomersList", rows);
+}
+
+function renderBestSellingProducts(orders) {
+  const rows = getProductStats(orders)
+    .sort((a, b) => b.sold - a.sold)
+    .slice(0, 8)
+    .map(product => `
+      <div class="analytics-row">
+        <span>${product.name}</span>
+        <strong>${product.sold} sold</strong>
+      </div>
+    `);
+
+  renderTable("#bestSellingProductsList", rows);
+}
+
+function renderWorstSellingProducts(orders) {
+  const rows = getProductStats(orders)
+    .sort((a, b) => a.sold - b.sold)
+    .slice(0, 8)
+    .map(product => `
+      <div class="analytics-row">
+        <span>${product.name}</span>
+        <strong>${product.sold} sold</strong>
+      </div>
+    `);
+
+  renderTable("#worstSellingProductsList", rows);
+}
+
+function renderOrderTrends(orders) {
+  const grouped = {};
+
+  orders.forEach(order => {
+    const date = new Date(order.createdAt || order.date || Date.now());
+    const key = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric"
+    });
+
+    grouped[key] = (grouped[key] || 0) + 1;
+  });
+
+  const labels = Object.keys(grouped);
+  const values = Object.values(grouped);
+
+  makeChart("orderTrendsChart", {
     type: "line",
     data: {
       labels,
       datasets: [
         {
-          label: "Revenue",
-          data: labels.map(label => grouped[label].revenue),
+          label: "Orders",
+          data: values,
           borderColor: "#34d6c3",
           backgroundColor: "rgba(52, 214, 195, 0.16)",
           fill: true,
-          tension: 0.35,
-          borderWidth: 2,
-          pointRadius: 2
-        },
-        {
-          label: "Orders",
-          data: labels.map(label => grouped[label].orders),
-          borderColor: "#4ba6df",
-          backgroundColor: "rgba(75, 166, 223, 0.12)",
-          fill: true,
-          tension: 0.35,
-          borderWidth: 2,
-          pointRadius: 2,
-          yAxisID: "ordersAxis"
+          tension: 0.35
         }
       ]
     },
-    options: getChartOptions({
-      scales: {
-        x: {
-          ticks: {
-            color: "#aebdca",
-            font: { size: 10 }
-          },
-          grid: {
-            color: "rgba(255,255,255,0.06)"
-          }
-        },
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: "#aebdca",
-            callback: value => formatCurrency(value)
-          },
-          grid: {
-            color: "rgba(255,255,255,0.06)"
-          }
-        },
-        ordersAxis: {
-          beginAtZero: true,
-          position: "right",
-          ticks: {
-            color: "#4ba6df",
-            precision: 0
-          },
-          grid: {
-            drawOnChartArea: false
-          }
-        }
-      }
-    })
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
   });
 }
 
-function renderTopCategoriesChart(orders) {
-  const categories = getCategoryStats(orders);
-  const labels = Object.keys(categories);
-  const values = Object.values(categories);
+function renderMonthlyRevenueComparison(orders) {
+  const grouped = {};
 
-  makeChart("topCategoriesChart", {
-    type: "doughnut",
+  orders.forEach(order => {
+    const date = new Date(order.createdAt || order.date || Date.now());
+    const key = date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric"
+    });
+
+    grouped[key] = (grouped[key] || 0) + getOrderTotal(order);
+  });
+
+  const labels = Object.keys(grouped);
+  const values = Object.values(grouped);
+
+  makeChart("monthlyRevenueChart", {
+    type: "bar",
     data: {
       labels,
       datasets: [
         {
+          label: "Revenue",
           data: values,
-          backgroundColor: [
-            "#31c7bd",
-            "#4ba6df",
-            "#9bd9d2",
-            "#e2a84b",
-            "#e66b87"
-          ],
-          borderColor: "#162537",
-          borderWidth: 2
+          backgroundColor: "#34d6c3"
         }
       ]
     },
-    options: getChartOptions({
-      cutout: "58%",
-      scales: {}
-    })
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
   });
 }
 
-/*function renderAcquisitionSourceChart() {
-  makeChart("acquisitionSourceChart", {
-    type: "doughnut",
-    data: {
-      labels: ["Direct", "Social", "Search", "Referral"],
-      datasets: [
-        {
-          data: [40, 25, 20, 15],
-          backgroundColor: [
-            "#31c7bd",
-            "#4ba6df",
-            "#9bd9d2",
-            "#e2a84b"
-          ],
-          borderColor: "#162537",
-          borderWidth: 2
-        }
-      ]
-    },
-    options: getChartOptions({
-      cutout: "58%",
-      scales: {}
-    })
-  });
-}                             */
+function renderSalesConversionSummary(orders) {
+  const totalOrders = orders.length;
+  const customers = getCustomerStats(orders);
+  const totalRevenue = orders.reduce((sum, order) => sum + getOrderTotal(order), 0);
+  const aov = totalOrders ? totalRevenue / totalOrders : 0;
+  const repeatRate = getRepeatPurchaseRate(orders);
 
-function renderNewRecurringChart(orders) {
+  setText("#summaryTotalOrders", totalOrders);
+  setText("#summaryRepeatRate", `${repeatRate.toFixed(1)}%`);
+  setText("#summaryAOV", formatCurrency(aov));
+  setText("#summaryCustomers", customers.length);
+}
+
+  function renderCustomerSegmentation(orders) {
   const customers = getCustomerStats(orders);
 
-  makeChart("newRecurringChart", {
-    type: "doughnut",
-    data: {
-      labels: ["New", "Recurring"],
-      datasets: [
-        {
-          data: [customers.fresh, customers.recurring],
-          backgroundColor: ["#31c7bd", "#4ba6df"],
-          borderColor: "#162537",
-          borderWidth: 2
-        }
-      ]
-    },
-    options: getChartOptions({
-      cutout: "62%",
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          backgroundColor: "#0a1422",
-          titleColor: "#ffffff",
-          bodyColor: "#d7e6f6"
-        }
-      },
-      scales: {}
-    })
-  });
+  const vipCustomers = customers.filter(customer => customer.spend >= 5000);
+  const activeCustomers = customers.filter(customer => customer.orders >= 2);
+  const atRiskCustomers = customers.filter(customer => customer.orders === 1);
+  const newCustomers = customers.filter(customer => customer.orders === 1);
+
+  setText("#segmentVipCustomers", vipCustomers.length);
+  setText("#segmentActiveCustomers", activeCustomers.length);
+  setText("#segmentAtRiskCustomers", atRiskCustomers.length);
+  setText("#segmentNewCustomers", newCustomers.length);
+
+      const rows = vipCustomers.slice(0, 5).map(customer => `
+        <div class="analytics-row">
+          <span>
+            ${customer.name}
+            <small>${customer.email} · ${customer.orders} order(s)</small>
+          </span>
+          <strong>${formatCurrency(customer.spend)}</strong>
+        </div>
+      `);
+
+      renderTable(
+        "#customerSegmentList",
+        rows,
+        "No VIP customers yet"
+      );
+    }
+
+    function renderSalesFunnel(orders) {
+  const created = orders.length;
+
+  const processing = orders.filter(order =>
+    (order.orderStatus || order.status) === "Processing"
+  ).length;
+
+  const shipped = orders.filter(order =>
+    (order.orderStatus || order.status) === "Shipped"
+  ).length;
+
+  const delivered = orders.filter(order =>
+    (order.orderStatus || order.status) === "Delivered"
+  ).length;
+
+  const max = Math.max(
+    created,
+    processing,
+    shipped,
+    delivered,
+    1
+  );
+
+  const funnel = document.querySelector("#salesFunnel");
+
+  if (!funnel) return;
+
+  funnel.className = "sales-funnel";
+
+  funnel.innerHTML = `
+    ${buildFunnelRow("Created", created, max)}
+    ${buildFunnelRow("Processing", processing, max)}
+    ${buildFunnelRow("Shipped", shipped, max)}
+    ${buildFunnelRow("Delivered", delivered, max)}
+  `;
 }
 
-function renderProductMatrix(orders) {
-  const matrix = document.querySelector("#analyticsProductMatrix");
-  if (!matrix) return;
+  function buildFunnelRow(label, value, max) {
+    const width = (value / max) * 100;
 
-  const products = getProductStats(orders).slice(0, 5);
+    return `
+      <div class="sales-funnel-row">
+        <span>${label}</span>
 
-  if (!products.length) {
-    matrix.innerHTML = `
-      <div class="heatmap-row">
-        <span>No product data yet</span>
-        <span>-</span>
-        <span>-</span>
+        <div class="sales-funnel-bar">
+          <div
+            class="sales-funnel-fill"
+            style="width:${width}%">
+          </div>
+        </div>
+
+        <strong>${value}</strong>
       </div>
     `;
-    return;
   }
 
-  matrix.innerHTML = products.map(product => `
-    <div class="heatmap-row">
-      <span>${product.name}</span>
+  function getOrderSource(order) {
+  return (
+    order.source ||
+    order.trafficSource ||
+    order.marketingSource ||
+    order.utmSource ||
+    order.customer?.source ||
+    "Direct"
+  );
+}
+
+function getMarketingAttributionStats(orders) {
+  const sources = {};
+
+  orders.forEach(order => {
+    const source = getOrderSource(order);
+    const revenue = getOrderTotal(order);
+
+    if (!sources[source]) {
+      sources[source] = {
+        source,
+        orders: 0,
+        revenue: 0
+      };
+    }
+
+    sources[source].orders += 1;
+    sources[source].revenue += revenue;
+  });
+
+  return Object.values(sources).sort((a, b) => b.revenue - a.revenue);
+}
+
+function renderMarketingAttribution(orders) {
+  const stats = getMarketingAttributionStats(orders);
+
+  const totalAttributedRevenue = stats.reduce((sum, item) => {
+    return sum + item.revenue;
+  }, 0);
+
+  const totalAttributedOrders = stats.reduce((sum, item) => {
+    return sum + item.orders;
+  }, 0);
+
+  const topSource = stats[0]?.source || "Direct";
+
+  setText("#topTrafficSource", topSource);
+  setText("#attributedRevenue", formatCurrency(totalAttributedRevenue));
+  setText("#attributedOrders", totalAttributedOrders);
+
+  const rows = stats.map(item => `
+    <div class="analytics-row">
       <span>
-        <div class="heatmap-cell">${product.sold}</div>
+        ${item.source}
+        <small>${item.orders} order(s)</small>
       </span>
-      <span>
-        <div class="heatmap-cell">${formatCurrency(product.revenue)}</div>
-      </span>
+      <strong>${formatCurrency(item.revenue)}</strong>
     </div>
-  `).join("");
+  `);
+
+  renderTable(
+    "#marketingAttributionList",
+    rows,
+    "No attribution data yet"
+  );
 }
 
 function initAnalyticsPage() {
@@ -431,13 +510,44 @@ function initAnalyticsPage() {
   clearOldCharts();
 
   const orders = getOrders();
+  const products = getProducts();
 
-  renderKpis(orders);
-  renderRevenueTrendChart(orders);
-  renderTopCategoriesChart(orders);
-/*  renderAcquisitionSourceChart(); */
-  renderNewRecurringChart(orders);
-  renderProductMatrix(orders);
+  renderMarketingAttribution(orders);
+  renderSalesFunnel(orders);
+  renderCustomerSegmentation(orders);
+  renderSalesConversionSummary(orders);
+  renderKpis(orders, products);
+  renderRevenueByCategory(orders);
+  renderRevenueByProduct(orders);
+  renderTopCustomers(orders);
+  renderBestSellingProducts(orders);
+  renderWorstSellingProducts(orders);
+  renderOrderTrends(orders);
+  renderMonthlyRevenueComparison(orders);
+
+  renderKpis(orders, products);
+  renderRevenueByCategory(orders);
+  renderRevenueByProduct(orders);
+  renderTopCustomers(orders);
+  renderBestSellingProducts(orders);
+  renderWorstSellingProducts(orders);
+  renderOrderTrends(orders);
+  renderMonthlyRevenueComparison(orders);
+  renderSalesConversionSummary(orders);
+  renderCustomerSegmentation(orders);
+
+}
+
+function getCustomerLifetimeValue(orders) {
+  const customers = getCustomerStats(orders);
+
+  if (!customers.length) return 0;
+
+  const totalSpend = customers.reduce((sum, customer) => {
+    return sum + customer.spend;
+  }, 0);
+
+  return totalSpend / customers.length;
 }
 
 document.addEventListener("DOMContentLoaded", initAnalyticsPage);

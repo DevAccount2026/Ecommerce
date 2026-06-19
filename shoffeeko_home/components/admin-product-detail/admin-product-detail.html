@@ -29,9 +29,17 @@
         <div><span>Product ID</span><strong id="detailProductId"></strong></div>
         <div><span>Category</span><strong id="detailProductCategory"></strong></div>
         <div><span>Price</span><strong id="detailProductPrice"></strong></div>
-        <div><span>Stock</span><strong id="detailProductStock"></strong></div>
-        <div><span>Status</span><strong id="detailProductStatus"></strong></div>
+        <div><span>Current Inventory</span><strong id="detailProductStock"></strong></div>
+        <div><span>Inventory Status</span><strong id="detailInventoryStatus"></strong></div>
+        <div><span>Product Status</span><strong id="detailProductStatus"></strong></div>
       </div>
+
+        <div class="admin-detail-inventory-action">
+          <a href="#" class="admin-table-btn" id="manageInventoryBtn">
+            Manage Inventory
+          </a>
+        </div>
+
     </div>
   </section>
 
@@ -74,16 +82,10 @@
       </label>
 
       <label>
-        Stock
-        <input type="number" id="editProductStock" min="0" required />
-      </label>
-
-      <label>
         Status
         <select id="editProductStatus" required>
           <option value="Active">Active</option>
-          <option value="Low Stock">Low Stock</option>
-          <option value="Out of Stock">Out of Stock</option>
+          <option value="Inactive">Inactive</option>
         </select>
       </label>
 

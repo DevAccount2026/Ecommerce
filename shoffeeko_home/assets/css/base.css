@@ -163,9 +163,128 @@ a {
   transform: none;
 }
 
-/* ==========================================================================
-   Responsive Design (Tablets & Mobile Devices)
-   ========================================================================== */
+/*===================================*/
+        login
+
+/*************************************/
+
+.customer-account-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff8dc;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.customer-account-link img {
+  width: 22px;
+  height: 22px;
+}
+
+.customer-account-link span {
+  max-width: 90px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.customer-account-menu {
+  position: relative;
+}
+
+.customer-account-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  color: #fff8dc;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.customer-account-link img {
+  width: 22px;
+  height: 22px;
+}
+
+.customer-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  min-width: 180px;
+  padding: 10px;
+
+  display: none;
+  z-index: 1000;
+
+  background: #080808;
+  border: 1px solid rgba(255, 248, 220, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+}
+
+.customer-dropdown.active {
+  display: grid;
+}
+
+.customer-dropdown a,
+.customer-dropdown button {
+  display: block;
+  width: 100%;
+
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #fff8dc;
+
+  text-align: left;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.customer-dropdown a:hover,
+.customer-dropdown button:hover {
+  background: rgba(255, 248, 220, 0.12);
+}
+/* ==========================================================================*/
+   Responsive Design Tablets & Mobile Devices
+ /* ========================================================================== */
+
+ .customer-account-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff8dc;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.customer-account-link img {
+  width: 22px;
+  height: 22px;
+}
+
+.customer-account-link span {
+  max-width: 90px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
 @media (max-width: 768px) {
   .sk-header {
     height: auto;

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ShoffeeKo Admin Marketing</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/admin-marketing.css" />
+</head>
+
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <span>ShoffeeKo HQ</span>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="admin-inventory.html">Inventory</a>
+        <a href="admin-customers.html">Customers</a>
+        <a href="admin-analytics.html">Analytics</a>
+        <a href="admin-marketing.html" class="active">Marketing</a>
+        <a href="admin-settings.html">Settings</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input type="search" placeholder="Search campaigns..." id="marketingSearch" />
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">✉️</button>
+
+          <div class="admin-profile">
+            <div class="admin-profile__avatar">A</div>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-marketing-page" id="adminMarketingPage">
+        <section class="marketing-header">
+          <div>
+            <p class="eyebrow">ShoffeeKo HQ</p>
+            <h1>Marketing Campaigns</h1>
+            <p>Create customer campaigns using your analytics segments.</p>
+          </div>
+
+          <button class="marketing-primary-btn" id="openCampaignModal">
+            + Create Campaign
+          </button>
+        </section>
+
+        <section class="marketing-kpi-grid">
+          <article>
+            <span>Total Campaigns</span>
+            <strong id="totalCampaigns">0</strong>
+          </article>
+
+          <article>
+            <span>Draft Campaigns</span>
+            <strong id="draftCampaigns">0</strong>
+          </article>
+
+          <article>
+            <span>Ready Campaigns</span>
+            <strong id="readyCampaigns">0</strong>
+          </article>
+
+          <article>
+            <span>Target Segments</span>
+            <strong>5</strong>
+          </article>
+        </section>
+
+        <section class="marketing-panel">
+          <div class="marketing-panel__header">
+            <h2>Campaign List</h2>
+            <span id="campaignCountLabel">0 campaigns</span>
+          </div>
+
+          <div class="marketing-table">
+            <div class="marketing-table__head">
+              <span>Campaign</span>
+              <span>Segment</span>
+              <span>Status</span>
+              <span>Created</span>
+              <span>Action</span>
+            </div>
+
+            <div id="campaignList"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="marketing-modal" id="campaignModal" aria-hidden="true">
+    <div class="marketing-modal__box">
+      <div class="marketing-modal__header">
+        <h2>Create Campaign</h2>
+        <button id="closeCampaignModal">×</button>
+      </div>
+
+      <form id="campaignForm" class="campaign-form">
+        <label>
+          Campaign Name
+          <input type="text" id="campaignName" required />
+        </label>
+
+        <label>
+          Customer Segment
+          <select id="campaignSegment" required>
+            <option value="All Customers">All Customers</option>
+            <option value="VIP Customers">VIP Customers</option>
+            <option value="Active Customers">Active Customers</option>
+            <option value="At Risk Customers">At Risk Customers</option>
+            <option value="New Customers">New Customers</option>
+          </select>
+        </label>
+
+        <label>
+          Email Subject
+          <input type="text" id="campaignSubject" required />
+        </label>
+
+        <label>
+          Email Message
+          <textarea id="campaignMessage" rows="8" required></textarea>
+        </label>
+
+        <label>
+          Status
+          <select id="campaignStatus">
+            <option value="Draft">Draft</option>
+            <option value="Ready">Ready</option>
+          </select>
+        </label>
+
+        <div class="campaign-form__actions">
+          <button type="button" id="cancelCampaign">Cancel</button>
+          <button type="submit">Save Campaign</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin-marketing.js"></script>
+</body>
+</html>

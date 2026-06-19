@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ShoffeeKo HQ | Inventory</title>
+
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css">
+  <link rel="stylesheet" href="../components/admin-inventory/admin-inventory.css">
+</head>
+
+<body>
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo">S</span>
+        <strong>ShoffeeKo HQ</strong>
+      </div>
+
+      <nav class="admin-sidebar__nav">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-orders.html">Orders</a>
+        <a href="admin-products.html">Products</a>
+        <a href="admin-inventory.html" class="active">Inventory</a>
+        <a href="admin-customers.html">Customers</a>
+        <a href="admin-analytics.html">Analytics</a>
+        <a href="admin-marketing.html">Marketing</a>
+        <a href="admin-settings.html">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div class="admin-search">
+          <span>⌕</span>
+          <input type="search" placeholder="Search inventory, SKU, products...">
+        </div>
+
+        <div class="admin-topbar__actions">
+          <button class="admin-icon-btn">🔔</button>
+          <button class="admin-icon-btn">◼</button>
+          <div class="admin-profile">
+            <span class="admin-profile__avatar">A</span>
+            <span>Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="admin-page">
+        <div id="adminInventoryPage"></div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="../components/admin-inventory/admin-inventory.js"></script>
+</body>
+</html>

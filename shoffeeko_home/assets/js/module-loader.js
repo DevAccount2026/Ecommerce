@@ -71,9 +71,21 @@ async function renderShell() {
           <div class="sk-icons">
             <img src="${BASE_PATH}assets/images/icons/icon-search.svg" alt="Search">
 
-            <a href="${BASE_PATH}pages/cust_login.html" id="accountLink">
-              <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
-            </a>
+            <div class="customer-account-menu">
+              <button type="button" id="accountMenuButton" class="customer-account-link">
+                <img src="${BASE_PATH}assets/images/icons/icon-account.svg" alt="Account">
+                <span id="customerHeaderName">Login</span>
+                <span id="customerMenuArrow">▾</span>
+              </button>
+
+              <div class="customer-dropdown" id="customerDropdown">
+                <a href="${BASE_PATH}pages/cust_account.html">My Account</a>
+                <a href="${BASE_PATH}pages/order-history.html">Order History</a>
+                <a href="${BASE_PATH}pages/cust_addresses.html">Saved Addresses</a>
+                <a href="${BASE_PATH}pages/customer_wishlist.html">Wishlist</a>
+                <button type="button" id="customerLogoutBtn">Logout</button>
+              </div>
+            </div>
 
               <a href="${BASE_PATH}pages/cart.html" class="sk-cart-link" id="cartButton" aria-label="Cart">
                 <img src="${BASE_PATH}assets/images/icons/icon-cart.svg" alt="Cart">
@@ -99,39 +111,65 @@ async function renderShell() {
       </header>
     `;
   }
-
   if (footer) {
     footer.innerHTML = '';
   }
 
-  setActiveNav();
-  document.dispatchEvent(new Event("shellReady"));
-
   function updateAccountLink() {
+  let customer = null;
 
-  const customer =
-    JSON.parse(
+  try {
+    customer = JSON.parse(
       localStorage.getItem("shoffeeko_current_customer")
     );
+  } catch {
+    customer = null;
+  }
 
-  const accountLink = document.getElementById("accountLink");
+  const nameEl = document.getElementById("customerHeaderName");
+  const dropdown = document.getElementById("customerDropdown");
+  const menuButton = document.getElementById("accountMenuButton");
+  const logoutBtn = document.getElementById("customerLogoutBtn");
 
-    if (!accountLink) return;
+  if (!nameEl || !menuButton) return;
 
-      if (customer) {
+  if (customer) {
+    const firstName =
+      customer.firstName ||
+      customer.name?.split(" ")[0] ||
+      "Account";
 
-        accountLink.href =
-          `${BASE_PATH}pages/cust_account.html`;
+    nameEl.textContent = firstName;
 
-      } else {
+    menuButton.addEventListener("click", event => {
+      event.stopPropagation();
+      dropdown?.classList.toggle("active");
+    });
 
-        accountLink.href =
-          `${BASE_PATH}pages/cust_login.html`;
+    logoutBtn?.addEventListener("click", () => {
+      localStorage.removeItem("shoffeeko_current_customer");
+      window.location.href = `${BASE_PATH}pages/cust_login.html`;
+    });
 
+    document.addEventListener("click", () => {
+      dropdown?.classList.remove("active");
+    });
+    } else {
+      nameEl.textContent = "Login";
+
+      menuButton.addEventListener("click", () => {
+        window.location.href = `${BASE_PATH}pages/cust_login.html`;
+      });
+
+      if (dropdown) {
+        dropdown.remove();
       }
     }
+  }
 
   updateAccountLink();
+  setActiveNav();
+  document.dispatchEvent(new Event("shellReady"));
 }
 
 function setActiveNav() {

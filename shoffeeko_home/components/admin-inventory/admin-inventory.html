@@ -1,0 +1,82 @@
+<div class="admin-inventory">
+  <div class="admin-dashboard__header">
+    <div>
+      <p class="admin-dashboard__eyebrow">ShoffeeKo HQ</p>
+      <h1>Inventory</h1>
+    </div>
+  </div>
+
+  <div class="inventory-stats-grid" id="inventoryStatsGrid"></div>
+
+  <section class="admin-panel inventory-stock-panel">
+    <div class="admin-panel__header">
+      <h2>Stock Overview</h2>
+      <span>Current product inventory</span>
+    </div>
+
+    <div class="inventory-toolbar">
+      <input type="search" id="inventorySearchInput" placeholder="Search product, SKU, category...">
+
+      <select id="inventoryStockFilter">
+        <option value="all">All Stock</option>
+        <option value="in-stock">In Stock</option>
+        <option value="low-stock">Low Stock</option>
+        <option value="out-of-stock">Out of Stock</option>
+      </select>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="inventoryStockTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="admin-panel inventory-history-panel">
+    <div class="admin-panel__header">
+      <h2>Inventory Movement History</h2>
+      <span>All stock changes</span>
+    </div>
+
+    <div class="inventory-toolbar">
+      <input type="search" id="inventoryHistorySearchInput" placeholder="Search product, SKU, reason...">
+
+      <select id="inventoryTypeFilter">
+        <option value="all">All Types</option>
+        <option value="Restock">Restock</option>
+        <option value="Deduction">Deduction</option>
+        <option value="Adjustment">Adjustment</option>
+      </select>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Previous</th>
+            <th>New</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+
+        <tbody id="inventoryHistoryTable"></tbody>
+      </table>
+    </div>
+  </section>
+</div>

@@ -90,13 +90,13 @@ function openProductEditor() {
         : "Edit Product";
     }
 
-  document.querySelector("#editProductName").value = currentProduct?.name || "";
+ /* document.querySelector("#editProductName").value = currentProduct?.name || "";
   document.querySelector("#editProductCategory").value = currentProduct?.category || "Arabica";
   document.querySelector("#editProductPrice").value = currentProduct?.price || "";
   document.querySelector("#editProductStock").value = currentProduct?.stock || "";
   document.querySelector("#editProductStatus").value = currentProduct?.status || "Active";
   document.querySelector("#editProductDescription").value =
-    currentProduct?.description || "";
+    currentProduct?.description || "";*/
 
   const previewImage = document.querySelector("#editProductImagePreview");
 
