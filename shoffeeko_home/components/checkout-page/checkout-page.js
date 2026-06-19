@@ -1,5 +1,43 @@
 document.addEventListener("DOMContentLoaded", initCheckoutPage);
 
+const ADMIN_PRODUCTS_KEY = "adminProducts";
+const CART_KEY = "shoffeeko_cart";
+
+function getAdminProducts() {
+  try {
+    return JSON.parse(localStorage.getItem(ADMIN_PRODUCTS_KEY)) || [];
+  } catch (error) {
+    console.error("Admin products are broken:", error);
+    return [];
+  }
+}
+
+function saveAdminProducts(products) {
+  localStorage.setItem(ADMIN_PRODUCTS_KEY, JSON.stringify(products));
+}
+
+function deductInventoryFromOrder(orderItems = []) {
+  const products = getAdminProducts();
+
+  const updatedProducts = products.map(product => {
+    const orderedItem = orderItems.find(item => String(item.id) === String(product.id));
+
+    if (!orderedItem) return product;
+
+    const currentStock = Number(product.stock || 0);
+    const quantityBought = Number(orderedItem.quantity || 1);
+    const newStock = Math.max(currentStock - quantityBought, 0);
+
+    return {
+      ...product,
+      stock: newStock,
+      status: newStock <= 0 ? "Inactive" : product.status
+    };
+  });
+
+  saveAdminProducts(updatedProducts);
+}
+
 async function initCheckoutPage() {
   const root = document.getElementById("checkoutPage");
   if (!root) return;
@@ -465,28 +503,28 @@ const enabledPayments = Object.entries(payments)
       paidAt: null,
 
       orderStatus: "Pending",
-
-      
+   
 
       items: cart.map(item => ({
         id: item.id,
         sku: item.sku,
         title: item.title || item.name,
         category: item.category || "Uncategorized",
-        price: Number(item.price || 0),
+        price: parsePrice(item.price),
         quantity: Number(item.quantity || 1),
         image: item.image
       }))
 
-    
-
-      
+          
     };
 
     const orders = JSON.parse(localStorage.getItem(ordersKey)) || [];
     orders.push(order);
 
     localStorage.setItem(ordersKey, JSON.stringify(orders));
+
+    deductInventoryFromOrder(order.items || []);
+
     localStorage.removeItem(cartKey);
 
     window.location.href = `order-confirmation.html?id=${order.id}`;

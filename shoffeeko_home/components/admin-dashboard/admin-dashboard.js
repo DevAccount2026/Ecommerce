@@ -169,7 +169,76 @@ function renderRecentOrders() {
   }).join("");
 }
 
-const PRODUCTS_KEY = "shoffeeko_products";
+const INVENTORY_LOG_KEY = "shoffeeko_inventory_logs";
+
+function getInventoryLogs() {
+  try {
+    return JSON.parse(localStorage.getItem(INVENTORY_LOG_KEY)) || [];
+  } catch (error) {
+    console.error("Inventory logs are broken:", error);
+    return [];
+  }
+}
+
+function saveInventoryLogs(logs) {
+  localStorage.setItem(INVENTORY_LOG_KEY, JSON.stringify(logs));
+}
+
+function addInventoryLog(log) {
+  const logs = getInventoryLogs();
+
+  logs.unshift({
+    id: "INV-" + Date.now(),
+    createdAt: new Date().toISOString(),
+    ...log
+  });
+
+  saveInventoryLogs(logs);
+}
+
+function saveProducts(products) {
+  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+}
+
+function restockProduct(productId) {
+  const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY)) || [];
+
+  const product = products.find(item => String(item.id) === String(productId));
+
+  if (!product) {
+    alert("Product not found.");
+    return;
+  }
+
+  const currentStock = Number(product.stock || 0);
+  const amount = Number(prompt(`Add stock for ${product.name || product.title}:`, "10"));
+
+  if (!amount || amount <= 0) return;
+
+  product.stock = currentStock + amount;
+
+  if (product.stock > 0 && product.status === "Inactive") {
+    product.status = "Active";
+  }
+
+  saveProducts(products);
+
+  addInventoryLog({
+    productId: product.id,
+    sku: product.sku || product.id,
+    productName: product.name || product.title || "Unnamed Product",
+    type: "Restock",
+    quantity: amount,
+    previousStock: currentStock,
+    newStock: product.stock,
+    reason: "Admin restock"
+  });
+
+  renderLowStockAlerts(products);
+}
+
+const PRODUCTS_KEY = "adminProducts";
+
 
 async function fetchProducts() {
   try {
@@ -195,7 +264,7 @@ function renderLowStockAlerts(products) {
   if (!tableBody || !Array.isArray(products)) return;
 
   const lowStockProducts = products.filter(product => {
-    return Number(product.stock || 0) <= 5;
+    return Number(product.stock || 0) <= 10;
   });
 
   if (!lowStockProducts.length) {
@@ -222,7 +291,14 @@ function renderLowStockAlerts(products) {
           </span>
         </td>
         <td>
-          <button class="admin-table-btn">Add Stock</button>
+
+          <button
+            class="admin-table-btn"
+            data-restock-id="${product.id}"
+          >
+            Add Stock
+          </button>
+
         </td>
       </tr>
     `;
@@ -692,7 +768,13 @@ function renderTopProducts() {
       <td>${index + 1}. ${product.name}</td>
       <td>${product.quantity} sold</td>
     </tr>
+    
   `).join("");
+     document.querySelectorAll("[data-restock-id]").forEach(button => {
+     button.addEventListener("click", () => {
+        restockProduct(button.dataset.restockId);
+      });
+    }); 
 }
 
 
