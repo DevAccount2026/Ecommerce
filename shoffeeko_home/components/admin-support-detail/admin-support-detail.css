@@ -1,0 +1,233 @@
+.admin-support-detail-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 70px 20px;
+  color: #f5efe6;
+}
+
+.admin-support-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.admin-eyebrow {
+  color: #c9a46b;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 13px;
+}
+
+.admin-support-header h1 {
+  font-size: clamp(34px, 5vw, 56px);
+  margin: 8px 0;
+}
+
+.admin-support-header p {
+  color: rgba(245, 239, 230, 0.72);
+}
+
+.admin-primary-btn,
+.admin-secondary-btn {
+  border: 1px solid rgba(255, 248, 220, 0.25);
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-primary-btn {
+  background: #fff8dc;
+  color: #111;
+}
+
+.admin-secondary-btn {
+  background: transparent;
+  color: #fff8dc;
+}
+
+.admin-ticket-summary,
+.admin-support-panel {
+  background: #080808;
+  border: 1px solid rgba(255, 248, 220, 0.14);
+  border-radius: 22px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.admin-ticket-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.admin-ticket-top h2 {
+  margin: 0 0 8px;
+}
+
+.admin-ticket-top p {
+  margin: 0;
+  color: rgba(245, 239, 230, 0.72);
+}
+
+.admin-status {
+  display: inline-flex;
+  height: fit-content;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(201, 164, 107, 0.14);
+  color: #f1c987;
+}
+
+.admin-status.resolved,
+.admin-status.closed {
+  background: rgba(86, 196, 126, 0.14);
+  color: #7de39c;
+}
+
+.admin-status.in-progress,
+.admin-status.waiting-customer {
+  background: rgba(84, 166, 255, 0.14);
+  color: #8cc8ff;
+}
+
+.admin-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.admin-meta-item {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.admin-meta-item span {
+  display: block;
+  color: rgba(245,239,230,0.58);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.admin-meta-item strong {
+  color: #fff8dc;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.admin-panel-header h2 {
+  margin: 0;
+}
+
+.admin-panel-header span {
+  color: #c9a46b;
+  font-size: 14px;
+}
+
+.admin-thread {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.admin-message {
+  max-width: 78%;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.admin-message.customer {
+  margin-right: auto;
+}
+
+.admin-message.admin {
+  margin-left: auto;
+  border-color: rgba(201,164,107,0.25);
+}
+
+.admin-message__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.admin-message__sender {
+  color: #fff8dc;
+  font-weight: 800;
+}
+
+.admin-message__date {
+  color: rgba(245,239,230,0.55);
+}
+
+.admin-message p {
+  margin: 0;
+  color: rgba(245,239,230,0.78);
+  line-height: 1.6;
+}
+
+.admin-reply-form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-reply-form label {
+  display: grid;
+  gap: 8px;
+  color: rgba(245,239,230,0.8);
+}
+
+.admin-reply-form textarea,
+.admin-reply-form select {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: #111;
+  color: #fff8dc;
+  padding: 14px;
+  outline: none;
+}
+
+.admin-empty {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+@media (max-width: 760px) {
+  .admin-support-header,
+  .admin-ticket-top,
+  .admin-panel-header,
+  .admin-message__header {
+    flex-direction: column;
+  }
+
+  .admin-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-message {
+    max-width: 100%;
+  }
+}
+
+.admin-support-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}

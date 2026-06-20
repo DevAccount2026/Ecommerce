@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="../assets/css/base.css" />
+<link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+<link rel="stylesheet" href="../assets/css/admin-marketing-segments.css" />
+
+<div class="admin-marketing-segments-page">
+
+  <div class="segments-header">
+    <div>
+      <p class="eyebrow">Marketing</p>
+      <h1>Customer Segments</h1>
+      <p>Manage dynamic marketing audiences.</p>
+    </div>
+
+    <div class="segments-header__actions">
+        <a href="admin-dashboard.html" class="segments-back-btn">
+            ← Dashboard
+        </a>
+
+        <a href="admin-marketing.html" class="segments-back-btn">
+            ← Campaigns
+        </a>
+     </div>
+
+
+  </div>
+
+  <div class="segments-summary-grid" id="segmentsSummaryGrid"></div>
+
+  <section class="segments-panel">
+    <div class="segments-panel__header">
+      <h2>Segment Overview</h2>
+    </div>
+
+    <div class="segments-table">
+      <div class="segments-table__head">
+        <span>Segment</span>
+        <span>Customers</span>
+        <span>Action</span>
+      </div>
+
+      <div id="segmentsTableBody"></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="../assets/js/admin-marketing.js"></script>
+<script src="../assets/js/admin-marketing-segments.js"></script>
+</body>
+</html>

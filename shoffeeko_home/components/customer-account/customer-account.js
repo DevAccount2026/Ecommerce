@@ -1,9 +1,13 @@
 document.addEventListener("DOMContentLoaded", initCustomerAccount);
 
+const ORDERS_KEY = "shoffeeko_orders";
+const WISHLIST_KEY = "shoffeeko_wishlist";
+
 async function initCustomerAccount() {
   const root = document.getElementById("customerAccountPage");
   if (!root) return;
  
+  
   const response = await fetch("../components/customer-account/customer-account.json");
   const data = await response.json();
   const settings = data.settings || {};
@@ -30,6 +34,7 @@ async function initCustomerAccount() {
 
     saveCustomers(updatedCustomers);
     saveSession(updatedCustomer);
+    renderCustomerDashboardMetrics(customer);
 
     alert(
       marketingOptIn.checked
@@ -128,18 +133,19 @@ function handleChangePassword(event) {
 
       <div class="account-tabs">
         
-          <button class="account-tab active" data-tab="overview">Overview</button>
-       
+          <button class="account-tab active" data-tab="overview">Overview</button>      
           <button class="account-tab" data-tab="orders">Orders</button>
-       
           <button class="account-tab" data-tab="rewards">Rewards</button>
           <button class="account-tab" data-tab="notifications">Notifications</button>
           <button class="account-tab" data-tab="settings">Settings</button>
+
       </div>
 
       <div class="account-layout">
 
        <div class="account-tab-panel active" data-panel="overview">
+         
+       <div class="customer-metrics-grid" id="customerDashboardMetrics"></div>
 
         <div class="account-card account-welcome">
           <h2>${settings.welcomeText}, ${customer.firstName}!</h2>
@@ -211,7 +217,7 @@ function handleChangePassword(event) {
 
         </div>
 
-
+        
         <div class="account-tab-panel" data-panel="rewards">
          <div class="account-card account-loyalty">
        
@@ -540,34 +546,43 @@ function renderLoyaltyRewards(customer) {
     return sum + Number(order.total || order.subtotal || 0);
   }, 0);
 
-  const points = Math.floor(totalSpent / 100);
+  const points = Math.floor(totalSpent);
 
   let tier = "Bronze";
   let nextTier = "Silver";
-  let nextGoal = 100;
+  let nextGoal = 10000;
 
-  if (points >= 500) {
+  if (points >= 50000) {
     tier = "Gold";
     nextTier = "VIP";
-    nextGoal = 1000;
-  } else if (points >= 100) {
+    nextGoal = 100000;
+  } else if (points >= 10000) {
     tier = "Silver";
     nextTier = "Gold";
-    nextGoal = 500;
+    nextGoal = 50000;
   }
 
   const remaining = Math.max(nextGoal - points, 0);
-  const progress = Math.min((points / nextGoal) * 100, 100);
 
-  document.querySelector("#loyaltyPoints").textContent = `${points} pts`;
+  const previousGoal =
+    tier === "Silver" ? 10000 :
+    tier === "Gold" ? 50000 :
+    tier === "VIP" ? 100000 :
+    0;
+
+  const progress =
+    ((points - previousGoal) / (nextGoal - previousGoal)) * 100;
+
+  document.querySelector("#loyaltyPoints").textContent = `${points.toLocaleString()} pts`;
   document.querySelector("#loyaltyTier").textContent = tier;
   document.querySelector("#loyaltyTierLabel").textContent = tier;
   document.querySelector("#loyaltyNextReward").textContent =
     remaining > 0
-      ? `${remaining} pts until ${nextTier}`
-      : "VIP reward unlocked";
+      ? `${remaining.toLocaleString()} pts until ${nextTier}`
+      : `${nextTier} unlocked`;
 
-  document.querySelector("#loyaltyProgressBar").style.width = `${progress}%`;
+  document.querySelector("#loyaltyProgressBar").style.width =
+    `${Math.min(Math.max(progress, 0), 100)}%`;
 }
 
 function bindAccountTabs() {
@@ -683,6 +698,56 @@ function renderCustomerNotifications(customer) {
   `).join("");
 }
 
+function renderCustomerRewards(customer) {
+  const panel = document.querySelector("#customerRewardsPanel");
+  if (!panel) return;
+
+  const orders = getCustomerOrders(customer);
+
+  const validOrders = orders.filter(order => {
+    const status = order.orderStatus || order.status || "";
+    return status.toLowerCase() !== "cancelled";
+  });
+
+  const totalSpent = validOrders.reduce((sum, order) => {
+    return sum + Number(order.total || order.subtotal || 0);
+  }, 0);
+
+  const points = Math.floor(totalSpent);
+  const voucherCount = Math.floor(points / 1000);
+  const discountValue = voucherCount * 50;
+
+  panel.innerHTML = `
+    <section class="account-card">
+      <h2>Rewards</h2>
+      <p>Earn points every time you shop.</p>
+
+      <div class="rewards-summary-grid">
+        <div class="reward-card">
+          <span>Current Points</span>
+          <strong>${points.toLocaleString()}</strong>
+        </div>
+
+        <div class="reward-card">
+          <span>Available Vouchers</span>
+          <strong>${voucherCount}</strong>
+        </div>
+
+        <div class="reward-card">
+          <span>Discount Value</span>
+          <strong>${formatCurrency(discountValue)}</strong>
+        </div>
+      </div>
+
+      <div class="rewards-rules">
+        <h3>How rewards work</h3>
+        <p>Earn <strong>1 point</strong> for every ${formatCurrency(1)} spent.</p>
+        <p>Every <strong>1,000 points</strong> can be redeemed for ${formatCurrency(50)} off.</p>
+      </div>
+    </section>
+  `;
+}
+
 function bindNotifications(customer) {
   const btn = document.querySelector("#markNotificationsReadBtn");
   if (!btn) return;
@@ -705,6 +770,7 @@ function bindNotifications(customer) {
     renderCustomerNotifications(customer);
   });
 }
+
 function renderRecentOrders(customer) {
   const list = document.querySelector("#recentOrdersList");
   if (!list) return;
@@ -817,7 +883,119 @@ function bindAccountSettings(customer) {
   }
 
 }
-    bindEditProfile();
+
+function getCustomerOrders(customer) {
+  const email = customer?.email?.toLowerCase();
+  if (!email) return [];
+
+  try {
+    const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+
+    return orders.filter(order => {
+      const orderEmail =
+        order.customerEmail ||
+        order.email ||
+        order.customer?.email ||
+        "";
+
+      return orderEmail.toLowerCase() === email;
+    });
+  } catch (error) {
+    console.error("Orders are broken:", error);
+    return [];
+  }
+}
+
+function getWishlistCount(customer) {
+  const email = customer?.email?.toLowerCase();
+  if (!email) return 0;
+
+  try {
+    const wishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY)) || [];
+
+    return wishlist.filter(item => {
+      const itemEmail =
+        item.customerEmail ||
+        item.email ||
+        item.customer?.email ||
+        "";
+
+      return itemEmail.toLowerCase() === email;
+    }).length;
+  } catch (error) {
+    console.error("Wishlist is broken:", error);
+    return 0;
+  }
+}
+
+function calculateRewardPoints(totalSpent) {
+  return Math.floor(totalSpent);
+}
+  
+function renderCustomerDashboardMetrics(customer) {
+  const container = document.querySelector("#customerDashboardMetrics");
+  if (!container) return;
+
+  const orders = getCustomerOrders(customer);
+
+  const totalOrders = orders.length;
+
+  const totalSpent = orders.reduce((sum, order) => {
+    return sum + Number(order.total || order.subtotal || 0);
+  }, 0);
+
+  const rewardPoints = calculateRewardPoints(totalSpent);
+  const wishlistItems = getWishlistCount(customer);
+
+  container.innerHTML = `
+    <div class="customer-metric-card">
+      <span>Total Orders</span>
+      <strong>${totalOrders}</strong>
+    </div>
+
+    <div class="customer-metric-card">
+      <span>Total Spent</span>
+      <strong>${formatCurrency(totalSpent)}</strong>
+    </div>
+
+    <div class="customer-metric-card">
+      <span>Reward Points</span>
+      <strong>${rewardPoints}</strong>
+    </div>
+
+    <div class="customer-metric-card">
+      <span>Wishlist Items</span>
+      <strong>${wishlistItems}</strong>
+    </div>
+  `;
+}
+
+function calculateCustomerRewardData(customer) {
+  const orders = getCustomerOrders(customer);
+
+  const completedOrders = orders.filter(order => {
+    const status = order.orderStatus || order.status || "";
+    return status.toLowerCase() !== "cancelled";
+  });
+
+  const totalSpent = completedOrders.reduce((sum, order) => {
+    return sum + Number(order.total || order.subtotal || 0);
+  }, 0);
+
+  const points = Math.floor(totalSpent);
+
+  const voucherCount = Math.floor(points / 1000);
+  const availableDiscount = voucherCount * 50;
+
+  return {
+    points,
+    voucherCount,
+    availableDiscount,
+    completedOrders
+  };
+}
+
+bindEditProfile();
     renderRecentOrders(customer);
     renderAccountStats(customer);
     bindNotifications(customer);

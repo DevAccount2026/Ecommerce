@@ -1,0 +1,48 @@
+<section class="admin-support-header">
+  <div>
+    <p class="admin-eyebrow">Support Desk</p>
+    <h1 id="adminTicketTitle">Ticket Detail</h1>
+    <p id="adminTicketSubtitle">Manage customer support conversation.</p>
+  </div>
+
+  <div class="admin-support-actions">
+  <a href="admin-dashboard.html" class="admin-secondary-btn">
+    ← Dashboard
+  </a>
+
+  <a href="admin-support.html" class="admin-secondary-btn">
+    ← Support Queue
+  </a>
+  </div>
+</section>
+
+<section class="admin-ticket-summary" id="adminTicketSummary"></section>
+
+<section class="admin-support-panel">
+  <div class="admin-panel-header">
+    <h2>Conversation</h2>
+    <span id="adminReplyCount">0 replies</span>
+  </div>
+
+  <div class="admin-thread" id="adminSupportThread"></div>
+
+  <form id="adminReplyForm" class="admin-reply-form">
+    <label>
+      Reply as Admin
+      <textarea id="adminReplyMessage" rows="4" required></textarea>
+    </label>
+
+    <label>
+      Ticket Status
+      <select id="adminTicketStatus">
+        <option value="Open">Open</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Waiting Customer">Waiting Customer</option>
+        <option value="Resolved">Resolved</option>
+        <option value="Closed">Closed</option>
+      </select>
+    </label>
+
+    <button type="submit" class="admin-primary-btn">Save Reply</button>
+  </form>
+</section>

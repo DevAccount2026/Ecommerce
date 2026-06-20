@@ -1,5 +1,8 @@
+const SUPPORT_TICKETS_KEY = "shoffeeko_support_tickets";
 
 async function fetchDashboardStats() {
+
+  
   const root = document.querySelector("#adminDashboard");
   const apiUrl = root?.dataset.api;
 
@@ -32,7 +35,13 @@ function renderDashboardStats(data) {
   const grid = document.querySelector("#adminStatsGrid");
   if (!grid || !data) return;
 
- const orders = getSavedOrders();
+const orders = getSavedOrders();
+
+const supportTickets = getSupportTickets();
+
+const openSupportTickets = supportTickets.filter(ticket =>
+  ticket.status !== "Resolved" && ticket.status !== "Closed"
+).length;
 
 const totalOrders = orders.length;
 
@@ -70,16 +79,39 @@ const cards = [
     label: "Pending Orders",
     value: pendingOrders,
     note: "Orders awaiting action"
+  },
+
+  {
+    label: "Open Support Tickets",
+    value: openSupportTickets,
+    note: "Needs attention",
+    link: "admin-support.html?status=Open"
   }
+
 ];
 
   grid.innerHTML = cards.map(card => `
-    <article class="admin-stat-card">
+    <article
+      class="admin-stat-card"
+      data-link="${card.link || ""}"
+    >
       <div class="admin-stat-card__label">${card.label}</div>
       <div class="admin-stat-card__value">${card.value}</div>
       <div class="admin-stat-card__note">${card.note}</div>
     </article>
   `).join("");
+
+  grid.querySelectorAll(".admin-stat-card").forEach(card => {
+    const link = card.dataset.link;
+
+    if (!link) return;
+
+    card.style.cursor = "pointer";
+
+    card.addEventListener("click", () => {
+      window.location.href = link;
+    });
+  });
 }
 
 function formatDate(dateValue) {
@@ -811,5 +843,14 @@ function renderInventoryHistory() {
   `).join("");
 }
 
+function getSupportTickets() {
+  try {
+    return JSON.parse(localStorage.getItem(SUPPORT_TICKETS_KEY)) || [];
+  } catch (error) {
+    console.error("Support tickets are broken:", error);
+    localStorage.removeItem(SUPPORT_TICKETS_KEY);
+    return [];
+  }
+}
 
 document.addEventListener("DOMContentLoaded", initAdminDashboard);

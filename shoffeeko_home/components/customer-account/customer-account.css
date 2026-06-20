@@ -560,3 +560,41 @@
 .notification-row.cancelled strong {
   color: #ff6b6b;
 }
+
+.customer-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.customer-metric-card {
+  border: 1px solid rgba(255, 248, 220, 0.45);
+  border-radius: 18px;
+  padding: 22px;
+  background: rgba(255, 248, 220, 0.04);
+}
+
+.customer-metric-card span {
+  display: block;
+  font-size: 13px;
+  color: #d9cda9;
+  margin-bottom: 10px;
+}
+
+.customer-metric-card strong {
+  font-size: 28px;
+  color: #fff8dc;
+}
+
+@media (max-width: 900px) {
+  .customer-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .customer-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

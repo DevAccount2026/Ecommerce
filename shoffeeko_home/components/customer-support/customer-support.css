@@ -1,0 +1,253 @@
+.customer-support-page {
+  padding: 80px 20px;
+  color: #f5efe6;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.support-hero {
+  margin-bottom: 28px;
+}
+
+.support-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #c9a46b;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.support-hero h1 {
+  font-size: clamp(34px, 5vw, 58px);
+  margin: 0 0 12px;
+}
+
+.support-hero p {
+  color: rgba(245, 239, 230, 0.72);
+  max-width: 620px;
+}
+
+.support-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 34px;
+}
+
+.support-primary-btn,
+.support-secondary-btn {
+  border: 1px solid rgba(255, 248, 220, 0.25);
+  border-radius: 999px;
+  padding: 12px 20px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.support-primary-btn {
+  background: #fff8dc;
+  color: #111;
+}
+
+.support-secondary-btn {
+  background: transparent;
+  color: #fff8dc;
+}
+
+.support-primary-btn:hover,
+.support-secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.support-list-section {
+  background: #080808;
+  border: 1px solid rgba(255, 248, 220, 0.14);
+  border-radius: 22px;
+  padding: 24px;
+}
+
+.support-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.support-section-header h2 {
+  margin: 0;
+}
+
+.support-section-header span {
+  color: #c9a46b;
+  font-size: 14px;
+}
+
+.support-ticket-list {
+  display: grid;
+  gap: 14px;
+}
+
+.support-ticket-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #111;
+  border-radius: 18px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.support-ticket-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.support-ticket-card h3 {
+  margin: 4px 0;
+  font-size: 20px;
+}
+
+.support-ticket-card p {
+  color: rgba(245, 239, 230, 0.68);
+  margin: 0;
+}
+
+.support-ticket-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(245, 239, 230, 0.7);
+}
+
+.support-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(201, 164, 107, 0.14);
+  color: #f1c987;
+  white-space: nowrap;
+}
+
+.support-status.resolved,
+.support-status.closed {
+  background: rgba(86, 196, 126, 0.14);
+  color: #7de39c;
+}
+
+.support-status.in-progress,
+.support-status.waiting-customer {
+  background: rgba(84, 166, 255, 0.14);
+  color: #8cc8ff;
+}
+
+.support-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.support-view-btn {
+  color: #fff8dc;
+  border: 1px solid rgba(255, 248, 220, 0.24);
+  padding: 9px 15px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.support-empty {
+  text-align: center;
+  padding: 42px 20px;
+  color: rgba(245, 239, 230, 0.65);
+}
+
+.support-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 999;
+}
+
+.support-modal.is-open {
+  display: flex;
+}
+
+.support-modal__box {
+  width: min(620px, 100%);
+  background: #0b0b0b;
+  border: 1px solid rgba(255, 248, 220, 0.18);
+  border-radius: 22px;
+  padding: 24px;
+}
+
+.support-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.support-modal__header h2 {
+  margin: 0;
+}
+
+.support-modal__header button {
+  background: transparent;
+  color: #fff8dc;
+  border: 0;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.support-form {
+  display: grid;
+  gap: 14px;
+}
+
+.support-form label {
+  display: grid;
+  gap: 8px;
+  color: rgba(245, 239, 230, 0.82);
+  font-size: 14px;
+}
+
+.support-form input,
+.support-form select,
+.support-form textarea {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #111;
+  color: #fff8dc;
+  padding: 13px 14px;
+  outline: none;
+}
+
+.support-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 680px) {
+  .support-ticket-card__top,
+  .support-section-header,
+  .support-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .support-card-actions {
+    justify-content: flex-start;
+  }
+}

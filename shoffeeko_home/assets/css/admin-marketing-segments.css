@@ -1,0 +1,111 @@
+.admin-marketing-segments-page {
+  padding: 32px;
+  color: #fff;
+}
+
+.segments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.segments-header h1 {
+  margin: 6px 0;
+}
+
+.segments-header p {
+  color: #8fa4b8;
+}
+
+.segments-back-btn {
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #31c7bd;
+  color: #08131f;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.segments-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.segment-card {
+  padding: 20px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.segment-card h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.segment-card strong {
+  font-size: 32px;
+  color: #31c7bd;
+}
+
+.segments-panel {
+  border-radius: 12px;
+  overflow: hidden;
+
+  background: linear-gradient(
+    180deg,
+    #172434,
+    #121d2b
+  );
+
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.segments-panel__header {
+  padding: 20px;
+}
+
+.segments-table__head,
+.segment-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 120px;
+  align-items: center;
+}
+
+.segments-table__head {
+  background: rgba(255,255,255,.05);
+  font-weight: 700;
+}
+
+.segments-table__head span,
+.segment-row span {
+  padding: 14px 18px;
+}
+
+.segment-row {
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.segment-view-btn {
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  background: rgba(49,199,189,.15);
+  color: #31c7bd;
+}
+
+.segments-header__actions {
+  display: flex;
+  gap: 12px;
+}

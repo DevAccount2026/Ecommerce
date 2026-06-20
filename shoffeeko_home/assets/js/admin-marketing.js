@@ -1,4 +1,47 @@
 const CAMPAIGNS_KEY = "shoffeeko_marketing_campaigns";
+const ORDERS_KEY = "shoffeeko_orders";
+const CURRENT_CUSTOMER_KEY = "shoffeeko_current_customer";
+
+const MARKETING_SEGMENT_RULES = [
+  {
+    id: "all",
+    name: "All Customers",
+    match: customer => true
+  },
+  {
+    id: "vip",
+    name: "VIP Customers",
+    match: customer => customer.totalSpent >= 500 || customer.orderCount >= 5
+  },
+  {
+    id: "active",
+    name: "Active Customers",
+    match: customer => customer.daysSinceLastOrder <= 30
+  },
+  {
+    id: "at-risk",
+    name: "At Risk Customers",
+    match: customer => customer.daysSinceLastOrder >= 60
+  },
+  {
+    id: "new",
+    name: "New Customers",
+    match: customer => customer.orderCount === 1
+  },
+
+  {
+  id: "repeat",
+  name: "Repeat Buyers",
+  match: customer => customer.orderCount >= 2
+  },
+
+  {
+    id: "abandoned-cart",
+    name: "Abandoned Cart",
+    match: customer => false
+  }
+
+];
 
 let campaigns = [];
 
@@ -37,6 +80,8 @@ function initMarketingPage() {
   if (!page) return;
 
   campaigns = getCampaigns();
+
+  renderSegmentOptions();
 
   bindMarketingEvents();
   renderMarketingPage();
@@ -103,6 +148,98 @@ function handleCampaignSubmit(event) {
   renderMarketingPage();
 }
 
+function getOrders() {
+  try {
+    return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+  } catch (error) {
+    console.error("Orders data is broken:", error);
+    return [];
+  }
+}
+
+function getCustomerEmail(order) {
+  return (
+    order.customerEmail ||
+    order.email ||
+    order.customer?.email ||
+    ""
+  ).toLowerCase();
+}
+
+function getMarketingCustomers() {
+  const orders = getOrders();
+  const customerMap = new Map();
+  const now = new Date();
+
+  orders.forEach(order => {
+    const email = getCustomerEmail(order);
+    if (!email) return;
+
+    const total = Number(order.total || order.subtotal || 0);
+    const date = new Date(order.createdAt || order.date || order.orderDate);
+
+    if (!customerMap.has(email)) {
+      customerMap.set(email, {
+        email,
+        orderCount: 0,
+        totalSpent: 0,
+        lastOrderDate: null,
+        daysSinceLastOrder: null
+      });
+    }
+
+    const customer = customerMap.get(email);
+
+    customer.orderCount += 1;
+    customer.totalSpent += total;
+
+    if (!Number.isNaN(date.getTime())) {
+      if (!customer.lastOrderDate || date > customer.lastOrderDate) {
+        customer.lastOrderDate = date;
+      }
+    }
+  });
+
+  return Array.from(customerMap.values()).map(customer => {
+    if (!customer.lastOrderDate) {
+      return customer;
+    }
+
+    const daysSinceLastOrder = Math.floor(
+      (now - customer.lastOrderDate) / (1000 * 60 * 60 * 24)
+    );
+
+    return {
+      ...customer,
+      daysSinceLastOrder: Math.floor(
+        (now - customer.lastOrderDate) / (1000 * 60 * 60 * 24)
+      )
+    };
+  });
+}
+
+function getMarketingSegments() {
+  const customers = getMarketingCustomers();
+
+  return MARKETING_SEGMENT_RULES.map(rule => ({
+    id: rule.id,
+    name: rule.name,
+    customers: customers.filter(rule.match)
+  }));
+}
+
+function renderSegmentOptions() {
+  const select = document.querySelector("#campaignSegment");
+
+  if (!select) return;
+
+  select.innerHTML = MARKETING_SEGMENT_RULES.map(segment => `
+    <option value="${segment.name}">
+      ${segment.name}
+    </option>
+  `).join("");
+}
+
 function renderMarketingPage() {
   renderMarketingKpis();
   renderCampaignList();
@@ -116,7 +253,12 @@ function renderMarketingKpis() {
   setText("#totalCampaigns", total);
   setText("#draftCampaigns", draft);
   setText("#readyCampaigns", ready);
+
+  const segments = getMarketingSegments();
+  setText("#targetSegments", segments.length);
   setText("#campaignCountLabel", `${total} campaign${total === 1 ? "" : "s"}`);
+
+  
 }
 
 function renderCampaignList(searchTerm = "") {
@@ -160,15 +302,49 @@ function renderCampaignList(searchTerm = "") {
 
       <span>${formatDate(campaign.createdAt)}</span>
 
-      <span>
-        <button
-          class="marketing-action-btn"
-          onclick="previewCampaign('${campaign.id}')">
+      <span class="marketing-actions">
+        <button class="marketing-action-btn" onclick="previewCampaign('${campaign.id}')">
           View
         </button>
+
+        <button class="marketing-action-btn" onclick="markCampaignReady('${campaign.id}')">
+          Ready
+        </button>
+
+        <button class="marketing-action-btn marketing-action-btn--danger" onclick="deleteCampaign('${campaign.id}')">
+          Delete
+        </button>
       </span>
+
     </div>
   `).join("");
+}
+
+function markCampaignReady(campaignId) {
+  campaigns = campaigns.map(campaign => {
+    if (campaign.id === campaignId) {
+      return {
+        ...campaign,
+        status: "Ready"
+      };
+    }
+
+    return campaign;
+  });
+
+  saveCampaigns();
+  renderMarketingPage();
+}
+
+function deleteCampaign(campaignId) {
+  const confirmDelete = confirm("Delete this campaign?");
+
+  if (!confirmDelete) return;
+
+  campaigns = campaigns.filter(campaign => campaign.id !== campaignId);
+
+  saveCampaigns();
+  renderMarketingPage();
 }
 
 function previewCampaign(campaignId) {

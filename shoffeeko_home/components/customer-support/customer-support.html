@@ -1,0 +1,68 @@
+<section class="support-hero">
+  <p class="support-eyebrow">Customer Care</p>
+  <h1>Support Center</h1>
+  <p>Submit tickets, track your concerns, and view support replies.</p>
+</section>
+
+<section class="support-actions">
+  <button type="button" class="support-primary-btn" id="createTicketBtn">
+    Create Ticket
+  </button>
+
+  <a href="cust_myaccount.html" class="support-secondary-btn">
+    Back to My Account
+  </a>
+</section>
+
+<section class="support-list-section">
+  <div class="support-section-header">
+    <h2>Your Tickets</h2>
+    <span id="ticketCount">0 tickets</span>
+  </div>
+
+  <div class="support-ticket-list" id="supportTicketList"></div>
+</section>
+
+<div class="support-modal" id="supportTicketModal" aria-hidden="true">
+  <div class="support-modal__box">
+    <div class="support-modal__header">
+      <h2>Create Support Ticket</h2>
+      <button type="button" id="closeSupportModal">×</button>
+    </div>
+
+    <form id="supportTicketForm" class="support-form">
+      <label>
+        Subject
+        <input type="text" id="ticketSubject" required />
+      </label>
+
+      <label>
+        Category
+        <select id="ticketCategory" required>
+          <option value="">Select category</option>
+          <option value="Order Issue">Order Issue</option>
+          <option value="Shipping">Shipping</option>
+          <option value="Product Inquiry">Product Inquiry</option>
+          <option value="Payment Issue">Payment Issue</option>
+          <option value="Refund Request">Refund Request</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+
+      <label>
+        Message
+        <textarea id="ticketMessage" rows="5" required></textarea>
+      </label>
+
+      <div class="support-form-actions">
+        <button type="button" class="support-secondary-btn" id="cancelSupportTicket">
+          Cancel
+        </button>
+
+        <button type="submit" class="support-primary-btn">
+          Submit Ticket
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

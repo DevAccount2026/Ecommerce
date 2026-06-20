@@ -57,9 +57,22 @@
             <p>Create customer campaigns using your analytics segments.</p>
           </div>
 
-          <button class="marketing-primary-btn" id="openCampaignModal">
-            + Create Campaign
-          </button>
+          <div class="marketing-header__actions">
+
+            <a
+              href="admin-marketing-segments.html"
+              class="marketing-secondary-btn">
+              Customer Segments
+            </a>
+
+            <button
+              class="marketing-primary-btn"
+              id="openCampaignModal">
+              + Create Campaign
+            </button>
+
+          </div>
+
         </section>
 
         <section class="marketing-kpi-grid">
@@ -80,8 +93,9 @@
 
           <article>
             <span>Target Segments</span>
-            <strong>5</strong>
+            <strong id="targetSegments">0</strong>
           </article>
+
         </section>
 
         <section class="marketing-panel">
@@ -121,13 +135,7 @@
 
         <label>
           Customer Segment
-          <select id="campaignSegment" required>
-            <option value="All Customers">All Customers</option>
-            <option value="VIP Customers">VIP Customers</option>
-            <option value="Active Customers">Active Customers</option>
-            <option value="At Risk Customers">At Risk Customers</option>
-            <option value="New Customers">New Customers</option>
-          </select>
+          <select id="campaignSegment" required></select>
         </label>
 
         <label>

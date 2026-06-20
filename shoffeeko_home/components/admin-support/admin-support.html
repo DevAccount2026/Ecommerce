@@ -1,0 +1,53 @@
+<<section class="admin-support-header">
+  <div>
+    <p class="admin-eyebrow">Support Desk</p>
+    <h1>Support Tickets</h1>
+    <p>Manage customer concerns, ticket replies, and ticket statuses.</p>
+  </div>
+
+  <div class="admin-support-actions">
+    <a href="admin-dashboard.html" class="admin-secondary-btn">
+      ← Dashboard
+    </a>
+  </div>
+</section>
+
+<section class="admin-support-controls">
+  <input type="search" id="supportSearchInput" placeholder="Search ticket, customer, subject..." />
+
+  <select id="supportStatusFilter">
+    <option value="All">All Status</option>
+    <option value="Open">Open</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Waiting Customer">Waiting Customer</option>
+    <option value="Resolved">Resolved</option>
+    <option value="Closed">Closed</option>
+  </select>
+</section>
+
+<section class="admin-support-stats" id="adminSupportStats"></section>
+
+<section class="admin-support-panel">
+  <div class="admin-panel-header">
+    <h2>Ticket Queue</h2>
+    <span id="adminSupportCount">0 tickets</span>
+  </div>
+
+  <div class="admin-support-table-wrap">
+    <table class="admin-support-table">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Customer</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Replies</th>
+          <th>Updated</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="adminSupportTableBody"></tbody>
+    </table>
+  </div>
+</section>
