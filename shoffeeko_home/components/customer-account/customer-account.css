@@ -443,3 +443,100 @@
     grid-template-columns: 1fr;
   }
 }
+
+.account-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.account-tab {
+  border: 1px solid rgba(255, 248, 220, 0.45);
+  background: transparent;
+  color: #fff8dc;
+  padding: 11px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.account-tab.active {
+  background: #fff8dc;
+  color: #050505;
+}
+
+.account-tab-panel {
+  display: none;
+}
+
+.account-tab-panel.active {
+  display: block;
+}
+
+.account-settings-card {
+  display: grid;
+  gap: 18px;
+}
+
+.settings-option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 248, 220, 0.18);
+}
+
+.settings-option-row:last-child {
+  border-bottom: none;
+}
+
+.settings-option-row strong {
+  color: #fff8dc;
+}
+
+.settings-option-row p {
+  margin: 6px 0 0;
+  color: #c9b98f;
+}
+
+.account-switch {
+  position: relative;
+  width: 54px;
+  height: 30px;
+}
+
+.account-switch input {
+  display: none;
+}
+
+.account-switch span {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  background: rgba(255, 248, 220, 0.2);
+  border: 1px solid rgba(255, 248, 220, 0.45);
+}
+
+.account-switch span::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 4px;
+  top: 3px;
+  border-radius: 50%;
+  background: #fff8dc;
+  transition: 0.2s ease;
+}
+
+.account-switch input:checked + span {
+  background: #fff8dc;
+}
+
+.account-switch input:checked + span::before {
+  transform: translateX(24px);
+  background: #050505;
+}

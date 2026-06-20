@@ -3,14 +3,118 @@ document.addEventListener("DOMContentLoaded", initCustomerAccount);
 async function initCustomerAccount() {
   const root = document.getElementById("customerAccountPage");
   if (!root) return;
-
-  
+ 
   const response = await fetch("../components/customer-account/customer-account.json");
   const data = await response.json();
   const settings = data.settings || {};
 
   const sessionKey = settings.sessionStorageKey || "shoffeeko_current_customer";
   const customer = JSON.parse(localStorage.getItem(sessionKey));
+
+  function bindCommunicationPreferences(customer) {
+  const marketingOptIn = document.querySelector("#marketingOptIn");
+  if (!marketingOptIn) return;
+
+  marketingOptIn.checked = Boolean(customer.marketingOptIn);
+
+  marketingOptIn.addEventListener("change", () => {
+    const updatedCustomer = {
+      ...customer,
+      marketingOptIn: marketingOptIn.checked,
+      updatedAt: new Date().toISOString()
+    };
+
+    const updatedCustomers = getCustomers().map(item => {
+      return item.id === customer.id ? updatedCustomer : item;
+    });
+
+    saveCustomers(updatedCustomers);
+    saveSession(updatedCustomer);
+
+    alert(
+      marketingOptIn.checked
+        ? "You are now subscribed to promos and updates."
+        : "You have unsubscribed from promos and updates."
+      );
+    });
+  }
+
+
+function bindChangePassword() {
+  const openBtn = document.querySelector("#openChangePasswordBtn");
+  const closeBtn = document.querySelector("#closeChangePasswordBtn");
+  const cancelBtn = document.querySelector("#cancelChangePasswordBtn");
+  const modal = document.querySelector("#changePasswordModal");
+  const form = document.querySelector("#changePasswordForm");
+
+  if (!openBtn || !modal || !form) return;
+
+  openBtn.addEventListener("click", () => {
+    form.reset();
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+  });
+
+  closeBtn?.addEventListener("click", closeChangePasswordModal);
+  cancelBtn?.addEventListener("click", closeChangePasswordModal);
+
+  modal.addEventListener("click", event => {
+    if (event.target === modal) {
+      closeChangePasswordModal();
+    }
+  });
+
+  form.addEventListener("submit", handleChangePassword);
+}
+
+function closeChangePasswordModal() {
+  const modal = document.querySelector("#changePasswordModal");
+  modal?.classList.remove("active");
+  modal?.setAttribute("aria-hidden", "true");
+}
+
+function handleChangePassword(event) {
+  event.preventDefault();
+
+  const currentCustomer = getCurrentCustomer();
+  if (!currentCustomer) return;
+
+  const currentPassword = document.querySelector("#currentPassword").value.trim();
+  const newPassword = document.querySelector("#newPassword").value.trim();
+  const confirmNewPassword = document.querySelector("#confirmNewPassword").value.trim();
+
+  if (currentPassword !== currentCustomer.password) {
+    alert("Current password is incorrect.");
+    return;
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    alert("New passwords do not match.");
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  const updatedCustomer = {
+    ...currentCustomer,
+    password: newPassword,
+    updatedAt: new Date().toISOString()
+  };
+
+  const updatedCustomers = getCustomers().map(customer => {
+    return customer.id === currentCustomer.id ? updatedCustomer : customer;
+  });
+
+  saveCustomers(updatedCustomers);
+  saveSession(updatedCustomer);
+
+  closeChangePasswordModal();
+  alert("Password updated successfully.");
+}
+
 
   if (!customer) {
     window.location.href = "cust_login.html";
@@ -22,7 +126,20 @@ async function initCustomerAccount() {
 
       <h1>${settings.title}</h1>
 
+      <div class="account-tabs">
+        
+          <button class="account-tab active" data-tab="overview">Overview</button>
+       
+          <button class="account-tab" data-tab="orders">Orders</button>
+       
+          <button class="account-tab" data-tab="rewards">Rewards</button>
+          <button class="account-tab" data-tab="notifications">Notifications</button>
+          <button class="account-tab" data-tab="settings">Settings</button>
+      </div>
+
       <div class="account-layout">
+
+       <div class="account-tab-panel active" data-panel="overview">
 
         <div class="account-card account-welcome">
           <h2>${settings.welcomeText}, ${customer.firstName}!</h2>
@@ -45,10 +162,6 @@ async function initCustomerAccount() {
 
             <button type="button" class="account-btn account-btn-outline" id="logoutBtn">
               ${settings.logoutText}
-            </button>
-
-            <button type="button" id="openEditProfileBtn" class="account-btn">
-              Edit Profile
             </button>
 
           </div>
@@ -96,7 +209,12 @@ async function initCustomerAccount() {
           </div>
         </div>
 
-<div class="account-card account-loyalty">
+        </div>
+
+
+        <div class="account-tab-panel" data-panel="rewards">
+         <div class="account-card account-loyalty">
+       
           <div class="account-card-header">
             <h2>Loyalty Rewards</h2>
             <span id="loyaltyTierLabel">Bronze</span>
@@ -122,39 +240,92 @@ async function initCustomerAccount() {
           <div class="loyalty-progress">
             <div id="loyaltyProgressBar"></div>
           </div>
-
+         </div>
           
         </div>
         
+          <div class="account-tab-panel" data-panel="notifications">
+              <div class="account-card account-notifications">
+                  <div class="account-card-header">
+                    <h2>Notifications</h2>
+                    <button type="button" id="markNotificationsReadBtn">Mark all as read</button>
+                  </div>
+              <div id="customerNotificationsList"></div>
+          </div>
+        </div>
+        
+        <div class="account-tab-panel" data-panel="settings">
+         <div class="account-card account-settings-card">
+          <h2>Account Settings</h2>
 
-        <div class="account-card account-notifications">
-          <div class="account-card-header">
-            <h2>Notifications</h2>
-            <button type="button" id="markNotificationsReadBtn">Mark all as read</button>
+          <div class="settings-option-row">
+            <div>
+              <strong>Profile Information</strong>
+              <p>Edit your name, email, and account details.</p>
+            </div>
+
+            <button type="button" id="openEditProfileBtn" class="account-btn">
+              Edit Profile
+            </button>
           </div>
 
-          <div id="customerNotificationsList"></div>
+          <div class="settings-option-row">
+            <div>
+              <strong>Security</strong>
+              <p>Change your account password.</p>
+            </div>
+
+            <button type="button" id="openChangePasswordBtn" class="account-btn">
+              Change Password
+            </button>
+          </div>
+
+          <div class="settings-option-row">
+            <div>
+              <strong>Communication Preferences</strong>
+              <p>Choose if you want to receive promos and updates.</p>
+            </div>
+
+            <label class="account-switch">
+              <input type="checkbox" id="marketingOptIn">
+              <span></span>
+            </label>
+          </div>
+
+          <div class="settings-option-row">
+            <div>
+              <strong>Logout</strong>
+              <p>Sign out from this customer account.</p>
+            </div>
+
+            <button type="button" id="settingsLogoutBtn" class="account-btn account-btn-outline">
+              Logout
+            </button>
+          </div>
         </div>
 
-        <div class="account-card account-recent-orders">
-          <div class="account-card-header">
-            <h2>Recent Orders</h2>
-            <a href="order-history.html">View All</a>
-          </div>
+      </div>
+
+      <div class="account-tab-panel" data-panel="orders">
+          <div class="account-card account-recent-orders">
+            <div class="account-card-header">
+              <h2>Recent Orders</h2>
+              <a href="order-history.html">View All</a>
+            </div>
 
           <div id="recentOrdersList"></div>
-        </div>
+      </div>
 
-        
+       </div>
       </div>
 
     </section>
    
     <div class="account-modal" id="editProfileModal" aria-hidden="true">
         <div class="account-modal__box">
+
           <div class="account-modal__header">
-            <h2>Edit Profile</h2>
-            <button type="button" id="closeEditProfileBtn">×</button>
+            <h2>Edit Profile</h2>     
           </div>
 
           <form id="editProfileForm" class="account-edit-form">
@@ -183,6 +354,41 @@ async function initCustomerAccount() {
               <button type="submit">Save Changes</button>
             </div>
 
+
+          </form>
+
+        </div>
+      </div>
+
+      <div class="account-modal" id="changePasswordModal" aria-hidden="true">
+       <div class="account-modal__box">
+
+          <div class="account-modal__header">
+            <h2>Change Password</h2>
+            <button type="button" id="closeChangePasswordBtn">×</button>
+          </div>
+
+          <form id="changePasswordForm" class="account-edit-form">
+
+            <label>
+              Current Password
+              <input type="password" id="currentPassword" required />
+            </label>
+
+            <label>
+              New Password
+              <input type="password" id="newPassword" required minlength="6" />
+            </label>
+
+            <label>
+              Confirm New Password
+              <input type="password" id="confirmNewPassword" required minlength="6" />
+            </label>
+
+            <div class="account-edit-actions">
+              <button type="button" id="cancelChangePasswordBtn">Cancel</button>
+              <button type="submit">Save Password</button>
+            </div>
 
           </form>
 
@@ -364,6 +570,26 @@ function renderLoyaltyRewards(customer) {
   document.querySelector("#loyaltyProgressBar").style.width = `${progress}%`;
 }
 
+function bindAccountTabs() {
+  const tabs = document.querySelectorAll(".account-tab");
+  const panels = document.querySelectorAll(".account-tab-panel");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+
+      tabs.forEach(item => item.classList.remove("active"));
+      panels.forEach(panel => panel.classList.remove("active"));
+
+      tab.classList.add("active");
+
+      document
+        .querySelector(`[data-panel="${target}"]`)
+        ?.classList.add("active");
+    });
+  });
+}
+
 const NOTIFICATIONS_KEY = "shoffeeko_notifications";
 
 function getNotifications() {
@@ -403,9 +629,20 @@ function seedCustomerNotifications(customer) {
   }));
 
   if (newNotifications.length) {
-    saveNotifications([...newNotifications, ...notifications]);
+      const existingKeys = new Set(
+        notifications.map(item => `${item.orderId}-${item.status}`)
+      );
+
+      const uniqueNewNotifications = newNotifications.filter(item => {
+        const key = `${item.orderId}-${item.status}`;
+        return !existingKeys.has(key);
+      });
+
+      if (uniqueNewNotifications.length) {
+        saveNotifications([...uniqueNewNotifications, ...notifications]);
+      }
+    }
   }
-}
 
 function renderCustomerNotifications(customer) {
   seedCustomerNotifications(customer);
@@ -551,12 +788,45 @@ function renderAccountStats(customer) {
   document.querySelector("#accountWishlistItems").textContent = wishlistItems.length;
   document.querySelector("#accountSavedAddresses").textContent = savedAddresses.length;
 }
+
+function bindAccountSettings(customer) {
+
+  const editProfileBtn =
+    document.querySelector("#settingsEditProfileBtn");
+
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener("click", () => {
+      document
+        .querySelector("#openEditProfileBtn")
+        ?.click();
+    });
+  }
+
+  const logoutBtn =
+    document.querySelector("#settingsLogoutBtn");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem(
+        "shoffeeko_current_customer"
+      );
+
+      window.location.href =
+        "cust_login.html";
+    });
+  }
+
+}
     bindEditProfile();
     renderRecentOrders(customer);
     renderAccountStats(customer);
     bindNotifications(customer);
     renderCustomerNotifications(customer);
     renderLoyaltyRewards(customer);
+    bindAccountTabs();
+    bindAccountSettings(customer);
+    bindChangePassword();
+    bindCommunicationPreferences(customer);
 
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem(sessionKey);

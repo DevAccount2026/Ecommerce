@@ -375,6 +375,17 @@ a {
   display: none;
 }
 
+.customer-notification-badge {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #7d1839;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 /* ---------------cart drawer------------------ */
 .cart-drawer {
   position: fixed;

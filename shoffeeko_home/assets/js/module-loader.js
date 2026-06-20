@@ -1,7 +1,20 @@
 const SKModules = {};
 
+const NOTIFICATIONS_KEY = "shoffeeko_notifications";
+
 const isInsidePages = window.location.pathname.includes('/pages/');
 const BASE_PATH = isInsidePages ? '../' : '';
+
+
+function getUnreadNotificationCount() {
+  try {
+    const notifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_KEY)) || [];
+    return notifications.filter(item => !item.read).length;
+  } catch (error) {
+    console.error("Notifications are broken:", error);
+    return 0;
+  }
+}
 
 async function loadHTML(el, name) {
   const response = await fetch(`${BASE_PATH}components/${name}/${name}.html`);
@@ -139,7 +152,12 @@ async function renderShell() {
       customer.name?.split(" ")[0] ||
       "Account";
 
-    nameEl.textContent = firstName;
+    const unreadCount = getUnreadNotificationCount();
+
+    nameEl.innerHTML =
+      unreadCount > 0
+        ? `${firstName} <span class="customer-notification-badge">🔔 ${unreadCount}</span>`
+        : firstName;
 
     menuButton.addEventListener("click", event => {
       event.stopPropagation();
