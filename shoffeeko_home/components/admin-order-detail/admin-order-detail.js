@@ -558,14 +558,48 @@ function createOrderStatusNotification(order, oldStatus, newStatus) {
 
   if (alreadyExists) return;
 
+
+  let title = `Order ${newStatus}`;
+  let message = `Order ${orderId} is currently ${newStatus}.`;
+
+  switch (newStatus.toLowerCase()) {
+    case "pending":
+      title = "Order Received";
+      message = `We've successfully received your order ${orderId}. Our team will review it shortly.`;
+      break;
+
+    case "processing":
+      title = "Order Being Prepared";
+      message = `Great news! Your order ${orderId} is now being prepared by our team.`;
+      break;
+
+    case "shipped":
+      title = "Order Shipped";
+      message = `Your order ${orderId} has been shipped and is now on its way to you.`;
+      break;
+
+    case "delivered":
+      title = "Order Delivered";
+      message = `Your order ${orderId} has been successfully delivered. Enjoy your purchase!`;
+      break;
+
+    case "cancelled":
+      title = "Order Cancelled";
+      message = `Your order ${orderId} has been cancelled. Please contact support if you need assistance.`;
+      break;
+
+    default:
+      break;
+  }
+
   const notification = {
     id: `NOTIF-${Date.now()}`,
     notificationKey,
     customerEmail: customerEmail.toLowerCase(),
     orderId,
     status: newStatus,
-    title: `Order ${newStatus}`,
-    message: `Order ${orderId} is currently ${newStatus}.`,
+    title,
+    message,
     type: "order-status",
     read: false,
     createdAt: new Date().toISOString()
