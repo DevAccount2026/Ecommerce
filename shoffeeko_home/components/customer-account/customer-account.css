@@ -151,3 +151,295 @@
     flex-direction: column;
   }
 }
+
+.account-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .72);
+  z-index: 1000;
+}
+
+.account-modal.active {
+  display: flex;
+}
+
+.account-modal__box {
+  width: min(520px, 92vw);
+  background: #080808;
+  border: 1px solid #fff8dc;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.account-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255, 248, 220, .18);
+}
+
+.account-modal__header h2 {
+  margin: 0;
+}
+
+.account-modal__header button {
+  background: none;
+  border: none;
+  color: #fff8dc;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.account-edit-form {
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+}
+
+.account-edit-form label {
+  display: grid;
+  gap: 7px;
+  color: #fff8dc;
+  font-weight: 700;
+}
+
+.account-edit-form input {
+  padding: 13px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 248, 220, .45);
+  background: #050505;
+  color: #fff8dc;
+}
+
+.account-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.account-edit-actions button {
+  padding: 12px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.account-edit-actions button[type="submit"] {
+  border: none;
+  background: #fff8dc;
+  color: #050505;
+  font-weight: 700;
+}
+
+.account-edit-actions button[type="button"] {
+  background: transparent;
+  color: #fff8dc;
+  border: 1px solid rgba(255, 248, 220, .45);
+}
+
+.account-recent-orders {
+  grid-column: 1 / -1;
+}
+
+.account-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.account-card-header h2 {
+  margin: 0;
+}
+
+.account-card-header a {
+  color: #fff8dc;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.recent-order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 248, 220, 0.18);
+
+  color: #fff8dc;
+  text-decoration: none;
+}
+
+.recent-order-row:last-child {
+  border-bottom: none;
+}
+
+.recent-order-row span {
+  display: grid;
+  gap: 4px;
+}
+
+.recent-order-row small {
+  color: #c9b98f;
+}
+
+.account-empty {
+  color: #c9b98f;
+}
+
+.account-stats-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.account-stat-card {
+  padding: 22px;
+  border: 1px solid #fff8dc;
+  border-radius: 18px;
+  background: #050505;
+}
+
+.account-stat-card span {
+  display: block;
+  margin-bottom: 10px;
+  color: #c9b98f;
+  font-size: 14px;
+}
+
+.account-stat-card strong {
+  color: #fff8dc;
+  font-size: 32px;
+}
+
+@media (max-width: 900px) {
+  .account-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .account-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account-notifications {
+  grid-column: 1 / -1;
+}
+
+.account-card-header button {
+  border: 1px solid rgba(255, 248, 220, 0.45);
+  background: transparent;
+  color: #fff8dc;
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.notification-row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 248, 220, 0.18);
+}
+
+.notification-row:last-child {
+  border-bottom: none;
+}
+
+.notification-row > span {
+  font-size: 20px;
+}
+
+.notification-row strong {
+  color: #fff8dc;
+}
+
+.notification-row p {
+  margin: 4px 0 0;
+  color: #c9b98f;
+}
+
+.notification-row.unread strong {
+  color: #fff2b8;
+}
+
+.account-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #c9b98f;
+}
+
+.account-empty-state span {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.account-empty-state h3 {
+  margin-bottom: 8px;
+  color: #fff8dc;
+}
+
+.account-loyalty {
+  grid-column: 1 / -1;
+}
+
+.account-card-header span {
+  color: #fff8dc;
+  font-weight: 700;
+}
+
+.loyalty-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.loyalty-grid div {
+  padding: 18px;
+  border: 1px solid rgba(255, 248, 220, 0.22);
+  border-radius: 14px;
+}
+
+.loyalty-grid span {
+  display: block;
+  margin-bottom: 8px;
+  color: #c9b98f;
+}
+
+.loyalty-grid strong {
+  color: #fff8dc;
+  font-size: 26px;
+}
+
+.loyalty-progress {
+  margin-top: 22px;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 248, 220, 0.16);
+}
+
+.loyalty-progress div {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: #fff8dc;
+}
+
+@media (max-width: 760px) {
+  .loyalty-grid {
+    grid-template-columns: 1fr;
+  }
+}
