@@ -592,12 +592,37 @@ function createOrderStatusNotification(order, oldStatus, newStatus) {
       break;
   }
 
+  let icon = "🔔";
+
+    switch (newStatus.toLowerCase()) {
+      case "pending":
+        icon = "🟡";
+        break;
+
+      case "processing":
+        icon = "🔵";
+        break;
+
+      case "shipped":
+        icon = "🚚";
+        break;
+
+      case "delivered":
+        icon = "✅";
+        break;
+
+      case "cancelled":
+        icon = "❌";
+        break;
+    }
+
   const notification = {
     id: `NOTIF-${Date.now()}`,
     notificationKey,
     customerEmail: customerEmail.toLowerCase(),
     orderId,
     status: newStatus,
+    icon,
     title,
     message,
     type: "order-status",

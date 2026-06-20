@@ -540,3 +540,23 @@
   transform: translateX(24px);
   background: #050505;
 }
+
+.notification-row.pending strong {
+  color: #f6c453;
+}
+
+.notification-row.processing strong {
+  color: #4da3ff;
+}
+
+.notification-row.shipped strong {
+  color: #7dd3fc;
+}
+
+.notification-row.delivered strong {
+  color: #66f0a3;
+}
+
+.notification-row.cancelled strong {
+  color: #ff6b6b;
+}

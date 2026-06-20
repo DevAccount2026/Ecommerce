@@ -672,8 +672,8 @@ function renderCustomerNotifications(customer) {
   }
 
   list.innerHTML = notifications.map(item => `
-    <div class="notification-row ${item.read ? "" : "unread"}">
-      <span>${item.read ? "✓" : "🔔"}</span>
+    <div class="notification-row ${item.read ? "" : "unread"} ${item.status?.toLowerCase() || ""}">
+      <span>${item.read ? "✓" : (item.icon || "🔔")}</span>
 
       <div>
         <strong>${item.title}</strong>
