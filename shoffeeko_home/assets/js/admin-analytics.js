@@ -40,8 +40,13 @@ function getCustomerEmail(order) {
     order.customerEmail ||
     order.email ||
     order.customer?.email ||
+    order.customer?.phone ||
+    order.customer?.firstName ||
+    order.customerName ||
+    order.id ||
+    order.orderNumber ||
     "unknown"
-  ).toLowerCase();
+  ).toString().toLowerCase();
 }
 
 function getCustomerName(order) {
@@ -196,6 +201,9 @@ function renderKpis(orders, products) {
   setText("#analyticsCustomers", customers.length);
   setText("#analyticsRepeatRate", `${repeatRate.toFixed(1)}%`);
   setText("#analyticsInventoryValue", formatCurrency(inventoryValue));
+  setText("#analyticsCLVCard", formatCurrency(clv));
+  setText("#analyticsCLVChange", "9.7%");
+
 }
 
 function renderRevenueByCategory(orders) {
@@ -604,23 +612,129 @@ function renderSvgSparkline(elementId, values, color = "#31c7bd") {
   });
 
   element.innerHTML = `
-    <svg viewBox="0 0 ${width} ${height}">
-      <polyline 
-        points="${points.join(" ")}"
-        style="stroke:${color}"
-      ></polyline>
-    </svg>
-  `;
+  <svg viewBox="0 0 ${width} ${height}">
+    <polyline 
+      points="${points.join(" ")}"
+      fill="none"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></polyline>
+  </svg>
+`;
 }
 
 function renderKpiSparklines() {
   renderSvgSparkline("aovSparkline", [560, 590, 570, 630, 650, 640, 652]);
   renderSvgSparkline("revenueSparkline", [3200, 4800, 4300, 6500, 8000, 9300, 12400]);
   renderSvgSparkline("ordersSparkline", [3, 5, 4, 8, 10, 13, 19]);
-  renderSvgSparkline("repeatSparkline", [54, 52, 51, 50, 49, 50, 50], "#e46f7d");
+  renderSvgSparkline("repeatSparkline", [54, 52, 51, 50, 49, 50, 50]);
+  renderSvgSparkline("clvSparkline", [3200, 3350, 3300, 3600, 3500, 3900, 4250]);
 }
 
+function renderCustomerSegmentGraph(orders = getOrders()) {
+  const canvas = document.querySelector("#customerSegmentChart");
+  const legend = document.querySelector("#customerSegmentLegend");
+  const totalEl = document.querySelector("#customerSegmentTotal");
 
+  if (!canvas || !legend || !totalEl) return;
+
+  const customers = getCustomerStats(orders);
+
+ const getAnalyticsCustomerTier = totalSpent => {
+ const spent = Number(totalSpent || 0);
+
+  if (spent >= 50000) return "Platinum";
+  if (spent >= 10000) return "Gold";
+  if (spent >= 5000) return "Silver";
+  if (spent >= 1000) return "Bronze";
+
+    return "New";
+  };
+
+  const analyticsCustomers = customers.map(customer => {
+    const tier = getAnalyticsCustomerTier(customer.spend);
+
+    return {
+      ...customer,
+      tier,
+     segments: {
+        vip: tier === "Platinum",
+        loyal: tier === "Gold",
+        occasional: ["New", "Bronze", "Silver"].includes(tier) && customer.orders === 1,
+        atRisk: ["New", "Bronze", "Silver"].includes(tier) && customer.orders >= 2
+     }
+    };
+  });
+
+  const totalCustomers = analyticsCustomers.length;
+
+  const segmentData = [
+    {
+      name: "VIP Customers",
+      color: "#7c4dff",
+      count: analyticsCustomers.filter(c => c.segments.vip).length
+    },
+    {
+      name: "Loyal Customers",
+      color: "#2f8cff",
+      count: analyticsCustomers.filter(c => c.segments.loyal).length
+    },
+    {
+      name: "Occasional Buyers",
+      color: "#2fc47c",
+      count: analyticsCustomers.filter(c => c.segments.occasional).length
+    },
+    {
+      name: "At Risk Customers",
+      color: "#f6a027",
+      count: analyticsCustomers.filter(c => c.segments.atRisk).length
+    }
+  ];
+
+  totalEl.textContent = totalCustomers.toLocaleString();
+
+  legend.innerHTML = segmentData.map(segment => {
+    const percent = totalCustomers
+      ? Math.round((segment.count / totalCustomers) * 100)
+      : 0;
+
+    return `
+      <div class="customer-segment-row">
+        <span class="customer-segment-dot" style="background:${segment.color}"></span>
+        <span class="customer-segment-name">${segment.name}</span>
+        <span class="customer-segment-value">
+          ${percent}% <span>(${segment.count.toLocaleString()})</span>
+        </span>
+      </div>
+    `;
+  }).join("");
+
+  if (window.customerSegmentChartInstance) {
+    window.customerSegmentChartInstance.destroy();
+  }
+
+  window.customerSegmentChartInstance = new Chart(canvas, {
+    type: "doughnut",
+    data: {
+      labels: segmentData.map(segment => segment.name),
+      datasets: [{
+        data: segmentData.map(segment => segment.count),
+        backgroundColor: segmentData.map(segment => segment.color),
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "65%",
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
 
 function initAnalyticsPage() {
   const page = document.querySelector("#adminAnalyticsPage");
@@ -641,10 +755,10 @@ function initAnalyticsPage() {
   renderMonthlyRevenueComparison(orders);
   renderMarketingAttribution(orders);
   renderSalesConversionSummary(orders);
-  renderCustomerSegmentation(orders);
   renderCustomerBehaviorFunnel();
   renderSalesFunnel(orders);
   renderKpiSparklines();
+  renderCustomerSegmentGraph(orders);
 }
 
 function getCustomerLifetimeValue(orders) {

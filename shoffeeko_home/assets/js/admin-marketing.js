@@ -7,21 +7,20 @@ function getCustomerSegments(customer) {
   const orderCount = Number(customer.orderCount || 0);
   const daysSinceLastOrder = Number(customer.daysSinceLastOrder || 0);
 
-  return {
+  const segments = {
     all: true,
     new: orderCount === 1,
     repeat: orderCount >= 2,
-    loyal: ["Silver", "Gold"].includes(tier),
-    vip: tier === "Gold",
+    loyal: ["Gold", "Platinum"].includes(tier),
+    vip: tier === "Platinum",
     active: daysSinceLastOrder <= 30,
     atRisk: daysSinceLastOrder > 30
   };
-  
+
   segments.list = Object.keys(segments)
     .filter(key => segments[key] === true);
 
   return segments;
-
 }
 
 const MARKETING_SEGMENT_RULES = [

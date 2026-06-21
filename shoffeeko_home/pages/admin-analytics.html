@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShoffeeKo Admin Analytics</title>
-
+  <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      />
   <link rel="stylesheet" href="../assets/css/base.css" />
   <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
   <link rel="stylesheet" href="../assets/css/admin-analytics.css" />
@@ -68,44 +71,78 @@
 
         <section class="analytics-kpi-grid">
 
-          <article class="analytics-kpi-card analytics-kpi-card--spark">
-            <div>
-              <span>Average Order Value (AOV)</span>
-              <strong id="analyticsAOV">₱0</strong>
-              <small class="positive">+0% vs last month</small>
-            </div>
+          <article class="analytics-kpi-card analytics-kpi-card--metric">
+              <div class="metric-card-header">          
+                  <div class="analytics-kpi-icon analytics-kpi-icon--aov">
+                     <i class="fa-solid fa-chart-line"></i>
+                  </div>
+                         <span>Average Order Value (AOV)</span>
+              </div>   
+                  <strong id="analyticsAOV">₱0</strong>
+                  <small class="positive kpi-change-line">
+                        <span>▲ 12.5%</span>
+                        <span>vs last 30 days</span>
+                  </small>
+              <div id="aovSparkline" class="kpi-sparkline spark-aov"></div>
+           </article>
 
-            <div id="aovSparkline" class="kpi-sparkline"></div>
-          </article>
 
-          <article class="analytics-kpi-card analytics-kpi-card--spark">
-            <div>
-              <span>Total Revenue</span>
-              <strong id="analyticsTotalRevenue">₱0</strong>
-              <small class="positive">Saved order revenue</small>
-            </div>
-
-            <div id="revenueSparkline" class="kpi-sparkline"></div>
-          </article>
-
-          <article class="analytics-kpi-card analytics-kpi-card--spark">
-             <div>
-                <span>Total Orders</span>
-                <strong id="analyticsTotalOrders">0</strong>
-                <small>Completed checkout records</small>
-             </div>
-              
-             <div id="ordersSparkline" class="kpi-sparkline"></div>
-          </article>
-
-          <article class="analytics-kpi-card analytics-mini-donut-card">
-              <div>
-                <span>Repeat Purchase Rate</span>
-                <strong id="analyticsRepeatRate">0%</strong>
-                <small>Customers with more than 1 order</small>
+          <article class="analytics-kpi-card analytics-kpi-card--metric">
+              <div class="metric-card-header">
+                  <div class="analytics-kpi-icon analytics-kpi-icon--revenue">
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                  </div>
+                        <span>Total Revenue</span>
               </div>
+                  <strong id="analyticsTotalRevenue">₱0</strong>
+                  <small class="positive kpi-change-line">
+                        <span>▲ 12.5%</span>
+                        <span>vs last 30 days</span>
+                  </small>
+              <div id="revenueSparkline" class="kpi-sparkline spark-revenue"></div>
+          </article>
 
-              <div id="repeatSparkline" class="kpi-sparkline"></div>            
+          <article class="analytics-kpi-card analytics-kpi-card--metric">    
+              <div class="metric-card-header">   
+                  <div class="analytics-kpi-icon analytics-kpi-icon--orders">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </div>
+                       <span>Total Orders</span>
+              </div> 
+                  <strong id="analyticsTotalOrders">0</strong>   
+                  <small class="positive kpi-change-line">                     
+                      <span>Completed checkout records</span>
+                  </small>             
+              <div id="ordersSparkline" class="kpi-sparkline spark-orders"></div>
+          </article>
+
+          <article class="analytics-kpi-card analytics-kpi-card--metric"> 
+              <div class="metric-card-header">   
+                  <div class="analytics-kpi-icon analytics-kpi-icon--clv">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                        <span>Customer Lifetime Value</span>
+              </div>            
+                   <strong id="analyticsCLVCard">₱0</strong>
+                   <small class="positive kpi-change-line">
+                        <span>▲ 9.7%</span>
+                        <span>vs last 30 days</span>
+                  </small>
+              <div id="clvSparkline" class="kpi-sparkline spark-clv"></div>
+           </article>
+
+          <article class="analytics-kpi-card analytics-kpi-card--metric">
+              <div class="metric-card-header">  
+                    <div class="analytics-kpi-icon analytics-kpi-icon--repeat">
+                      <i class="fa-solid fa-repeat"></i>
+                    </div>
+                          <span>Repeat Purchase Rate</span>
+                  </div>             
+                      <strong id="analyticsRepeatRate">0%</strong>
+                      <small class="positive kpi-change-line">
+                            <span>Customers with more than 1 order</span>
+                      </small>          
+              <div id="repeatSparkline" class="kpi-sparkline spark-repeat"></div>           
           </article>
 
         </section>
@@ -221,39 +258,38 @@
           <div id="customerBehaviorFunnel" class="customer-behavior-funnel"></div>
         </section>
 
-       <article class="analytics-panel analytics-panel--wide">
-          <h2>Customer Segmentation</h2>
+       <article class="analytics-panel analytics-panel--wide customer-segment-graph-card">
+          <h2>Customer Segments</h2>
 
-          <div class="customer-segment-grid">
-            <div class="customer-segment-card">
-              <span>VIP Customers</span>
-              <strong id="segmentVipCustomers">0</strong>
-              <small>Spent ₱5,000 or more</small>
+            <div class="customer-segment-graph-layout">
+
+              <div class="customer-segment-chart-box">
+                <canvas id="customerSegmentChart"></canvas>
+
+                <div class="customer-segment-center">
+                  <strong id="customerSegmentTotal">0</strong>
+                  <span>Total Customers</span>
+                </div>
+              </div>
+
+              <div
+                class="customer-segment-legend"
+                id="customerSegmentLegend">
+              </div>
+
             </div>
 
-            <div class="customer-segment-card">
-              <span>Active Customers</span>
-              <strong id="segmentActiveCustomers">0</strong>
-              <small>2 or more orders</small>
-            </div>
+            <a
+              href="admin-marketing.html"
+              class="customer-segment-link">
+              View all segments →
+            </a>
 
-            <div class="customer-segment-card">
-              <span>At Risk Customers</span>
-              <strong id="segmentAtRiskCustomers">0</strong>
-              <small>Only 1 order so far</small>
-            </div>
-
-            <div class="customer-segment-card">
-              <span>New Customers</span>
-              <strong id="segmentNewCustomers">0</strong>
-              <small>First-time buyers</small>
-            </div>
-          </div>
-
-          <div class="analytics-list" id="customerSegmentList"></div>
         </article>
 
+
         <article class="analytics-panel">
+
           <h2>Sales Funnel</h2>
 
           <div id="salesFunnel"></div>
