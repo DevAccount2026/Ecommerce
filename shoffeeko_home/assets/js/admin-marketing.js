@@ -16,6 +16,12 @@ function getCustomerSegments(customer) {
     active: daysSinceLastOrder <= 30,
     atRisk: daysSinceLastOrder > 30
   };
+  
+  segments.list = Object.keys(segments)
+    .filter(key => segments[key] === true);
+
+  return segments;
+
 }
 
 const MARKETING_SEGMENT_RULES = [

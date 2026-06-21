@@ -166,6 +166,10 @@ function handleChangePassword(event) {
               Saved Addresses
             </a>
 
+            <a href="support.html" class="account-btn">
+              Support Center
+            </a>
+
             <button type="button" class="account-btn account-btn-outline" id="logoutBtn">
               ${settings.logoutText}
             </button>
