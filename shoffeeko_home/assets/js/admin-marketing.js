@@ -2,43 +2,57 @@ const CAMPAIGNS_KEY = "shoffeeko_marketing_campaigns";
 const ORDERS_KEY = "shoffeeko_orders";
 const CURRENT_CUSTOMER_KEY = "shoffeeko_current_customer";
 
+function getCustomerSegments(customer) {
+  const tier = getCustomerTier(customer.totalSpent);
+  const orderCount = Number(customer.orderCount || 0);
+  const daysSinceLastOrder = Number(customer.daysSinceLastOrder || 0);
+
+  return {
+    all: true,
+    new: orderCount === 1,
+    repeat: orderCount >= 2,
+    loyal: ["Silver", "Gold"].includes(tier),
+    vip: tier === "Gold",
+    active: daysSinceLastOrder <= 30,
+    atRisk: daysSinceLastOrder > 30
+  };
+}
+
 const MARKETING_SEGMENT_RULES = [
   {
     id: "all",
     name: "All Customers",
-    match: customer => true
-  },
-  {
-    id: "vip",
-    name: "VIP Customers",
-    match: customer => customer.totalSpent >= 500 || customer.orderCount >= 5
-  },
-  {
-    id: "active",
-    name: "Active Customers",
-    match: customer => customer.daysSinceLastOrder <= 30
-  },
-  {
-    id: "at-risk",
-    name: "At Risk Customers",
-    match: customer => customer.daysSinceLastOrder >= 60
+    match: customer => customer.segments.all
   },
   {
     id: "new",
     name: "New Customers",
-    match: customer => customer.orderCount === 1
+    match: customer => customer.segments.new
   },
-
   {
-  id: "repeat",
-  name: "Repeat Buyers",
-  match: customer => customer.orderCount >= 2
+    id: "repeat",
+    name: "Repeat Buyers",
+    match: customer => customer.segments.repeat
   },
-
   {
-    id: "abandoned-cart",
-    name: "Abandoned Cart",
-    match: customer => false
+    id: "loyal",
+    name: "Loyal Customers",
+    match: customer => customer.segments.loyal
+  },
+  {
+    id: "vip",
+    name: "VIP Customers",
+    match: customer => customer.segments.vip
+  },
+  {
+    id: "active",
+    name: "Active Customers",
+    match: customer => customer.segments.active
+  },
+  {
+    id: "at-risk",
+    name: "At Risk Customers",
+    match: customer => customer.segments.atRisk
   }
 
 ];
@@ -205,21 +219,27 @@ function getMarketingCustomers() {
       return customer;
     }
 
-    const daysSinceLastOrder = Math.floor(
+   const daysSinceLastOrder = Math.floor(
       (now - customer.lastOrderDate) / (1000 * 60 * 60 * 24)
     );
 
-    return {
+    const customerProfile = {
       ...customer,
-      daysSinceLastOrder: Math.floor(
-        (now - customer.lastOrderDate) / (1000 * 60 * 60 * 24)
-      )
+      daysSinceLastOrder
     };
+
+    customerProfile.segments = getCustomerSegments(customerProfile);
+
+    return customerProfile;
   });
 }
 
 function getMarketingSegments() {
   const customers = getMarketingCustomers();
+
+  customers.forEach(customer => {
+    customer.segments = getCustomerSegments(customer);
+  });
 
   return MARKETING_SEGMENT_RULES.map(rule => ({
     id: rule.id,

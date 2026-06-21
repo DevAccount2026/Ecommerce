@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Marketing Segment Detail</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../components/admin-dashboard/admin-dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/admin-marketing-segment-detail.css" />
+</head>
+
+<body>
+  <main class="segment-detail-page">
+    <header class="segment-detail-header">
+      <div>
+        <p class="eyebrow">Marketing Segment</p>
+        <h1 id="segmentTitle">Segment Detail</h1>
+        <p id="segmentSubtitle">View customers inside this segment.</p>
+      </div>
+
+      <div class="segment-detail-actions">
+        <a href="admin-dashboard.html">← Dashboard</a>
+        <a href="admin-marketing-segments.html">← Segments</a>
+      </div>
+    </header>
+
+    <section class="segment-detail-summary">
+      <article>
+        <span>Total Customers</span>
+        <strong id="segmentCustomerCount">0</strong>
+      </article>
+    </section>
+
+    <section class="segment-detail-panel">
+      <h2>Customer List</h2>
+
+      <div class="segment-customer-table">
+        <div class="segment-customer-table__head">
+          <span>Email</span>
+          <span>Orders</span>
+          <span>Total Spent</span>
+          <span>Last Order</span>
+        </div>
+
+        <div id="segmentCustomerList"></div>
+      </div>
+    </section>
+  </main>
+
+    <script src="../assets/js/customer-metrics-service.js"></script>
+    <script src="../assets/js/admin-marketing.js"></script>
+    <script src="../assets/js/admin-marketing-segment-detail.js"></script>
+    
+    
+</body>
+</html>

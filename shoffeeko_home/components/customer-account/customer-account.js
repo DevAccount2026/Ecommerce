@@ -546,40 +546,29 @@ function renderLoyaltyRewards(customer) {
     return sum + Number(order.total || order.subtotal || 0);
   }, 0);
 
-  const points = Math.floor(totalSpent);
-
-  let tier = "Bronze";
-  let nextTier = "Silver";
-  let nextGoal = 10000;
-
-  if (points >= 50000) {
-    tier = "Gold";
-    nextTier = "VIP";
-    nextGoal = 100000;
-  } else if (points >= 10000) {
-    tier = "Silver";
-    nextTier = "Gold";
-    nextGoal = 50000;
-  }
-
-  const remaining = Math.max(nextGoal - points, 0);
+  const points = getCustomerPoints(totalSpent);
+  const tier = getCustomerTier(totalSpent);
+  const nextTierInfo = getNextTierInfo(totalSpent);
 
   const previousGoal =
     tier === "Silver" ? 10000 :
     tier === "Gold" ? 50000 :
-    tier === "VIP" ? 100000 :
     0;
 
+  const nextGoal = totalSpent + nextTierInfo.remaining;
+
   const progress =
-    ((points - previousGoal) / (nextGoal - previousGoal)) * 100;
+    nextTierInfo.remaining === 0
+      ? 100
+      : ((points - previousGoal) / (nextGoal - previousGoal)) * 100;
 
   document.querySelector("#loyaltyPoints").textContent = `${points.toLocaleString()} pts`;
   document.querySelector("#loyaltyTier").textContent = tier;
   document.querySelector("#loyaltyTierLabel").textContent = tier;
   document.querySelector("#loyaltyNextReward").textContent =
-    remaining > 0
-      ? `${remaining.toLocaleString()} pts until ${nextTier}`
-      : `${nextTier} unlocked`;
+    nextTierInfo.remaining > 0
+      ? `${nextTierInfo.remaining.toLocaleString()} pts until ${nextTierInfo.nextTier}`
+      : `${tier} unlocked`;
 
   document.querySelector("#loyaltyProgressBar").style.width =
     `${Math.min(Math.max(progress, 0), 100)}%`;

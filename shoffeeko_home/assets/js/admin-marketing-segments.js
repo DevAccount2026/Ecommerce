@@ -45,5 +45,5 @@ function renderSegmentsTable(segments) {
 }
 
 function viewSegment(segmentId) {
-  alert(`Segment: ${segmentId}`);
+  window.location.href = `admin-marketing-segment-detail.html?segment=${segmentId}`;
 }
