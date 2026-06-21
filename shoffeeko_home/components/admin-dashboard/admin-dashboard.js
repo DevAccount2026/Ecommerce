@@ -576,7 +576,7 @@ function renderOrderStatusChart(items) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "70%",
+      cutout: "62%",
 
       plugins: {
        legend: {
@@ -742,7 +742,7 @@ function renderTopCategoriesChart(items) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "72%",
+      cutout: "62%",
       plugins: {
         legend: {
           position: "bottom",
