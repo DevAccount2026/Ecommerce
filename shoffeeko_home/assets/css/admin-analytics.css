@@ -514,4 +514,106 @@
 }
 
 
-/*-------------------------------------------*/
+/*---------------Analytics----------------------------*/
+.customer-behavior-funnel {
+  display: grid;
+  gap: 14px;
+  padding-top: 10px;
+}
+
+.behavior-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 60px;
+  align-items: center;
+  gap: 14px;
+}
+
+.behavior-label {
+  color: #dce7f3;
+  font-size: 13px;
+}
+
+.behavior-track {
+  height: 28px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.behavior-bar {
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 2px;
+  box-shadow: 0 0 14px rgba(42, 219, 205, 0.25);
+}
+
+.behavior-rate {
+  color: #f4f7fb;
+  font-size: 13px;
+  text-align: right;
+}
+
+.behavior-bar.visitors {
+  background: #2fd3c5;
+}
+
+.behavior-bar.product-view {
+  background: #57aee8;
+}
+
+.behavior-bar.add-cart {
+  background: #9ed7cd;
+}
+
+.behavior-bar.checkout {
+  background: #f2a03c;
+}
+
+.behavior-bar.purchase {
+  background: #f0c431;
+}
+
+/*--------------sparline-------------*/
+
+.analytics-kpi-card--spark canvas {
+  width: 120px !important;
+  height: 46px !important;
+}
+
+.analytics-kpi-card--spark {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  align-items: center;
+  gap: 18px;
+}
+
+.analytics-kpi-card--spark > div:first-child {
+  min-width: 0;
+}
+
+.kpi-sparkline {
+  width: 120px;
+  height: 48px;
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-sparkline svg {
+  width: 120px;
+  height: 48px;
+  display: block;
+  overflow: visible;
+}
+
+.kpi-sparkline polyline {
+  fill: none;
+  stroke: #31c7bd;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(49, 199, 189, 0.45));
+}

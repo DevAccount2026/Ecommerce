@@ -59,60 +59,68 @@ const pendingOrders = orders.filter(order => {
  return getOrderDisplayStatus(order) === "Pending";
 }).length;
 
+
+
 const cards = [
   {
     label: "Total Orders",
     value: totalOrders,
-    note: "All saved orders"
+    note: "All saved orders",
+    iconClass: "orders-icon",
+    icon: "🛍️"
   },
   {
     label: "Revenue",
     value: formatCurrency(revenue),
-    note: "Total order revenue"
+    note: "Total order revenue",
+    iconClass: "revenue-icon",
+    icon: "💵"
   },
   {
     label: "Customers",
     value: customers,
-    note: "Unique customer emails"
+    note: "Unique customer emails",
+    iconClass: "customers-icon",
+    icon: "👥"
   },
   {
     label: "Pending Orders",
     value: pendingOrders,
-    note: "Orders awaiting action"
+    note: "Orders awaiting action",
+    iconClass: "pending-icon",
+    icon: "⏰"
   },
-
   {
     label: "Open Support Tickets",
     value: openSupportTickets,
     note: "Needs attention",
+    iconClass: "support-icon",
+    icon: "🎧",
     link: "admin-support.html?status=Open"
   }
-
 ];
 
-  grid.innerHTML = cards.map(card => `
-    <article
-      class="admin-stat-card"
-      data-link="${card.link || ""}"
-    >
-      <div class="admin-stat-card__label">${card.label}</div>
-      <div class="admin-stat-card__value">${card.value}</div>
-      <div class="admin-stat-card__note">${card.note}</div>
+
+
+
+   grid.innerHTML = cards.map(card => `
+    <article class="admin-stat-card">
+      <div class="admin-stat-card__icon ${card.iconClass}">
+        ${card.icon}
+      </div>
+
+      <div>
+        <div class="admin-stat-card__label">${card.label}</div>
+        <div class="admin-stat-card__value">${card.value}</div>
+        <div class="admin-stat-card__note">${card.note}</div>
+      </div>
+      
     </article>
   `).join("");
-
-  grid.querySelectorAll(".admin-stat-card").forEach(card => {
-    const link = card.dataset.link;
-
-    if (!link) return;
-
-    card.style.cursor = "pointer";
-
-    card.addEventListener("click", () => {
-      window.location.href = link;
-    });
-  });
 }
+
+
+
 
 function formatDate(dateValue) {
   return new Date(dateValue).toLocaleDateString("en-US", {

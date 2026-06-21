@@ -13,7 +13,7 @@
 
   <div class="admin-shell">
 
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="admin-sidebar__brand">
         <span class="admin-sidebar__logo">S</span>
         <span>ShoffeeKo HQ</span>
@@ -67,28 +67,45 @@
         </section>
 
         <section class="analytics-kpi-grid">
-          <article class="analytics-kpi-card">
-            <span>Average Order Value (AOV)</span>
-            <strong id="analyticsAOV">₱0</strong>
-            <small class="positive">+0% vs last month</small>
+
+          <article class="analytics-kpi-card analytics-kpi-card--spark">
+            <div>
+              <span>Average Order Value (AOV)</span>
+              <strong id="analyticsAOV">₱0</strong>
+              <small class="positive">+0% vs last month</small>
+            </div>
+
+            <div id="aovSparkline" class="kpi-sparkline"></div>
           </article>
 
-          <article class="analytics-kpi-card">
-            <span>Total Revenue</span>
-            <strong id="analyticsTotalRevenue">₱0</strong>
-            <small class="positive">Saved order revenue</small>
+          <article class="analytics-kpi-card analytics-kpi-card--spark">
+            <div>
+              <span>Total Revenue</span>
+              <strong id="analyticsTotalRevenue">₱0</strong>
+              <small class="positive">Saved order revenue</small>
+            </div>
+
+            <div id="revenueSparkline" class="kpi-sparkline"></div>
           </article>
 
-          <article class="analytics-kpi-card">
-            <span>Total Orders</span>
-            <strong id="analyticsTotalOrders">0</strong>
-            <small>Completed checkout records</small>
+          <article class="analytics-kpi-card analytics-kpi-card--spark">
+             <div>
+                <span>Total Orders</span>
+                <strong id="analyticsTotalOrders">0</strong>
+                <small>Completed checkout records</small>
+             </div>
+              
+             <div id="ordersSparkline" class="kpi-sparkline"></div>
           </article>
 
-         <article class="analytics-kpi-card analytics-mini-donut-card">
-            <span>Repeat Purchase Rate</span>
-            <strong id="analyticsRepeatRate">0%</strong>
-            <small>Customers with more than 1 order</small>
+          <article class="analytics-kpi-card analytics-mini-donut-card">
+              <div>
+                <span>Repeat Purchase Rate</span>
+                <strong id="analyticsRepeatRate">0%</strong>
+                <small>Customers with more than 1 order</small>
+              </div>
+
+              <div id="repeatSparkline" class="kpi-sparkline"></div>            
           </article>
 
         </section>
@@ -199,6 +216,11 @@
           </div>
         </article>
 
+        <section class="analytics-card">
+          <h3>Customer Behavior Funnel</h3>
+          <div id="customerBehaviorFunnel" class="customer-behavior-funnel"></div>
+        </section>
+
        <article class="analytics-panel analytics-panel--wide">
           <h2>Customer Segmentation</h2>
 
@@ -244,7 +266,8 @@
     </div>
 
   </div>
-
+   
+  <script src="../components/admin-sidebar/admin-sidebar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../assets/js/admin-analytics.js"></script>
 

@@ -11,12 +11,25 @@
 </head>
 
 <body>
-  <main
-    id="adminSupportPage"
-    class="admin-support-page"
-    data-component="../components/admin-support/admin-support.html">
-  </main>
 
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar"></aside>
+
+    <div class="admin-main">
+
+      <main
+        id="adminSupportPage"
+        class="admin-support-page"
+        data-component="../components/admin-support/admin-support.html">
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="../components/admin-sidebar/admin-sidebar.js"></script>
   <script src="../components/admin-support/admin-support.js"></script>
+
 </body>
 </html>

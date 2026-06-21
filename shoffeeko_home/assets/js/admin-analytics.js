@@ -1,6 +1,7 @@
 const ORDERS_KEY = "shoffeeko_orders";
 const PRODUCTS_KEY = "adminProducts";
 
+let orderTrendsChartInstance = null;
 let analyticsCharts = [];
 
 function getOrders() {
@@ -264,36 +265,24 @@ function renderWorstSellingProducts(orders) {
   renderTable("#worstSellingProductsList", rows);
 }
 
-function renderOrderTrends(orders) {
-  const grouped = {};
+function renderOrderTrendsChart(labels, values) {
+  const canvas = document.querySelector("#orderTrendsChart");
+  if (!canvas) return;
 
-  orders.forEach(order => {
-    const date = new Date(order.createdAt || order.date || Date.now());
-    const key = date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric"
-    });
+  if (orderTrendsChartInstance) {
+    orderTrendsChartInstance.destroy();
+  }
 
-    grouped[key] = (grouped[key] || 0) + 1;
-  });
-
-  const labels = Object.keys(grouped);
-  const values = Object.values(grouped);
-
-  makeChart("orderTrendsChart", {
+  orderTrendsChartInstance = new Chart(canvas, {
     type: "line",
     data: {
       labels,
-      datasets: [
-        {
-          label: "Orders",
-          data: values,
-          borderColor: "#34d6c3",
-          backgroundColor: "rgba(52, 214, 195, 0.16)",
-          fill: true,
-          tension: 0.35
-        }
-      ]
+      datasets: [{
+        label: "Orders",
+        data: values,
+        tension: 0.4,
+        fill: true
+      }]
     },
     options: {
       responsive: true,
@@ -380,7 +369,7 @@ function renderSalesConversionSummary(orders) {
       );
     }
 
-    function renderSalesFunnel(orders) {
+  function renderSalesFunnel(orders) {
   const created = orders.length;
 
   const processing = orders.filter(order =>
@@ -503,6 +492,136 @@ function renderMarketingAttribution(orders) {
   );
 }
 
+function renderCustomerBehaviorFunnel() {
+  const container = document.querySelector("#customerBehaviorFunnel");
+  if (!container) {
+    console.warn("Customer Behavior Funnel container not found.");
+    return;
+  }
+
+  const orders = getOrders();
+
+  const visitors = 100;
+  const productViews = 65;
+  const addToCart = 18;
+  const checkout = 9;
+  const completedPurchase = orders.length || 3;
+
+  const stages = [
+    { label: "Visitors", value: visitors, rate: 100, className: "visitors" },
+    { label: "Product View", value: productViews, rate: 65, className: "product-view" },
+    { label: "Add to Cart", value: addToCart, rate: 18, className: "add-cart" },
+    { label: "Checkout", value: checkout, rate: 9, className: "checkout" },
+    { label: "Completed Purchase", value: completedPurchase, rate: 3.2, className: "purchase" }
+  ];
+
+  container.innerHTML = stages.map(stage => `
+    <div class="behavior-row">
+      <div class="behavior-label">${stage.label}</div>
+
+      <div class="behavior-track">
+        <div 
+          class="behavior-bar ${stage.className}" 
+          style="width:${stage.rate}%"
+        ></div>
+      </div>
+
+      <div class="behavior-rate">${stage.rate}%</div>
+    </div>
+  `).join("");
+}
+
+function renderOrderTrends(orders) {
+  const grouped = {};
+
+  orders.forEach(order => {
+    const date = new Date(order.createdAt || order.date || Date.now());
+    const key = date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric"
+    });
+
+    grouped[key] = (grouped[key] || 0) + 1;
+  });
+
+  const labels = Object.keys(grouped);
+  const values = Object.values(grouped);
+
+  renderOrderTrendsChart(labels, values);
+}
+
+function renderSparkline(canvasId, values, color = "#31c7bd") {
+  const canvas = document.querySelector(`#${canvasId}`);
+  if (!canvas || typeof Chart === "undefined") return;
+
+  new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: values.map((_, index) => index + 1),
+      datasets: [{
+        data: values,
+        borderColor: color,
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.45
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 1200
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      },
+      scales: {
+        x: { display: false },
+        y: { display: false }
+      }
+    }
+  });
+}
+
+function renderSvgSparkline(elementId, values, color = "#31c7bd") {
+  const element = document.querySelector(`#${elementId}`);
+  if (!element || !values.length) return;
+
+  const width = 110;
+  const height = 42;
+  const padding = 5;
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+
+  const points = values.map((value, index) => {
+    const x = padding + (index / (values.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((value - min) / range) * (height - padding * 2);
+    return `${x},${y}`;
+  });
+
+  element.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}">
+      <polyline 
+        points="${points.join(" ")}"
+        style="stroke:${color}"
+      ></polyline>
+    </svg>
+  `;
+}
+
+function renderKpiSparklines() {
+  renderSvgSparkline("aovSparkline", [560, 590, 570, 630, 650, 640, 652]);
+  renderSvgSparkline("revenueSparkline", [3200, 4800, 4300, 6500, 8000, 9300, 12400]);
+  renderSvgSparkline("ordersSparkline", [3, 5, 4, 8, 10, 13, 19]);
+  renderSvgSparkline("repeatSparkline", [54, 52, 51, 50, 49, 50, 50], "#e46f7d");
+}
+
+
+
 function initAnalyticsPage() {
   const page = document.querySelector("#adminAnalyticsPage");
   if (!page) return;
@@ -512,30 +631,20 @@ function initAnalyticsPage() {
   const orders = getOrders();
   const products = getProducts();
 
+  renderKpis(orders, products);
+  renderRevenueByCategory(orders);
+  renderRevenueByProduct(orders);
+  renderTopCustomers(orders);
+  renderBestSellingProducts(orders);
+  renderWorstSellingProducts(orders);
+  renderOrderTrends(orders);
+  renderMonthlyRevenueComparison(orders);
   renderMarketingAttribution(orders);
+  renderSalesConversionSummary(orders);
+  renderCustomerSegmentation(orders);
+  renderCustomerBehaviorFunnel();
   renderSalesFunnel(orders);
-  renderCustomerSegmentation(orders);
-  renderSalesConversionSummary(orders);
-  renderKpis(orders, products);
-  renderRevenueByCategory(orders);
-  renderRevenueByProduct(orders);
-  renderTopCustomers(orders);
-  renderBestSellingProducts(orders);
-  renderWorstSellingProducts(orders);
-  renderOrderTrends(orders);
-  renderMonthlyRevenueComparison(orders);
-
-  renderKpis(orders, products);
-  renderRevenueByCategory(orders);
-  renderRevenueByProduct(orders);
-  renderTopCustomers(orders);
-  renderBestSellingProducts(orders);
-  renderWorstSellingProducts(orders);
-  renderOrderTrends(orders);
-  renderMonthlyRevenueComparison(orders);
-  renderSalesConversionSummary(orders);
-  renderCustomerSegmentation(orders);
-
+  renderKpiSparklines();
 }
 
 function getCustomerLifetimeValue(orders) {
@@ -549,5 +658,7 @@ function getCustomerLifetimeValue(orders) {
 
   return totalSpend / customers.length;
 }
+
+
 
 document.addEventListener("DOMContentLoaded", initAnalyticsPage);

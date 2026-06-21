@@ -174,6 +174,7 @@ function applyOrderFilters() {
   const searchInput = document.querySelector("#orderSearchInput");
   const topSearch = document.querySelector("#adminOrderTopSearch");
   const statusFilter = document.querySelector("#orderStatusFilter");
+  
 
   const searchTerm = (
     searchInput?.value ||
@@ -190,7 +191,9 @@ function applyOrderFilters() {
       order.email.toLowerCase().includes(searchTerm);
 
     const matchesStatus =
-      selectedStatus === "all" || order.status === selectedStatus;
+      selectedStatus === "all" ||
+       order.orderStatus === selectedStatus ||
+       order.status === selectedStatus;
 
     return matchesSearch && matchesStatus;
   });
@@ -224,6 +227,11 @@ function getSavedOrders() {
   }
 }
 
+function getOrderStatusFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("status");
+}
+
 async function initAdminOrdersPage() {
   const root = document.querySelector("#adminOrdersPage");
   if (!root) return;
@@ -238,6 +246,15 @@ async function initAdminOrdersPage() {
     : await fetchOrders();
 
   renderOrders(allOrders);
+
+  const urlStatus = getOrderStatusFromUrl();
+  const statusFilter = document.querySelector("#orderStatusFilter");
+
+  if (urlStatus && statusFilter) {
+    statusFilter.value = urlStatus;
+  }
+
+  applyOrderFilters();
 
   document.querySelector("#orderSearchInput")?.addEventListener("input", applyOrderFilters);
   document.querySelector("#adminOrderTopSearch")?.addEventListener("input", applyOrderFilters);

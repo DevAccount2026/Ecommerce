@@ -4,6 +4,8 @@ let currentProduct = null;
 
 let isAddingProduct = false;
 
+
+
 async function fetchProducts() {
   const root = document.querySelector("#adminProductsPage");
   const apiUrl = root?.dataset.api;
@@ -21,6 +23,7 @@ async function fetchProducts() {
     return [];
   }
 }
+
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-PH", {
@@ -199,8 +202,9 @@ async function initAdminProductsPage() {
   JSON.parse(localStorage.getItem("adminProducts")) ||
   await fetchProducts();
 
+  
+  handleProductUrlActions();
   renderProducts(allProducts);
-
   renderCategoryFilter(allProducts);
 
   document.querySelector("#productSearchInput")?.addEventListener("input", applyProductFilters);
@@ -212,5 +216,15 @@ async function initAdminProductsPage() {
   window.location.href = "admin-product-detail.html?add=true";
   });
 }
+
+function handleProductUrlActions() {
+  const params = new URLSearchParams(window.location.search);
+  const action = params.get("action");
+
+  if (action === "add") {
+    openAddProductModal();
+  }
+}
+
 
 document.addEventListener("DOMContentLoaded", initAdminProductsPage);
